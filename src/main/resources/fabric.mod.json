@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "redstonecomptools",
+  "version": "${version}",
+  "name": "RedstoneCompTools",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/redstonecomptools/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "me.jtech.redstonecomptools.client.RedstonecomptoolsClient"
+    ],
+    "main": [
+      "me.jtech.redstonecomptools.Redstonecomptools"
+    ]
+  },
+  "mixins": [
+    "redstonecomptools.mixins.json",
+    {
+      "config": "redstonecomptools.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
