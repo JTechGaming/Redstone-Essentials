@@ -17,6 +17,7 @@ import java.util.Optional;
 
 public abstract class BaseAbility {
     public String name;
+    public static Identifier identifier;
     public boolean toggled;
     public KeyBinding keyBinding;
     private int key = GLFW.GLFW_KEY_P;
@@ -25,7 +26,7 @@ public abstract class BaseAbility {
 
     public void init() {
         keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.redstonecomptools.%s".formatted(name),
+                "key.redstonecomptools.%s".formatted(identifier),
                 InputUtil.Type.KEYSYM,
                 key,
                 "category.redstonecomptools.abilities"

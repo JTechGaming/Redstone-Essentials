@@ -2,9 +2,7 @@ package me.jtech.redstonecomptools.client;
 
 import me.jtech.redstonecomptools.client.clientAbilities.BaseAbility;
 import me.jtech.redstonecomptools.client.clientAbilities.DustPlaceAbility;
-import me.jtech.redstonecomptools.client.clientAbilities.TestAbility;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntryInfo;
 import net.minecraft.util.Identifier;
 
 public class Abilities {
@@ -16,7 +14,6 @@ public class Abilities {
 
 
     public static final BaseAbility DUST_PLACE = register("dust_place", new DustPlaceAbility());
-    public static final BaseAbility TEST_ABILITY = register("test_ability", new TestAbility());
 
 
 

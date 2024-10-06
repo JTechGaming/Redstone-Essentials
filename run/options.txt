@@ -139,7 +139,8 @@ key_axiom.keybind.nudge_with_scroll:key.keyboard.unknown
 key_axiom.keybind.nudge_forwards:key.keyboard.unknown
 key_axiom.keybind.nudge_backwards:key.keyboard.unknown
 key_key.redstonecomptools.Dust Place:key.keyboard.o
-key_key.redstonecomptools.Test Ability:key.keyboard.j
+key_key.redstonecomptools.barrel:key.keyboard.b
+key_key.redstonecomptools.shulker:key.keyboard.v
 soundCategory_master:0.8024282560706402
 soundCategory_music:0.0
 soundCategory_record:1.0

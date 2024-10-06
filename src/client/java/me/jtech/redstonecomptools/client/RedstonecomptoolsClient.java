@@ -2,7 +2,9 @@ package me.jtech.redstonecomptools.client;
 
 import me.jtech.redstonecomptools.client.axiomExtensions.ServiceHelper;
 import me.jtech.redstonecomptools.client.axiomExtensions.tools.forceNeighborUpdatesTool;
+import me.jtech.redstonecomptools.client.qolTools.SignalStrengthGiver;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +18,17 @@ public class RedstonecomptoolsClient implements ClientModInitializer {
         Abilities abilities = Abilities.getInstance();
         AbilityManager.initAbilities();
 
-        LOGGER.info("Registering forceNeighborUpdatesTool...");
+        LOGGER.info("Setting up QOL features...");
+        // Setup keybinds for barrel and shulker giver
+        SignalStrengthGiver.setupKeybinds();
+
+        LOGGER.info("Registering axiom extension tools...");
         ServiceHelper.getToolRegistryService().register(new forceNeighborUpdatesTool());
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            SignalStrengthGiver.processBarrel();
+            SignalStrengthGiver.processShulker();
+        });
+
     }
 }
