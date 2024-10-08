@@ -1,5 +1,6 @@
 package me.jtech.redstonecomptools.client.clientAbilities;
 
+import me.jtech.redstonecomptools.client.utility.Toaster;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.advancement.AdvancementDisplay;
@@ -52,9 +53,7 @@ public abstract class BaseAbility {
     public void toggle() {
         toggled = !toggled;
 
-        AdvancementDisplay display = new AdvancementDisplay(ItemStack.EMPTY, Text.literal("Ability Manager"), Text.literal(name + " ability was toggled " + String.valueOf(toggled).toUpperCase()), Optional.of(Identifier.ofVanilla("textures/gui/advancements/window.png")), AdvancementFrame.TASK, true, false, false);
-        assert MinecraftClient.getInstance().player != null;
-        MinecraftClient.getInstance().player.currentScreenHandler.sendContentUpdates();
+        Toaster.sendToast(MinecraftClient.getInstance(), Text.literal(name), Text.literal("Was toggled " + (toggled? "On" : "Off")));
 
         toggled(toggled);
     }

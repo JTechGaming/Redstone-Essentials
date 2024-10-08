@@ -12,7 +12,7 @@ darknessEffectScale:1.0
 glintSpeed:0.5
 glintStrength:0.75
 prioritizeChunkUpdates:0
-fullscreen:false
+fullscreen:true
 gamma:0.5
 graphicsMode:1
 guiScale:3
@@ -138,7 +138,7 @@ key_axiom.keybind.toggle_bulldozer_cap:key.keyboard.unknown
 key_axiom.keybind.nudge_with_scroll:key.keyboard.unknown
 key_axiom.keybind.nudge_forwards:key.keyboard.unknown
 key_axiom.keybind.nudge_backwards:key.keyboard.unknown
-key_key.redstonecomptools.Dust Place:key.keyboard.o
+key_key.redstonecomptools.null:key.keyboard.o
 key_key.redstonecomptools.barrel:key.keyboard.b
 key_key.redstonecomptools.shulker:key.keyboard.v
 soundCategory_master:0.8024282560706402

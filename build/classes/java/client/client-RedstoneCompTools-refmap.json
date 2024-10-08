@@ -2,12 +2,20 @@
   "mappings": {
     "me/jtech/redstonecomptools/mixin/client/BlockPlaceMixin": {
       "onPlaced": "Lnet/minecraft/class_2248;method_9567(Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;Lnet/minecraft/class_1309;Lnet/minecraft/class_1799;)V"
+    },
+    "me/jtech/redstonecomptools/mixin/client/PauzeScreenMixin": {
+      "Lnet/minecraft/client/MinecraftClient;isInSingleplayer()Z": "Lnet/minecraft/class_310;method_1542()Z",
+      "initWidgets": "Lnet/minecraft/class_433;method_20543()V"
     }
   },
   "data": {
     "named:intermediary": {
       "me/jtech/redstonecomptools/mixin/client/BlockPlaceMixin": {
         "onPlaced": "Lnet/minecraft/class_2248;method_9567(Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;Lnet/minecraft/class_1309;Lnet/minecraft/class_1799;)V"
+      },
+      "me/jtech/redstonecomptools/mixin/client/PauzeScreenMixin": {
+        "Lnet/minecraft/client/MinecraftClient;isInSingleplayer()Z": "Lnet/minecraft/class_310;method_1542()Z",
+        "initWidgets": "Lnet/minecraft/class_433;method_20543()V"
       }
     }
   }

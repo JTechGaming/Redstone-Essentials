@@ -1,12 +1,3 @@
-/c 16*3+4#h
-/c 2+2
-/c 2+2h
-/c 2+2#h
-/c 2+2#o
-/c 2+2#bv
-/c 2+2#bc
-/c 2+2#bcv
-/c 10+10#b
 /c 10+10#d
 /c 10+10#h
 /c 10+10#o
@@ -48,3 +39,12 @@
 /print_bitmap Test.bmp 64 40 2 2 -40 64 31 -40 64 31 -40 64 31 -40 64 31 -40 64 31 -40 64
 /calc 4/14
 /clear
+/keybind test 85 say hi
+/keybind test 85 say test
+/keybind test 85 say amogus
+/keybind test 85 say amogu
+/keybind test 86 say amogus
+/keybind test 85 say amogus
+/keybind test2 85 say amogussss
+/keybind creativeMode 89 gamemode creative
+/keybind creativeMode 89 gamemode survival

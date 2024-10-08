@@ -1,1 +1,2 @@
 v1	named	intermediary
+METHOD	me/jtech/redstonecomptools/mixin/client/PauzeScreenMixin	(Lnet/minecraft/text/Text;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/widget/ButtonWidget;	createButton	method_47900
