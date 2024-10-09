@@ -41,7 +41,7 @@ public class KeybindEditorScreen extends Screen {
         }
 
         // Save and Cancel buttons
-        this.saveButton = new PublicButtonWidget(this.width / 2 - 50, this.height - 40, 100, 20, Text.literal("Save"), button -> {
+        this.saveButton = ButtonWidget.builder(Text.literal("Save"), button -> {
             // Save keybind data here (either update existing or create new)
             if (keybind == null) {
                 KeybindEntry newKeybind = new KeybindEntry(this.nameField.getText(), this.commandField.getText(), shiftRequired, ctrlRequired);
@@ -53,11 +53,11 @@ public class KeybindEditorScreen extends Screen {
                 keybind.setCtrlRequired(ctrlRequired);
             }
             MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent)); // Go back to the list
-        }, null);
+        }).dimensions(this.width / 2 - 50, this.height - 40, 100, 20).build();
 
-        this.cancelButton = new PublicButtonWidget(this.width / 2 - 50, this.height - 70, 100, 20, Text.literal("Cancel"), button -> {
+        this.cancelButton = ButtonWidget.builder(Text.literal("Cancel"), button -> {
             MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent));
-        }, null);
+        }).dimensions(this.width / 2 - 50, this.height - 70, 100, 20).build();
 
         // Add widgets
         this.addDrawableChild(nameField);

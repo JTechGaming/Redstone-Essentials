@@ -9,12 +9,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KeybindScreen extends Screen {
     public static Screen parent;
 
-    private List<KeybindEntry> keybindEntries; // Holds keybind data
+    private List<KeybindEntry> keybindEntries = KeybindRegistry.getKeybinds(); // Holds keybind data
     private ButtonWidget addButton;
 
     public KeybindScreen(Screen parent) {
@@ -26,18 +27,19 @@ public class KeybindScreen extends Screen {
     protected void init() {
         super.init();
 
-        // Adding existing keybinds to the UI list
+        // Add all existing keybinds in the array to the UI list
         int y = 20;
         for (KeybindEntry keybind : keybindEntries) {
             // Render each keybind entry
-            this.addDrawableChild(new KeybindWidget(this, keybind, 10, y, 200, 20));
+            this.addDrawableChild(new KeybindWidget(this, keybind, this.width/2-100, y, 200, 20));
             y += 30;
         }
 
-        // Add button to create new keybind
-        addButton = new PublicButtonWidget(this.width / 2 - 50, this.height - 30, 100, 20, Text.literal("Add Keybind"), button -> {
+        // Build the button to create a new keybind
+        addButton = ButtonWidget.builder(Text.literal("Add Keybind"), button -> {
             MinecraftClient.getInstance().setScreen(new KeybindEditorScreen(null)); // null indicates creating a new keybind
-        }, null);
+        }).dimensions(this.width / 2 - 50, this.height - 30, 100, 20).build();
+        // Add the button to the screen
         this.addDrawableChild(addButton);
     }
 
