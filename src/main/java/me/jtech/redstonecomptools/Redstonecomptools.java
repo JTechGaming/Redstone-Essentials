@@ -19,6 +19,9 @@ import org.slf4j.LoggerFactory;
 public class Redstonecomptools implements ModInitializer {
 
     public static final Logger LOGGER = LoggerFactory.getLogger("redstonecomptools");
+    public static final String MOD_ID = "redstonecomptools";
+
+    public static boolean shouldApplyButtonStyle = false;
 
     @Override
     public void onInitialize() {

@@ -4,6 +4,7 @@
   "package": "me.jtech.redstonecomptools.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "GUIButtonMixin"
   ],
   "injectors": {
     "defaultRequire": 1

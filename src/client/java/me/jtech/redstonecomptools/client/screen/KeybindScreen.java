@@ -1,5 +1,6 @@
 package me.jtech.redstonecomptools.client.screen;
 
+import me.jtech.redstonecomptools.Redstonecomptools;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
@@ -20,6 +21,7 @@ public class KeybindScreen extends Screen {
 
     public KeybindScreen(Screen parent) {
         super(Text.literal("Dynamic Keybind Editor"));
+        Redstonecomptools.shouldApplyButtonStyle = true;
         KeybindScreen.parent = parent;
     }
 
@@ -51,6 +53,7 @@ public class KeybindScreen extends Screen {
 
     @Override
     public void close() {
+        Redstonecomptools.shouldApplyButtonStyle = false;
         this.client.setScreen(this.parent);
     }
 

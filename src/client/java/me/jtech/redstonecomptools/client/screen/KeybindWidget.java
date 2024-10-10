@@ -1,8 +1,11 @@
 package me.jtech.redstonecomptools.client.screen;
 
+import me.jtech.redstonecomptools.Redstonecomptools;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 
 public class KeybindWidget extends ButtonWidget {
@@ -28,7 +31,7 @@ public class KeybindWidget extends ButtonWidget {
             button = this.parentScreen.addDrawableChild(ButtonWidget.builder(Text.literal("Edit"), b -> {
                 // Open KeybindEditorScreen for this keybind
                 MinecraftClient.getInstance().setScreen(new KeybindEditorScreen(this.keybind));
-            }).dimensions(this.getX() + 200, this.getY() + 25, 80, 20).build());
+            }).dimensions(this.getX() + 310, this.getY()+(this.height/2), 80, 20).tooltip(Tooltip.of(Text.literal("Edit this keybindings settings"))).build());
 
             // TODO Add additional UI elements for properties
         } else {
@@ -49,8 +52,10 @@ public class KeybindWidget extends ButtonWidget {
                 button.visible = true;
             }
 
-            context.fill(this.getX(), this.getY(), this.getX() + this.width + 20, this.getY() + this.height + 20, 0x575252D); //0x575252
-            context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, "Command: " + keybind.getCommand(), this.getX(), this.getY(), 0xFFFFFF);
+            int padding = 20;
+            // -javaagent:"C:\Users\jaspe\.gradle\caches\modules-2\files-2.1\net.fabricmc\sponge-mixin\0.15.3+mixin.0.8.7\51ee0a44ab05f6fddd66b09e66b3a16904f9c55d\sponge-mixin-0.15.3+mixin.0.8.7.jar"
+            context.fill(this.getX()+this.width, this.getY(), this.getX()+this.width+200, this.getY()+this.height*2, 0xAF221B1B); //0x221B1B
+            context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, "Command: " + keybind.getCommand(), this.getX() + 220, this.getY()+this.height-5, 0xFFFFFF);
 
             // TODO Display the flags, key, etc.
         } else {
