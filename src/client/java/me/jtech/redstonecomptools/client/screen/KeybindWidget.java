@@ -30,7 +30,7 @@ public class KeybindWidget extends ButtonWidget {
             // Render the button for editing the keybind
             button = this.parentScreen.addDrawableChild(ButtonWidget.builder(Text.literal("Edit"), b -> {
                 // Open KeybindEditorScreen for this keybind
-                MinecraftClient.getInstance().setScreen(new KeybindEditorScreen(this.keybind));
+                MinecraftClient.getInstance().setScreen(new KeybindEditorScreen(this.keybind, this.keybind.getKey()));
             }).dimensions(this.getX() + 310, this.getY()+(this.height/2), 80, 20).tooltip(Tooltip.of(Text.literal("Edit this keybindings settings"))).build());
 
             // TODO Add additional UI elements for properties

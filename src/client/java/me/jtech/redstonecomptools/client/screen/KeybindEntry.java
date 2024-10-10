@@ -1,14 +1,18 @@
 package me.jtech.redstonecomptools.client.screen;
 
+import java.util.List;
+
 public class KeybindEntry {
     private String name;
     private String command;
+    private List<Integer> key;
     private boolean shiftRequired;
     private boolean ctrlRequired;
 
-    public KeybindEntry(String name, String command, boolean shiftRequired, boolean ctrlRequired) {
+    public KeybindEntry(String name, String command, List<Integer> key, boolean shiftRequired, boolean ctrlRequired) {
         this.name = name;
         this.command = command;
+        this.key = key;
         this.shiftRequired = shiftRequired;
         this.ctrlRequired = ctrlRequired;
     }
@@ -18,6 +22,9 @@ public class KeybindEntry {
 
     public String getCommand() { return command; }
     public void setCommand(String command) { this.command = command; }
+
+    public List<Integer> getKey() { return key; }
+    public void setKey(List<Integer> key) { this.key = key; }
 
     public boolean isShiftRequired() { return shiftRequired; }
     public void setShiftRequired(boolean shiftRequired) { this.shiftRequired = shiftRequired; }

@@ -20,7 +20,7 @@ public class KeybindScreen extends Screen {
     private ButtonWidget addButton;
 
     public KeybindScreen(Screen parent) {
-        super(Text.literal("Dynamic Keybind Editor"));
+        super(Text.literal("Dynamic Keybinding Editor"));
         Redstonecomptools.shouldApplyButtonStyle = true;
         KeybindScreen.parent = parent;
     }
@@ -38,8 +38,8 @@ public class KeybindScreen extends Screen {
         }
 
         // Build the button to create a new keybind
-        addButton = ButtonWidget.builder(Text.literal("Add Keybind"), button -> {
-            MinecraftClient.getInstance().setScreen(new KeybindEditorScreen(null)); // null indicates creating a new keybind
+        addButton = ButtonWidget.builder(Text.literal("Add Keybinding"), button -> {
+            MinecraftClient.getInstance().setScreen(new KeybindEditorScreen(null, new ArrayList<>())); // null (and new arraylist) indicate creating a new keybinding
         }).dimensions(this.width / 2 - 50, this.height - 30, 100, 20).build();
         // Add the button to the screen
         this.addDrawableChild(addButton);
