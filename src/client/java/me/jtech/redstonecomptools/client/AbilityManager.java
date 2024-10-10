@@ -1,7 +1,6 @@
 package me.jtech.redstonecomptools.client;
 
 import me.jtech.redstonecomptools.client.clientAbilities.BaseAbility;
-import me.jtech.redstonecomptools.client.clientAbilities.DustPlaceAbility;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.registry.RegistryKey;
