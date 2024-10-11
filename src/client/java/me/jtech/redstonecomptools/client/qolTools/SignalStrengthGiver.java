@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SignalStrengthGiver {
+public class SignalStrengthGiver { //TODO comment this
     private static KeyBinding barrel;
     private static boolean barrelBtnHeld = false;
 

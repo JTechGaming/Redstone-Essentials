@@ -6,7 +6,7 @@ import me.jtech.redstonecomptools.client.keybinds.DynamicKeybindProperties;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeybindRegistry {
+public class KeybindRegistry { //TODO comment this
     private static List<KeybindEntry> keybinds = new ArrayList<>();
 
     public static void register(KeybindEntry keybind) {

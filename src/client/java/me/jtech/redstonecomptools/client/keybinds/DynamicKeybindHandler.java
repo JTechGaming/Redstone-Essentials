@@ -22,7 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class DynamicKeybindHandler {
+public class DynamicKeybindHandler { //TODO comment this
     public static Map<String, Pair<List<Integer>, DynamicKeybindProperties>> keyBinds = new HashMap<>();
     private static boolean isWaitingForKey = false;
     private static boolean hasProcessedKey = false;

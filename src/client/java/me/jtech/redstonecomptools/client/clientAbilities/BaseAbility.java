@@ -18,10 +18,12 @@ import java.util.Optional;
 
 public abstract class BaseAbility {
     public String name; // The name of the ability
-    public static Identifier identifier; // The identifier of this ability
+    public Identifier identifier; // The identifier of this ability
     public boolean toggled; // The toggle state of the ability
     public KeyBinding keyBinding; // The keybind. This is just a backend variable that doesnt need to be touched anywhere else
     private int key = GLFW.GLFW_KEY_P; // The key used to toggle the ability (default is P)
+    public boolean shouldToast;
+    public boolean canHold;
 
     private boolean hasProcessed = false; // Variable for spam prevention. Not used for anything else
 
@@ -36,8 +38,8 @@ public abstract class BaseAbility {
 
         // The keybind press detection
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (keyBinding.isPressed() && !hasProcessed) {
-                hasProcessed = true; // Prevent spamming the keybind
+            if (keyBinding.isPressed() && (!hasProcessed || canHold)) {
+                hasProcessed = true; // Prevent spamming the keybind (unless canHold is enabled)
                 toggle();
             }
 
@@ -50,17 +52,21 @@ public abstract class BaseAbility {
     }
 
     // Just a constructor to allow classes that extend this to provide custom values for name, toggled, and key.
-    public BaseAbility(String name, boolean toggled, int key) {
+    public BaseAbility(String name, boolean toggled, int key, boolean shouldToast, boolean canHold, Identifier identifier) {
         this.name = name;
         this.toggled = toggled;
         this.key = key;
+        this.shouldToast = shouldToast;
+        this.canHold = canHold;
+        this.identifier = identifier;
     }
 
     // This function is called whenever the keybind is pressed and will toggle the active state
     public void toggle() {
         toggled = !toggled; // toggle the active state
-        // Sends a toast to notify the player about the toggle
-        Toaster.sendToast(MinecraftClient.getInstance(), Text.literal(name), Text.literal("Was toggled " + (toggled? "On" : "Off")));
+        // Sends a toast to notify the player about the toggle (if shouldToast is enabled)
+        if (shouldToast)
+            Toaster.sendToast(MinecraftClient.getInstance(), Text.literal(name), Text.literal("Was toggled " + (toggled? "On" : "Off")));
         // This function is called after the toggle function is done processing. It can be overridden in an ability class to execute some custom code
         toggled(toggled);
     }

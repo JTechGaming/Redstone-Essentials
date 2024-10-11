@@ -104,19 +104,19 @@ public class KeybindEditorScreen extends Screen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) { //TODO comment this
         this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         this.nameField.render(context, mouseX, mouseY, delta);
         this.commandField.render(context, mouseX, mouseY, delta);
     }
 
-    public void setKeys(List<Integer> keys) {
+    public void setKeys(List<Integer> keys) { //TODO comment this
         keyList = keys;
         keyButton.setMessage(Text.literal("Key: " + keyNameQuery(keyList)));
     }
 
-    public String keyNameQuery(List<Integer> keys) {
+    public String keyNameQuery(List<Integer> keys) { //TODO comment this
         String out = "";
         for (int i=0; i<keys.size(); i++) {
             out = out.concat(GLFW.glfwGetKeyName(keys.get(i), 0) + (i<keys.size()-1? " + " : ""));
@@ -125,7 +125,7 @@ public class KeybindEditorScreen extends Screen {
     }
 
     @Override
-    public void close() {
+    public void close() { //TODO comment this
         Redstonecomptools.shouldApplyButtonStyle = false;
         this.client.setScreen(null);
     }

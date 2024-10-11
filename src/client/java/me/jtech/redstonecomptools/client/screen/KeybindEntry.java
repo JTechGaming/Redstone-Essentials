@@ -2,7 +2,7 @@ package me.jtech.redstonecomptools.client.screen;
 
 import java.util.List;
 
-public class KeybindEntry {
+public class KeybindEntry { //TODO comment this
     private String name;
     private String command;
     private List<Integer> key;

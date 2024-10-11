@@ -8,7 +8,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 
-public class KeybindWidget extends ButtonWidget {
+public class KeybindWidget extends ButtonWidget { //TODO comment this
     private final KeybindEntry keybind;
     private boolean expanded = false;
     private KeybindScreen parentScreen;
@@ -51,7 +51,7 @@ public class KeybindWidget extends ButtonWidget {
             if (button != null) {
                 button.visible = true;
             }
-
+//TODO comment this
             context.fill(this.getX()+this.width, this.getY(), this.getX()+this.width+200, this.getY()+this.height*2, 0xAF221B1B); //0x221B1B
             context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, "Command: " + keybind.getCommand(), this.getX() + 205, this.getY()+this.height-5, 0xFFFFFF);
 
