@@ -23,6 +23,7 @@ import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 
 public class RedstonecomptoolsClient implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("redstonecomptools");
+    public static final String MOD_ID = "redstonecomptools";
 
     @Override
     public void onInitializeClient() {

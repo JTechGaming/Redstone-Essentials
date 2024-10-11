@@ -1,6 +1,8 @@
 package me.jtech.redstonecomptools.config;
 
-public class MidnightConfig extends eu.midnightdust.lib.config.MidnightConfig {
+import eu.midnightdust.lib.config.MidnightConfig;
+
+public class Config extends MidnightConfig {
     public static final String SETTINGS = "settings";
     public static final String KEYBINDS = "keybindings";
 

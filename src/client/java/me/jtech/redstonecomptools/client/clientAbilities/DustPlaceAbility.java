@@ -4,25 +4,15 @@ import org.lwjgl.glfw.GLFW;
 
 public class DustPlaceAbility extends BaseAbility{
     public DustPlaceAbility() {
-        super("Dust Place", false, GLFW.GLFW_KEY_O);
+        super("Dust Place", false, GLFW.GLFW_KEY_O); // Set the settings and default values for this ability
     }
 
     @Override
-    public void postInit() {
-
-    }
+    public void postInit() { }
 
     @Override
-    public void toggled(boolean state) {
-        if (state) {
-            System.out.println("enabled dustplace ability");
-        } else {
-            System.out.println("disabled dustplace ability");
-        }
-    }
+    public void toggled(boolean state) { }
 
     @Override
-    public void used() {
-
-    }
+    public void used() { }
 }

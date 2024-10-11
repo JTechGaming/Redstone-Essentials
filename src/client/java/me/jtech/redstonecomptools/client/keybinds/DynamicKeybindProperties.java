@@ -35,5 +35,11 @@ public class DynamicKeybindProperties {
     public boolean hasCycleState;
     public List<String> cycleStates;
 
+    // If hold key is enabled, you will be able to hold the keybind, and it will execute the command every tick
     public boolean hasHoldKey;
+
+    // Send toast just sends a toast to the screen when enabled with the provided title and message
+    public boolean hasSendToast;
+    public String toastTitle;
+    public String toastMessage;
 }

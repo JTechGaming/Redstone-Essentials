@@ -24,19 +24,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class BlockPlaceMixin {
     @Inject(method = "onPlaced", at = @At("TAIL"))
     private void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {
+        // Called when the player places a block
+        PlayerEntity player = (PlayerEntity) placer; // Get a reference to the player
 
-        PlayerEntity player = (PlayerEntity) placer;
-
+        // Check if player isn't null
         if (player != null) {
+            // Only execute this code if the dust place ability is enabled
             if (Abilities.DUST_PLACE.toggled) {
-                BlockPos dustLoc = pos.up();
-                Block dustBlock = world.getBlockState(dustLoc).getBlock();
-                if (dustBlock == Blocks.AIR) {
+                BlockPos dustLoc = pos.up(); // Get the location of the block on top of the block that was placed
+                Block dustBlock = world.getBlockState(dustLoc).getBlock(); // Get the block in that location
+                if (dustBlock == Blocks.AIR) { // Only change it if it is air
+                    // Create a placementContext
                     ItemPlacementContext context = new ItemPlacementContext(player, Hand.MAIN_HAND, new ItemStack(Items.REDSTONE), new BlockHitResult(new Vec3d(dustLoc.getX(), dustLoc.getY(), dustLoc.getZ()), Direction.UP, dustLoc, false));
-                    BlockState redstoneWireState = Blocks.REDSTONE_WIRE.getPlacementState(context);
+                    BlockState redstoneWireState = Blocks.REDSTONE_WIRE.getPlacementState(context); // Convert the placementContext into a blockstate
 
-                    if (redstoneWireState != null && redstoneWireState.canPlaceAt(world, dustLoc)) {
-                        placer.getWorld().setBlockState(dustLoc, Blocks.REDSTONE_WIRE.getPlacementState(context));
+                    if (redstoneWireState != null && redstoneWireState.canPlaceAt(world, dustLoc)) { // Only execute if the dust is able to be placed at that location
+                        placer.getWorld().setBlockState(dustLoc, Blocks.REDSTONE_WIRE.getPlacementState(context)); // Place the dust at the location
                     }
                 }
             }

@@ -1,6 +1,9 @@
 package me.jtech.redstonecomptools.client.screen;
 
+import me.jtech.redstonecomptools.Redstonecomptools;
 import me.jtech.redstonecomptools.client.keybinds.DynamicKeybindHandler;
+import me.jtech.redstonecomptools.client.keybinds.DynamicKeybindProperties;
+import me.jtech.redstonecomptools.client.utility.Pair;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -10,6 +13,7 @@ import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 //public class KeybindEditorScreen extends HandledScreen<ScreenHandler> {
 public class KeybindEditorScreen extends Screen {
@@ -46,35 +50,49 @@ public class KeybindEditorScreen extends Screen {
             this.commandField.setText(keybind.getCommand());
         }
 
+        // Button to input the keys
         this.keyButton = ButtonWidget.builder(Text.literal(keybind == null ? "Key: ..." : "Key: " + keyNameQuery(keyList)), button -> {
-            DynamicKeybindHandler.waitForKeyInput(this);
-        }).dimensions(this.width / 2, 150, 200, 20).build();
+            DynamicKeybindHandler.waitForKeyInput(this); // Tell the DynamicKeybindHandler to start registring key inputs
+        }).dimensions(this.width / 2 - 100, 150, 200, 20).build(); // Set dimensions and build the button
+
+        // Delete button
+        if (keybind != null) // Keybind can't be null (because then you can't delete it ofc)
+            this.deleteButton = ButtonWidget.builder(Text.literal("Delete"), button -> {
+                DynamicKeybindHandler.removeKeybind(keybind.getName()); // Remove keybind from keybind handler registry
+                KeybindRegistry.remove(keybind); // Remove keybind from keybind screen registry
+                DynamicKeybindHandler.saveKeybinds(); // Save all keybinds to config file
+                MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent)); // Go back to the list
+            }).dimensions(this.width / 2 - 50, this.height - 100, 100, 20).build(); // Set dimensions and build the button
 
         // Save and Cancel buttons
-        this.saveButton = ButtonWidget.builder(Text.literal("Save"), button -> {
+        this.saveButton = ButtonWidget.builder(Text.literal("Save"), button -> { // Start button widget builder
             // Save keybind data here (either update existing or create new)
-            if (keybind == null) {
-                KeybindEntry newKeybind = new KeybindEntry(this.nameField.getText(), this.commandField.getText(), keyList, shiftRequired, ctrlRequired);
+            if (keybind == null) { // If the keybind is null, create a new one
+                KeybindEntry newKeybind = new KeybindEntry(this.nameField.getText(), this.commandField.getText(), keyList, shiftRequired, ctrlRequired); // Create a new keybind entry
                 KeybindRegistry.register(newKeybind); // Custom logic to add the keybind
-            } else {
-                keybind.setName(this.nameField.getText());
-                keybind.setCommand(this.commandField.getText());
-                keybind.setShiftRequired(shiftRequired);
-                keybind.setCtrlRequired(ctrlRequired);
+            } else { // Otherwise, we modify it
+                int i = KeybindRegistry.getKeybinds().indexOf(keybind); // Get the array index of the keybind in the registry
+
+                DynamicKeybindHandler.removeKeybind(keybind.getName()); // Remove the old version of the keybind from the handler
+
+                keybind.setName(this.nameField.getText()); // Update the name value
+                keybind.setCommand(this.commandField.getText()); // Update the command value
+                keybind.setShiftRequired(shiftRequired); // not in use
+                keybind.setCtrlRequired(ctrlRequired); // not in use
+
+                DynamicKeybindProperties properties = new DynamicKeybindProperties(); // Create new properties
+                properties.command = keybind.getCommand(); // Set the command in the new properties variable to the updated command value
+                DynamicKeybindHandler.addKeybind(keybind.getName(), keybind.getKey(), properties); // Add the new keybind the the keybind handler registry
+
+                KeybindRegistry.getKeybinds().set(i, keybind); // Also add the new keybind to the keybind screen registry
             }
             DynamicKeybindHandler.saveKeybinds(); // Save all keybinds to config file
             MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent)); // Go back to the list
-        }).dimensions(this.width / 2 - 50, this.height - 40, 100, 20).build();
+        }).dimensions(this.width / 2 - 50, this.height - 40, 100, 20).build(); // Set dimensions and build the button
 
         this.cancelButton = ButtonWidget.builder(Text.literal("Cancel"), button -> {
-            MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent));
-        }).dimensions(this.width / 2 - 50, this.height - 70, 100, 20).build();
-
-        this.deleteButton = ButtonWidget.builder(Text.literal("Delete"), button -> {
-            DynamicKeybindHandler.removeKeybind(keybind.getName());
-            KeybindRegistry.remove(keybind);
-            MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent));
-        }).dimensions(this.width / 2 - 50, this.height - 100, 100, 20).build();
+            MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent)); // Go back to the list
+        }).dimensions(this.width / 2 - 50, this.height - 70, 100, 20).build(); // Set dimensions and build the button
 
         // Add widgets
         this.addDrawableChild(nameField);
@@ -103,9 +121,13 @@ public class KeybindEditorScreen extends Screen {
         for (int i=0; i<keys.size(); i++) {
             out = out.concat(GLFW.glfwGetKeyName(keys.get(i), 0) + (i<keys.size()-1? " + " : ""));
         }
-        // TODO remove this sout
-        System.out.println(out);
         return out;
+    }
+
+    @Override
+    public void close() {
+        Redstonecomptools.shouldApplyButtonStyle = false;
+        this.client.setScreen(null);
     }
 }
 

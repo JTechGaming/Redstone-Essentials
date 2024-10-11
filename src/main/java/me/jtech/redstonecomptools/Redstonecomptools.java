@@ -2,7 +2,9 @@ package me.jtech.redstonecomptools;
 
 import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.brigadier.ParseResults;
+import eu.midnightdust.lib.config.MidnightConfig;
 import me.jtech.redstonecomptools.commands.*;
+import me.jtech.redstonecomptools.config.Config;
 import me.jtech.redstonecomptools.networking.GiveItemPayload;
 import me.jtech.redstonecomptools.networking.RunCommandPayload;
 import net.fabricmc.api.ModInitializer;
@@ -54,6 +56,8 @@ public class Redstonecomptools implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(RunCommandPayload.ID, ((payload, context) -> {
             context.server().execute(() -> {
                 String command = payload.command();
+                command = command.replace("/", "");
+
                 ServerCommandSource commandSource = context.player().getCommandSource();
 
                 // Parse the command string into ParseResults
@@ -62,5 +66,8 @@ public class Redstonecomptools implements ModInitializer {
                 context.server().getCommandManager().execute(parseResults, command);
             });
         }));
+
+
+        MidnightConfig.init(MOD_ID, Config.class);
     }
 }

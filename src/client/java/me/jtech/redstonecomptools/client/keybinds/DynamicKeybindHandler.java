@@ -13,6 +13,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -24,9 +25,10 @@ import java.util.*;
 public class DynamicKeybindHandler {
     public static Map<String, Pair<List<Integer>, DynamicKeybindProperties>> keyBinds = new HashMap<>();
     private static boolean isWaitingForKey = false;
+    private static boolean hasProcessedKey = false;
 
     private static final Gson GSON = new Gson();
-    private static final Path CONFIG_FILE = MinecraftClient.getInstance().runDirectory.toPath().resolve("config/dynamic_keybinds.json");
+    private static final Path CONFIG_FILE = MinecraftClient.getInstance().runDirectory.toPath().resolve("config/redstonecomptools/dynamic_keybinds.json");
 
     public static void addKeybind(String name, List<Integer> key, DynamicKeybindProperties properties) {
         keyBinds.put(name, new Pair<>(key, properties));
@@ -37,6 +39,7 @@ public class DynamicKeybindHandler {
     }
 
     public static void checkKeyPresses() {
+        boolean shouldProcessKey = checkShouldUpdate();
         long windowHandle = MinecraftClient.getInstance().getWindow().getHandle();
         for (Pair<List<Integer>, DynamicKeybindProperties> pair : keyBinds.values()) {
             int completionBuffer = 0;
@@ -44,8 +47,14 @@ public class DynamicKeybindHandler {
                 if (InputUtil.isKeyPressed(windowHandle, pair.getFirst().get(i))) {
                     completionBuffer++;
                     if (completionBuffer==pair.getFirst().size()) {
-                        handleKeyPress(pair.getSecond());
+                        DynamicKeybindProperties properties = pair.getSecond();
+                        if (!hasProcessedKey && shouldProcessKey) {
+                            hasProcessedKey = !properties.hasHoldKey; // Hold key implementation
+                            handleKeyPress(pair.getSecond()); // Handle the keypress
+                        }
                     }
+                } else {
+                    hasProcessedKey = false;
                 }
             }
         }
@@ -110,5 +119,15 @@ public class DynamicKeybindHandler {
             KeybindEntry entry = new KeybindEntry(key, value.getSecond().command, value.getFirst(), false, false);
             KeybindRegistry.register(entry);
         }
+    }
+
+    public static boolean checkShouldUpdate() {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client.currentScreen != null)
+            return false;
+        if (client.inGameHud.getChatHud().isChatFocused())
+            return false;
+
+        return true;
     }
 }

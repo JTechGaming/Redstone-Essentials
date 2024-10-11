@@ -33,7 +33,7 @@ public class KeybindScreen extends Screen {
         int y = 20;
         for (KeybindEntry keybind : keybindEntries) {
             // Render each keybind entry
-            this.addDrawableChild(new KeybindWidget(this, keybind, this.width/2-100, y, 200, 20));
+            this.addDrawableChild(new KeybindWidget(this, keybind, this.width / 2 - 100, y, 200, 20));
             y += 30;
         }
 
@@ -54,7 +54,7 @@ public class KeybindScreen extends Screen {
     @Override
     public void close() {
         Redstonecomptools.shouldApplyButtonStyle = false;
-        this.client.setScreen(this.parent);
+        this.client.setScreen(null);
     }
 
     public void updateKeybinds() {

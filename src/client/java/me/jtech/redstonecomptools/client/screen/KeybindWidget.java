@@ -52,10 +52,8 @@ public class KeybindWidget extends ButtonWidget {
                 button.visible = true;
             }
 
-            int padding = 20;
-            // -javaagent:"C:\Users\jaspe\.gradle\caches\modules-2\files-2.1\net.fabricmc\sponge-mixin\0.15.3+mixin.0.8.7\51ee0a44ab05f6fddd66b09e66b3a16904f9c55d\sponge-mixin-0.15.3+mixin.0.8.7.jar"
             context.fill(this.getX()+this.width, this.getY(), this.getX()+this.width+200, this.getY()+this.height*2, 0xAF221B1B); //0x221B1B
-            context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, "Command: " + keybind.getCommand(), this.getX() + 220, this.getY()+this.height-5, 0xFFFFFF);
+            context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, "Command: " + keybind.getCommand(), this.getX() + 205, this.getY()+this.height-5, 0xFFFFFF);
 
             // TODO Display the flags, key, etc.
         } else {
