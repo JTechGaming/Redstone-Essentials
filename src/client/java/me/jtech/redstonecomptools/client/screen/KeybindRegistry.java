@@ -13,8 +13,11 @@ public class KeybindRegistry {
         keybinds.add(keybind);
         DynamicKeybindProperties properties = new DynamicKeybindProperties();
         properties.command = keybind.getCommand();
-        //TODO make this work with multi-keybinds like ctrl + i for example
-        //DynamicKeybindHandler.addKeybind(keybind.getName(), keybind, properties);
+        DynamicKeybindHandler.addKeybind(keybind.getName(), keybind.getKey(), properties);
+    }
+
+    public static void remove(KeybindEntry keybind) {
+        keybinds.remove(keybind);
     }
 
     public static List<KeybindEntry> getKeybinds() {

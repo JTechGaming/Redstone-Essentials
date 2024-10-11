@@ -16,6 +16,9 @@ import net.minecraft.server.command.ServerCommandSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 
 public class RedstonecomptoolsClient implements ClientModInitializer {
@@ -27,6 +30,8 @@ public class RedstonecomptoolsClient implements ClientModInitializer {
         AbilityManager.init();
         Abilities abilities = Abilities.getInstance();
         AbilityManager.initAbilities();
+
+        DynamicKeybindHandler.loadKeybinds();
 
         LOGGER.info("Setting up QOL features...");
         // Setup keybinds for barrel and shulker giver
@@ -43,7 +48,6 @@ public class RedstonecomptoolsClient implements ClientModInitializer {
         });
 
         registerCommand();
-
     }
 
     public static void registerCommand() {
@@ -63,7 +67,9 @@ public class RedstonecomptoolsClient implements ClientModInitializer {
 
         DynamicKeybindProperties properties = new DynamicKeybindProperties();
         properties.command = command;
-        DynamicKeybindHandler.addKeybind(name, key, properties);
+        List<Integer> keys = new ArrayList<>();
+        keys.add(key);
+        DynamicKeybindHandler.addKeybind(name, keys, properties);
 
         return 0;
     }

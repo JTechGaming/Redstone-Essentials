@@ -1,6 +1,10 @@
 package me.jtech.redstonecomptools.client.keybinds;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import me.jtech.redstonecomptools.client.screen.KeybindEditorScreen;
+import me.jtech.redstonecomptools.client.screen.KeybindEntry;
+import me.jtech.redstonecomptools.client.screen.KeybindRegistry;
 import me.jtech.redstonecomptools.client.utility.Pair;
 import me.jtech.redstonecomptools.networking.RunCommandPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -9,21 +13,40 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class DynamicKeybindHandler {
-    public static Map<String, Pair<Integer, DynamicKeybindProperties>> keyBinds = new HashMap<>();
+    public static Map<String, Pair<List<Integer>, DynamicKeybindProperties>> keyBinds = new HashMap<>();
     private static boolean isWaitingForKey = false;
 
-    public static void addKeybind(String name, int key, DynamicKeybindProperties properties) {
+    private static final Gson GSON = new Gson();
+    private static final Path CONFIG_FILE = MinecraftClient.getInstance().runDirectory.toPath().resolve("config/dynamic_keybinds.json");
+
+    public static void addKeybind(String name, List<Integer> key, DynamicKeybindProperties properties) {
         keyBinds.put(name, new Pair<>(key, properties));
+    }
+
+    public static void removeKeybind(String name) {
+        keyBinds.remove(name);
     }
 
     public static void checkKeyPresses() {
         long windowHandle = MinecraftClient.getInstance().getWindow().getHandle();
-        for (Pair<Integer, DynamicKeybindProperties> pair : keyBinds.values()) {
-            if (InputUtil.isKeyPressed(windowHandle, pair.getFirst())) {
-                handleKeyPress(pair.getSecond());
+        for (Pair<List<Integer>, DynamicKeybindProperties> pair : keyBinds.values()) {
+            int completionBuffer = 0;
+            for (int i=0; i<pair.getFirst().size(); i++) {
+                if (InputUtil.isKeyPressed(windowHandle, pair.getFirst().get(i))) {
+                    completionBuffer++;
+                    if (completionBuffer==pair.getFirst().size()) {
+                        handleKeyPress(pair.getSecond());
+                    }
+                }
             }
         }
     }
@@ -57,5 +80,35 @@ public class DynamicKeybindHandler {
                 handler.setKeys(keyCombo);
             }
         });
+    }
+
+    // Save keybinds to a config file
+    public static void saveKeybinds() {
+        try (Writer writer = Files.newBufferedWriter(CONFIG_FILE)) {
+            GSON.toJson(keyBinds, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Load keybinds from the config file
+    public static void loadKeybinds() {
+        if (Files.exists(CONFIG_FILE)) {
+            try (Reader reader = Files.newBufferedReader(CONFIG_FILE)) {
+                Type type = new TypeToken<Map<String, Pair<List<Integer>, DynamicKeybindProperties>>>() {}.getType();
+                keyBinds = GSON.fromJson(reader, type);
+                setupScreenRegister();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void setupScreenRegister() {
+        for (String key : keyBinds.keySet()) {
+            Pair<List<Integer>, DynamicKeybindProperties> value = keyBinds.get(key);
+            KeybindEntry entry = new KeybindEntry(key, value.getSecond().command, value.getFirst(), false, false);
+            KeybindRegistry.register(entry);
+        }
     }
 }

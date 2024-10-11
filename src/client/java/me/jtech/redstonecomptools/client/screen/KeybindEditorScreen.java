@@ -19,6 +19,7 @@ public class KeybindEditorScreen extends Screen {
     private TextFieldWidget commandField;
     private ButtonWidget saveButton;
     private ButtonWidget cancelButton;
+    private ButtonWidget deleteButton;
     private ButtonWidget keyButton;
 
     private boolean shiftRequired;
@@ -47,7 +48,7 @@ public class KeybindEditorScreen extends Screen {
 
         this.keyButton = ButtonWidget.builder(Text.literal(keybind == null ? "Key: ..." : "Key: " + keyNameQuery(keyList)), button -> {
             DynamicKeybindHandler.waitForKeyInput(this);
-        }).dimensions(this.width / 2 - 50, 150, 200, 20).build();
+        }).dimensions(this.width / 2, 150, 200, 20).build();
 
         // Save and Cancel buttons
         this.saveButton = ButtonWidget.builder(Text.literal("Save"), button -> {
@@ -61,6 +62,7 @@ public class KeybindEditorScreen extends Screen {
                 keybind.setShiftRequired(shiftRequired);
                 keybind.setCtrlRequired(ctrlRequired);
             }
+            DynamicKeybindHandler.saveKeybinds(); // Save all keybinds to config file
             MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent)); // Go back to the list
         }).dimensions(this.width / 2 - 50, this.height - 40, 100, 20).build();
 
@@ -68,12 +70,19 @@ public class KeybindEditorScreen extends Screen {
             MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent));
         }).dimensions(this.width / 2 - 50, this.height - 70, 100, 20).build();
 
+        this.deleteButton = ButtonWidget.builder(Text.literal("Delete"), button -> {
+            DynamicKeybindHandler.removeKeybind(keybind.getName());
+            KeybindRegistry.remove(keybind);
+            MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent));
+        }).dimensions(this.width / 2 - 50, this.height - 100, 100, 20).build();
+
         // Add widgets
         this.addDrawableChild(nameField);
         this.addDrawableChild(commandField);
         this.addDrawableChild(keyButton);
         this.addDrawableChild(saveButton);
         this.addDrawableChild(cancelButton);
+        this.addDrawableChild(deleteButton);
     }
 
     @Override

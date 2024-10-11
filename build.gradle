@@ -30,6 +30,13 @@ repositories {
     maven {
         url = "https://jitpack.io"
     }
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
     mavenCentral()
 }
 
@@ -43,6 +50,12 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     modCompileOnly "com.github.moulberry:AxiomClientAPI:1.0.5.3"
+
+    modImplementation include ("maven.modrinth:midnightlib:${project.midnightlib_version}")
+
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+    modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 }
 
 processResources {
