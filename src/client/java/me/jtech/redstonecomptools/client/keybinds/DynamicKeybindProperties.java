@@ -1,6 +1,5 @@
 package me.jtech.redstonecomptools.client.keybinds;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DynamicKeybindProperties {

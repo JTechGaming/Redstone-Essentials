@@ -1,11 +1,9 @@
 package me.jtech.redstonecomptools.client.screen;
 
-import me.jtech.redstonecomptools.Redstonecomptools;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 
 public class KeybindWidget extends ButtonWidget { //TODO comment this

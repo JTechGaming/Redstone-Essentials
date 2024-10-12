@@ -2,7 +2,6 @@ package me.jtech.redstonecomptools.client.clientAbilities;
 
 import me.jtech.redstonecomptools.client.utility.Toaster;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.toast.Toast;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;

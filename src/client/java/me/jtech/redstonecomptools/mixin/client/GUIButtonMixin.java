@@ -1,10 +1,7 @@
 package me.jtech.redstonecomptools.mixin.client;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import me.jtech.redstonecomptools.Redstonecomptools;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ButtonTextures;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.text.Text;

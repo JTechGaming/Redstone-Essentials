@@ -3,18 +3,12 @@ package me.jtech.redstonecomptools.client.clientAbilities;
 import me.jtech.redstonecomptools.client.utility.Toaster;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.advancement.AdvancementDisplay;
-import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.PlayerManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
-
-import java.util.Optional;
 
 public abstract class BaseAbility {
     public String name; // The name of the ability

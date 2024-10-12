@@ -1,6 +1,5 @@
 package me.jtech.redstonecomptools;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.brigadier.ParseResults;
 import eu.midnightdust.lib.config.MidnightConfig;
 import me.jtech.redstonecomptools.commands.*;
@@ -8,13 +7,10 @@ import me.jtech.redstonecomptools.config.Config;
 import me.jtech.redstonecomptools.networking.GiveItemPayload;
 import me.jtech.redstonecomptools.networking.RunCommandPayload;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,11 +28,6 @@ public class Redstonecomptools implements ModInitializer {
         ReadBinCommand.registerCommand();
         WriteBinCommand.registerCommand();
         BitmapPrinterCommand.registerCommand();
-        ArgumentTypeRegistry.registerArgumentType(
-                Identifier.of("fabric-docs", "block_pos"),
-                BlockPosArgumentType.class,
-                ConstantArgumentSerializer.of(BlockPosArgumentType::new)
-        );
 
 
         LOGGER.info("Registering Packets...");

@@ -3,7 +3,6 @@ package me.jtech.redstonecomptools.client.screen;
 import me.jtech.redstonecomptools.Redstonecomptools;
 import me.jtech.redstonecomptools.client.keybinds.DynamicKeybindHandler;
 import me.jtech.redstonecomptools.client.keybinds.DynamicKeybindProperties;
-import me.jtech.redstonecomptools.client.utility.Pair;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -13,7 +12,6 @@ import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
-import java.util.function.UnaryOperator;
 
 //public class KeybindEditorScreen extends HandledScreen<ScreenHandler> {
 public class KeybindEditorScreen extends Screen {

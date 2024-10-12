@@ -1,14 +1,11 @@
 package me.jtech.redstonecomptools.client.utility;
 
-import me.jtech.redstonecomptools.client.rendering.BlockOverlay;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
-
-import java.awt.*;
 
 public class RaycastingHelper {
     public static BlockPos performRaycast(MinecraftClient client) {
