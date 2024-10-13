@@ -11,7 +11,9 @@ import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 
-public class PingAbility extends BaseAbility{ //TODO comment this
+//TODO comment this
+public class PingAbility extends BaseAbility{
+    private boolean processedShift;
     public PingAbility(String identifier) {
         super("Ping", false, GLFW.GLFW_KEY_K, false, true, Identifier.of(identifier));
     }
@@ -26,10 +28,13 @@ public class PingAbility extends BaseAbility{ //TODO comment this
         // Adding an overlay
         MinecraftClient client = MinecraftClient.getInstance();
 
-        if (InputUtil.isKeyPressed(client.getWindow().getHandle(), InputUtil.GLFW_KEY_LEFT_SHIFT)) {
+        if (InputUtil.isKeyPressed(client.getWindow().getHandle(), InputUtil.GLFW_KEY_LEFT_SHIFT) && !processedShift) {
+            processedShift = true;
             BlockOverlay.clearOverlays();
             Toaster.sendToast(client, Text.literal("Ping"), Text.literal("Removed all pings"));
             return;
+        } else {
+            processedShift = false;
         }
 
         BlockOverlay.addOverlay(RaycastingHelper.performRaycast(client), Color.RED);

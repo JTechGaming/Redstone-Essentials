@@ -10,10 +10,15 @@ import me.jtech.redstonecomptools.networking.SetItemPayload;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Redstonecomptools implements ModInitializer { // TODO comment this
 
@@ -24,6 +29,12 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
 
     @Override
     public void onInitialize() {
+        try {
+            Files.createDirectories(FabricLoader.getInstance().getConfigDir().resolve("/redstonecomptools/bitmaps/"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         LOGGER.info("Registering Commands...");
         CalculateCommand.registerCommand();
         ReadBinCommand.registerCommand();
@@ -50,6 +61,7 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
         ServerPlayNetworking.registerGlobalReceiver(SetItemPayload.ID, ((payload, context) -> {
             context.server().execute(() -> {
                 PlayerEntity player = context.player();
+                player.getInventory().removeStack(payload.slot());
                 player.getInventory().insertStack(payload.slot(), payload.item());
                 player.getInventory().updateItems();
             });

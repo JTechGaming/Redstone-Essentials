@@ -166,6 +166,7 @@ public class BitmapPrinterCommand { // TODO comment all this
                                 new Pair<>(new Pair<>(channel2xPos1, channel2xPos2), new Pair<>(channel2yPos1, channel2yPos2)),
                                 new Pair<>(new Pair<>(channel3xPos1, channel3xPos2), new Pair<>(channel3yPos1, channel3yPos2)),
                                 offset,
+                                false, // TODO add invert direction arguments
                                 context
                         );
                         if (writeLocations.size() <= 2) {
@@ -186,12 +187,12 @@ public class BitmapPrinterCommand { // TODO comment all this
         return 0;
     }
 
-    private static void executePlacement(List<Vec2f> writeLocations, Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> byteLoc1, Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> byteLoc2, Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> byteLoc3, int offset, CommandContext<ServerCommandSource> context) {
+    private static void executePlacement(List<Vec2f> writeLocations, Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> byteLoc1, Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> byteLoc2, Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> byteLoc3, int offset, boolean invertDirection, CommandContext<ServerCommandSource> context) {
         Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> currentByte = byteLoc1;
         for (int i = 0; i < 3; i++) {
-            SelectionHelper selection = new SelectionHelper(currentByte.getFirst().getFirst(), currentByte.getFirst().getSecond());
+            SelectionHelper selection = new SelectionHelper(currentByte.getFirst().getFirst(), currentByte.getFirst().getSecond(), invertDirection);
             selection.writeData(context.getSource().getWorld(), (int) writeLocations.get(i).x, offset, SelectionHelper.Mode.WRITE);
-            selection = new SelectionHelper(currentByte.getSecond().getFirst(), currentByte.getSecond().getSecond());
+            selection = new SelectionHelper(currentByte.getSecond().getFirst(), currentByte.getSecond().getSecond(), invertDirection);
             selection.writeData(context.getSource().getWorld(), (int) writeLocations.get(i).y, offset, SelectionHelper.Mode.WRITE);
             if (i == 1) {
                 currentByte = byteLoc2;

@@ -9,6 +9,7 @@ public class SelectionHelper { // TODO comment this
     private final BlockPos pos1;
     private final BlockPos pos2;
     private final boolean isVertical;
+    private final boolean invertDirection;
     private final Axis selectionAxis;
 
     public enum Mode {
@@ -19,9 +20,10 @@ public class SelectionHelper { // TODO comment this
         X, Y, Z
     }
 
-    public SelectionHelper(BlockPos pos1, BlockPos pos2) {
+    public SelectionHelper(BlockPos pos1, BlockPos pos2, boolean invertDirection) {
         this.pos1 = pos1;
         this.pos2 = pos2;
+        this.invertDirection = invertDirection;
 
         // Determine if it's vertical (Y axis) or horizontal (X or Z axis)
         if (pos1.getX() == pos2.getX() && pos1.getZ() == pos2.getZ()) {
@@ -94,6 +96,18 @@ public class SelectionHelper { // TODO comment this
 
     // Get the position for a specific index in the selection
     private BlockPos getTargetPos(int index) {
+        if (invertDirection) {
+            if (isVertical) {
+                int minY = Math.max(pos1.getY(), pos2.getY());
+                return new BlockPos(pos1.getX(), minY + index, pos1.getZ());
+            } else if (selectionAxis == Axis.X) {
+                int minX = Math.max(pos1.getX(), pos2.getX());
+                return new BlockPos(minX + index, pos1.getY(), pos1.getZ());
+            } else { // Axis.Z
+                int minZ = Math.max(pos1.getZ(), pos2.getZ());
+                return new BlockPos(pos1.getX(), pos1.getY(), minZ + index);
+            }
+        }
         if (isVertical) {
             int minY = Math.min(pos1.getY(), pos2.getY());
             return new BlockPos(pos1.getX(), minY + index, pos1.getZ());

@@ -45,10 +45,11 @@ public class ReadBinCommand { // TODO comment this
     private static int executeCommand(CommandContext<ServerCommandSource> context) {
         BlockPos pos1 = context.getArgument("c1pos1", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
         BlockPos pos2 = context.getArgument("c1pos2", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
+        boolean invertDirection = BoolArgumentType.getBool(context, "invertDirection");
 
         int offset = IntegerArgumentType.getInteger(context, "offset");
 
-        SelectionHelper selection = new SelectionHelper(pos1, pos2);
+        SelectionHelper selection = new SelectionHelper(pos1, pos2, invertDirection);
 
         int data = selection.readData(context.getSource().getWorld(), offset);
         context.getSource().sendFeedback(() -> Text.literal(Integer.toBinaryString(data)).withColor(8251903), false);

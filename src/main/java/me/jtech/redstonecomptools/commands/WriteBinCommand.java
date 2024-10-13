@@ -49,11 +49,12 @@ public class WriteBinCommand { // TODO comment this
     private static int executeCommand(CommandContext<ServerCommandSource> context) {
         BlockPos pos1 = context.getArgument("c1pos1", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
         BlockPos pos2 = context.getArgument("c1pos2", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
+        boolean invertDirection = BoolArgumentType.getBool(context, "invertDirection");
 
         int offset = IntegerArgumentType.getInteger(context, "offset");
         int data = IntegerArgumentType.getInteger(context, "value");
 
-        SelectionHelper selection = new SelectionHelper(pos1, pos2);
+        SelectionHelper selection = new SelectionHelper(pos1, pos2, invertDirection);
 
         selection.writeData(context.getSource().getWorld(), data, offset, SelectionHelper.Mode.WRITE);
         return 0;

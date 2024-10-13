@@ -30,7 +30,6 @@ public class KeybindEditorScreen extends Screen {
     private List<Integer> keyList;
 
     public KeybindEditorScreen(KeybindEntry keybind, List<Integer> keys) {
-        //super(MinecraftClient.getInstance().player.getInventory(), Text.literal(keybind == null ? "Create Keybind" : "Edit Keybind"));
         super(Text.literal(keybind == null ? "Create Keybind" : "Edit Keybind"));
         this.keybind = keybind;
         this.keyList = keys;
@@ -78,6 +77,7 @@ public class KeybindEditorScreen extends Screen {
 
                 keybind.setName(this.nameField.getText()); // Update the name value
                 keybind.setCommand(this.commandField.getText()); // Update the command value
+                keybind.setKey(this.keyList); // Update the keys
                 keybind.setShiftRequired(shiftRequired); // not in use
                 keybind.setCtrlRequired(ctrlRequired); // not in use
 

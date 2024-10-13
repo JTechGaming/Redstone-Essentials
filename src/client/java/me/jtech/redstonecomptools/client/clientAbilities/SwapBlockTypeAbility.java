@@ -42,19 +42,18 @@ public class SwapBlockTypeAbility extends BaseAbility{ //TODO comment this
 
         if (type.contains("stained_glass")) {
             type = type.replace("stained_glass", concrete?"concrete":"wool");
-        }
-
-        if (type.contains("wool")) {
+        } else if (type.contains("wool")) {
             type = type.replace("wool", "stained_glass");
-        }
-
-        if (type.contains("concrete")) {
+        } else if (type.contains("concrete")) {
             type = type.replace("concrete", "stained_glass");
         }
+
+        type = type.replaceAll("minecraft:", "");
 
         ItemStack returnItem = Registries.ITEM.get(Identifier.ofVanilla(type)).getDefaultStack();
         returnItem.set(DataComponentTypes.CUSTOM_NAME, item.get(DataComponentTypes.CUSTOM_NAME));
         returnItem.set(DataComponentTypes.ITEM_NAME, item.get(DataComponentTypes.ITEM_NAME));
+        returnItem.setCount(item.getCount());
 
         ClientPlayNetworking.send(new SetItemPayload(returnItem, client.player.getInventory().selectedSlot));
     }
