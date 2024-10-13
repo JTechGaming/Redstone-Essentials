@@ -20,11 +20,11 @@ public class RaycastingHelper {
         BlockHitResult blockHitResult = client.world.raycast(new RaycastContext(
                 cameraPos, endPos,
                 RaycastContext.ShapeType.OUTLINE,
-                RaycastContext.FluidHandling.NONE, // Ignore fluids, or you can change to FluidHandling.ANY if you want to consider them
+                RaycastContext.FluidHandling.NONE, // Ignore fluids
                 client.player
         ));
 
-        // Check if we hit a block
+        // Check if a block was hit
         if (blockHitResult.getType() == HitResult.Type.BLOCK) {
             return blockHitResult.getBlockPos();
         }

@@ -1,4 +1,4 @@
-package me.jtech.redstonecomptools.client.utility;
+package me.jtech.redstonecomptools.utility;
 
 // Utility class for storing pairs of values
 public class Pair<A, B> {

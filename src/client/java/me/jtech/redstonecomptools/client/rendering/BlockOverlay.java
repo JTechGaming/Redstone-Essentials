@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockOverlay {
+public class BlockOverlay { //TODO comment this
     private static final MinecraftClient client = MinecraftClient.getInstance();
     private static final List<BlockOverlay> overlays = new ArrayList<>();
 

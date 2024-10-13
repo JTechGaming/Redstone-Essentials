@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import me.jtech.redstonecomptools.client.screen.KeybindEditorScreen;
 import me.jtech.redstonecomptools.client.screen.KeybindEntry;
 import me.jtech.redstonecomptools.client.screen.KeybindRegistry;
-import me.jtech.redstonecomptools.client.utility.Pair;
+import me.jtech.redstonecomptools.utility.Pair;
 import me.jtech.redstonecomptools.networking.RunCommandPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;

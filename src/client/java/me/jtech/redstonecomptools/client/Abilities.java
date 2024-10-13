@@ -7,7 +7,7 @@ import me.jtech.redstonecomptools.client.clientAbilities.SwapBlockTypeAbility;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 
-public class Abilities {
+public class Abilities { //TODO comment this
 
     public static Abilities instance;
 

@@ -21,7 +21,8 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
-public class forceNeighborUpdatesTool implements CustomTool {
+//TODO this doesnt work yet
+public class forceNeighborUpdatesTool implements CustomTool { //TODO comment this
 
     private final BlockRegion blockRegion = ServiceHelper.createBlockRegion();
     private final BooleanRegion previewRegion = ServiceHelper.createBooleanRegion();

@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.function.Supplier;
 
 @Mixin(GameMenuScreen.class)
-public abstract class PauzeScreenMixin extends Screen {
+public abstract class PauzeScreenMixin extends Screen { //TODO comment this
 
     @Shadow protected abstract ButtonWidget createButton(Text text, Supplier<Screen> screenSupplier);
 

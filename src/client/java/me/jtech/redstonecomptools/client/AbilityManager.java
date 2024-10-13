@@ -8,7 +8,7 @@ import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntryInfo;
 import net.minecraft.util.Identifier;
 
-public class AbilityManager {
+public class AbilityManager { //TODO comment this
 
     static SimpleRegistry<BaseAbility> registry;
 

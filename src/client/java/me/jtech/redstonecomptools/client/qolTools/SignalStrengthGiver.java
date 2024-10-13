@@ -1,6 +1,6 @@
 package me.jtech.redstonecomptools.client.qolTools;
 
-import me.jtech.redstonecomptools.client.utility.Pair;
+import me.jtech.redstonecomptools.utility.Pair;
 import me.jtech.redstonecomptools.networking.GiveItemPayload;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

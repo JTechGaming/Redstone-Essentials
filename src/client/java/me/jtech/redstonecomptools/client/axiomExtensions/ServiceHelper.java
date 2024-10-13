@@ -12,7 +12,7 @@ import com.moulberry.axiomclientapi.service.ToolService;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-public class ServiceHelper {
+public class ServiceHelper { //TODO comment this
 
     private static final RegionProvider regionProvider;
     private static final ToolPatherProvider toolPatherProvider;

@@ -21,7 +21,7 @@ enum returnBase {
     OCT
 }
 
-public class CalculateCommand {
+public class CalculateCommand { // TODO comment this
     private static returnBase rBase = returnBase.DEC;
     private static boolean copy = false;
     private static boolean vertical = false;

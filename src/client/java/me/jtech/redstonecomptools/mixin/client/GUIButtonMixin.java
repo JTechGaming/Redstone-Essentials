@@ -31,7 +31,8 @@ public abstract class GUIButtonMixin extends ClickableWidget { // Make the class
         }
         return this.TEXTURES.get(this.active, this.isSelected()); // If the custom button style shouldn't be applied, use the default code as seen in:
         /**
-         * @Param Lnet/minecraft/client/gui/widget/PressableWidget;renderWidget(Lnet/minecraft/client/gui/DrawContext;IIF)V
+         * @Param Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V
+         * (to jump to this reference, it is the same as in the @ModifyArg's target parameter above)
          * */
     }
 }

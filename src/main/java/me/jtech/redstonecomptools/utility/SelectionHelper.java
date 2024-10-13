@@ -5,7 +5,7 @@ import net.minecraft.block.RedstoneLampBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class SelectionHelper {
+public class SelectionHelper { // TODO comment this
     private final BlockPos pos1;
     private final BlockPos pos2;
     private final boolean isVertical;
@@ -39,13 +39,13 @@ public class SelectionHelper {
     }
 
     // Write data into the selection (as redstone blocks and air)
-    public void writeData(World world, int data, Mode mode) {
+    public void writeData(World world, int data, int offset, Mode mode) {
         // Loop through the range between pos1 and pos2 based on the axis
-        int length = getLength();
+        int length = getLengthWithoutOffset(getLength(), offset);
         for (int i = 0; i < length; i++) {
             boolean isBitSet = ((data >> i) & 1) == 1; // Extract the i-th bit from the data
 
-            BlockPos targetPos = getTargetPos(i);
+            BlockPos targetPos = getTargetPos((i + (offset * (i - 1))) + offset);
             if (mode == Mode.WRITE) {
                 if (isBitSet) {
                     world.setBlockState(targetPos, Blocks.REDSTONE_BLOCK.getDefaultState());
@@ -57,12 +57,12 @@ public class SelectionHelper {
     }
 
     // Read data from the selection
-    public int readData(World world) {
+    public int readData(World world, int offset) {
         int result = 0;
-        int length = getLength();
+        int length = getLengthWithoutOffset(getLength(), offset);
 
         for (int i = 0; i < length; i++) {
-            BlockPos targetPos = getTargetPos(i);
+            BlockPos targetPos = getTargetPos((i + (offset * (i - 1))) + offset);
             if (isBitSet(world, targetPos)) {
                 result |= (1 << i); // Set the i-th bit in result
             }
@@ -79,6 +79,17 @@ public class SelectionHelper {
         } else { // Axis.Z
             return Math.abs(pos2.getZ() - pos1.getZ()) + 1;
         }
+    }
+
+    private int getLengthWithoutOffset(int length, int offset) {
+        int steps = 1;
+        while (length != steps) { // really proud of this little algorithm
+            length = length-offset;
+            if (steps==length)
+                return length-1;
+            steps++;
+        }
+        return length;
     }
 
     // Get the position for a specific index in the selection

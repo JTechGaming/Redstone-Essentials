@@ -1,7 +1,11 @@
 {
   "key.redstonecomptools.barrel": "Signal Barrel",
   "key.redstonecomptools.shulker": "Signal Shulker",
+  "category.redstonecomptools.main": "RedstoneCompTools",
   "category.redstonecomptools.qol": "RedstoneCompTools QOL",
   "category.redstonecomptools.abilities": "RedstoneCompTools Abilities",
-  "key.redstonecomptools.dust_place": "Auto Dust Place"
+  "key.redstonecomptools.dust_place": "Auto Dust Place",
+  "key.redstonecomptools.ping_ability": "Ping",
+  "key.redstonecomptools.swap_block": "Swap Block",
+  "key.redstonecomptools.open_menu": "Open Dynamic Keybinds Menu"
 }
