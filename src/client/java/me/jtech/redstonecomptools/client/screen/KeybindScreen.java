@@ -9,11 +9,14 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class KeybindScreen extends Screen {
+    private static final Logger log = LoggerFactory.getLogger(KeybindScreen.class);
     public static Screen parent;
 
     private List<KeybindEntry> keybindEntries = KeybindRegistry.getKeybinds(); // Holds keybind data

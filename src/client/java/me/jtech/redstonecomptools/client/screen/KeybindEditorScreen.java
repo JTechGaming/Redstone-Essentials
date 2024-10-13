@@ -54,13 +54,16 @@ public class KeybindEditorScreen extends Screen {
         }).dimensions(this.width / 2 - 100, 150, 200, 20).build(); // Set dimensions and build the button
 
         // Delete button
-        if (keybind != null) // Keybind can't be null (because then you can't delete it ofc)
+        if (keybind != null) {// Keybind can't be null (because then you can't delete it ofc)
             this.deleteButton = ButtonWidget.builder(Text.literal("Delete"), button -> {
                 DynamicKeybindHandler.removeKeybind(keybind.getName()); // Remove keybind from keybind handler registry
                 KeybindRegistry.remove(keybind); // Remove keybind from keybind screen registry
                 DynamicKeybindHandler.saveKeybinds(); // Save all keybinds to config file
                 MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent)); // Go back to the list
             }).dimensions(this.width / 2 - 50, this.height - 100, 100, 20).build(); // Set dimensions and build the button
+
+            this.addDrawableChild(deleteButton); // This one line took 2 hours to figure out lol
+        }
 
         // Save and Cancel buttons
         this.saveButton = ButtonWidget.builder(Text.literal("Save"), button -> { // Start button widget builder
@@ -98,7 +101,6 @@ public class KeybindEditorScreen extends Screen {
         this.addDrawableChild(keyButton);
         this.addDrawableChild(saveButton);
         this.addDrawableChild(cancelButton);
-        this.addDrawableChild(deleteButton);
     }
 
     @Override
