@@ -33,6 +33,7 @@ public class KeybindScreen extends Screen {
         super.init();
 
         // Add all existing keybinds in the array to the UI list
+        //KeybindListWidget keybindListWidget = this.addDrawableChild(new KeybindListWidget());
         int y = 20;
         for (KeybindEntry keybind : keybindEntries) {
             // Render each keybind entry
