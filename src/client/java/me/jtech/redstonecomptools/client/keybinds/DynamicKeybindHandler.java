@@ -10,6 +10,7 @@ import me.jtech.redstonecomptools.networking.RunCommandPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
@@ -23,8 +24,10 @@ import java.util.*;
 
 public class DynamicKeybindHandler { //TODO comment this
     public static Map<String, Pair<List<Integer>, DynamicKeybindProperties>> keyBinds = new HashMap<>();
-    private static boolean isWaitingForKey = false;
+    public static boolean isWaitingForKey = false;
     private static boolean hasProcessedKey = false;
+
+    private static List<Integer> keyCombo = new ArrayList<>();
 
     private static final Gson GSON = new Gson();
     private static final Path CONFIG_FILE = MinecraftClient.getInstance().runDirectory.toPath().resolve("config/redstonecomptools/dynamic_keybinds.json");
@@ -64,10 +67,12 @@ public class DynamicKeybindHandler { //TODO comment this
     }
 
     public static void waitForKeyInput(KeybindEditorScreen handler) {
+        keyCombo.clear();
+        handler.setKeys(keyCombo);
+        System.out.println("cleared keys");
         isWaitingForKey = true;
         MinecraftClient client = MinecraftClient.getInstance();
         assert client.currentScreen != null;
-        List<Integer> keyCombo = new ArrayList<>();
         /**
          * Called right before a key press is handled.
          *
@@ -80,12 +85,16 @@ public class DynamicKeybindHandler { //TODO comment this
          */
         ScreenKeyboardEvents.beforeKeyPress(client.currentScreen).register((screen, key, scancode, modifiers) -> {
             if (isWaitingForKey) {
+                System.out.println("detected key");
                 if (key == GLFW.GLFW_KEY_ENTER) {
+                    System.out.println("detected enter key");
+                    handler.resetInputKey();
                     isWaitingForKey = false;
                 } else {
+                    System.out.println("added key to list");
                     keyCombo.add(key);
+                    handler.setKeys(keyCombo);
                 }
-                handler.setKeys(keyCombo);
             }
         });
     }

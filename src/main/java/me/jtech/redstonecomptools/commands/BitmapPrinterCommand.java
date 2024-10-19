@@ -128,7 +128,9 @@ public class BitmapPrinterCommand { // TODO comment all this
         BlockPos channel3yPos1 = context.getArgument("c3ypos1", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
         BlockPos channel3yPos2 = context.getArgument("c3ypos2", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
 
-        Path path = FabricLoader.getInstance().getConfigDir().resolve("/redstonecomptools/bitmaps/").resolve(filePath);
+        Path path = FabricLoader.getInstance().getConfigDir().resolve("redstonecomptools/bitmaps/").resolve(filePath);
+        System.out.println("hi");
+        System.out.println(path);
 
         System.out.println(path);
         File file = path.toFile();

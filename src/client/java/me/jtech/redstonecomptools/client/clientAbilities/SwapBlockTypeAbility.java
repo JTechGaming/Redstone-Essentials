@@ -13,12 +13,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
-//TODO make this send a server packet, which sends a packet to all clients to render on all clients screens
 public class SwapBlockTypeAbility extends BaseAbility{ //TODO comment this
     private boolean concrete = true;
 
     public SwapBlockTypeAbility(String identifier) {
-        super("Swap Block Type", false, GLFW.GLFW_KEY_J, false, false, Identifier.of(identifier));
+        super("Swap Block Type", false, GLFW.GLFW_KEY_J, false, false, Identifier.of("redstonecomptools", identifier));
     }
 
     @Override
@@ -32,6 +31,9 @@ public class SwapBlockTypeAbility extends BaseAbility{ //TODO comment this
         assert client.player != null;
         PlayerInventory inventory = client.player.getInventory();
         ItemStack item = inventory.getMainHandStack();
+
+        if (item.equals(ItemStack.EMPTY)) return;
+
         String type = item.getItem().toString();
 
         if (InputUtil.isKeyPressed(client.getWindow().getHandle(), InputUtil.GLFW_KEY_LEFT_SHIFT)) {

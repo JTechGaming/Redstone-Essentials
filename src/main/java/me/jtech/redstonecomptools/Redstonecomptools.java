@@ -29,11 +29,11 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
 
     @Override
     public void onInitialize() {
-        try {
-            Files.createDirectories(FabricLoader.getInstance().getConfigDir().resolve("/redstonecomptools/bitmaps/"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Files.createDirectories(FabricLoader.getInstance().getConfigDir().resolve("/redstonecomptools/bitmaps/"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
         LOGGER.info("Registering Commands...");
         CalculateCommand.registerCommand();
@@ -55,6 +55,7 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
                 player.getInventory().insertStack(slot, payload.item());
                 player.getInventory().selectedSlot = slot;
                 player.getInventory().updateItems();
+                System.out.println("received packet");
             });
         }));
 

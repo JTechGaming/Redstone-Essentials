@@ -1,5 +1,6 @@
 package me.jtech.redstonecomptools.client.qolTools;
 
+import me.jtech.redstonecomptools.networking.SetItemPayload;
 import me.jtech.redstonecomptools.utility.Pair;
 import me.jtech.redstonecomptools.networking.GiveItemPayload;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -43,11 +44,13 @@ public class SignalStrengthGiver { //TODO comment this
     }
 
     public static void processBarrel() {
+        if (!barrel.isPressed()) {
+            barrelBtnHeld = false;
+        }
         if (barrelBtnHeld) {
             return;
         }
         if (barrel.isPressed()) {
-            barrelBtnHeld = true;
             // Check if shift is pressed
             boolean shift = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT);
 
@@ -56,6 +59,8 @@ public class SignalStrengthGiver { //TODO comment this
             // Check for pressed keys
             for (Map.Entry<Integer, Pair<Integer, Integer>> entry : keyData.entrySet()) {
                 if (InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), entry.getKey())) {
+                    barrelBtnHeld = true;
+
                     int ss = entry.getValue().getFirst();
                     int axes = entry.getValue().getSecond();
 
@@ -72,53 +77,58 @@ public class SignalStrengthGiver { //TODO comment this
                     barrelItem.set(DataComponentTypes.CUSTOM_NAME, Text.literal("Signal Strength " + ss));
 
                     // Send item packet to the server
-                    ClientPlayNetworking.send(new GiveItemPayload(barrelItem));
+                    ClientPlayNetworking.send(new SetItemPayload(barrelItem, MinecraftClient.getInstance().player.getInventory().getEmptySlot()));
 
                     break;  // Exit loop since a key has been processed
                 }
             }
-        } else {
-            barrelBtnHeld = false;
         }
     }
 
     public static void processShulker() {
+        if (!shulker.isPressed()) {
+            shulkerBtnHeld = false;
+        }
         if (shulkerBtnHeld) {
             return;
         }
         if (shulker.isPressed()) {
-            shulkerBtnHeld = true;
             // Check if shift is pressed
             boolean shift = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT);
 
             Map<Integer, Pair<Integer, Integer>> keyData = setupKeycodes(shift);
 
+            if (InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_5)) {
+                System.out.println("pressed 5");
+            }
+
             // Check for pressed keys
             for (Map.Entry<Integer, Pair<Integer, Integer>> entry : keyData.entrySet()) {
                 if (InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), entry.getKey())) {
+                    System.out.println("pressed");
+                    shulkerBtnHeld = true;
+
                     int ss = entry.getValue().getFirst();
                     int axes = entry.getValue().getSecond();
 
-                    // Process the barrel with the given ss and axes
+                    // Process the shulker with the given ss and axes
                     ItemStack shulkerItem = new ItemStack(Items.WHITE_SHULKER_BOX);
                     List<ItemStack> stacks = new ArrayList<>();
                     for (int i = axes; i > 0; i--) {
                         stacks.add(new ItemStack(Items.WOODEN_AXE));
                     }
 
-                    // Set NBT and other properties for the barrel
+                    // Set NBT and other properties for the shulker
                     shulkerItem.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(stacks));
                     shulkerItem.set(DataComponentTypes.ITEM_NAME, Text.literal("Signal Strength " + ss));
                     shulkerItem.set(DataComponentTypes.CUSTOM_NAME, Text.literal("Signal Strength " + ss));
 
                     // Send item packet to the server
-                    ClientPlayNetworking.send(new GiveItemPayload(shulkerItem));
+                    ClientPlayNetworking.send(new SetItemPayload(shulkerItem, MinecraftClient.getInstance().player.getInventory().getEmptySlot()));
 
                     break;  // Exit loop since a key has been processed
                 }
             }
-        } else {
-            shulkerBtnHeld = false;
         }
     }
 

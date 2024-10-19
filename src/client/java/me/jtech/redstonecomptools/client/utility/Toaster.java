@@ -7,7 +7,7 @@ import net.minecraft.text.Text;
 public class Toaster { //TODO comment this
     public static void sendToast(MinecraftClient client, Text title, Text text) {
         client.getToastManager().add(
-                SystemToast.create(client, new SystemToast.Type(1000L), title, text)
+                SystemToast.create(client, new SystemToast.Type(250L), title, text)
         );
     }
 }

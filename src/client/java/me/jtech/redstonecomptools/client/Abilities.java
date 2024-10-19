@@ -1,9 +1,6 @@
 package me.jtech.redstonecomptools.client;
 
-import me.jtech.redstonecomptools.client.clientAbilities.BaseAbility;
-import me.jtech.redstonecomptools.client.clientAbilities.DustPlaceAbility;
-import me.jtech.redstonecomptools.client.clientAbilities.PingAbility;
-import me.jtech.redstonecomptools.client.clientAbilities.SwapBlockTypeAbility;
+import me.jtech.redstonecomptools.client.clientAbilities.*;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 
@@ -18,6 +15,7 @@ public class Abilities { //TODO comment this
     public static final BaseAbility DUST_PLACE = register("dust_place", new DustPlaceAbility("dust_place"));
     public static final BaseAbility PING = register("ping_ability", new PingAbility("ping_ability"));
     public static final BaseAbility SWAP_BLOCK = register("swap_block", new SwapBlockTypeAbility("swap_block"));
+    public static final BaseAbility RTB = register("realtime_byte_output", new RealtimeByteOutputAbility("realtime_byte_output"));
 
 
 

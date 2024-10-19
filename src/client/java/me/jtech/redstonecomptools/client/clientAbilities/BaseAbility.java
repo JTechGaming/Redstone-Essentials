@@ -24,7 +24,7 @@ public abstract class BaseAbility {
     public void init() {
         // Setting up the keybind
         keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.redstonecomptools.%s".formatted(identifier),
+                "key.%s".formatted(identifier),
                 InputUtil.Type.KEYSYM,
                 key,
                 "category.redstonecomptools.abilities"

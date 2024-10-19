@@ -49,12 +49,19 @@ public class KeybindEditorScreen extends Screen {
 
         // Button to input the keys
         this.keyButton = ButtonWidget.builder(Text.literal(keybind == null ? "Key: ..." : "Key: " + keyNameQuery(keyList)), button -> {
-            DynamicKeybindHandler.waitForKeyInput(this); // Tell the DynamicKeybindHandler to start registring key inputs
+            System.out.println("pressed");
+            if (!DynamicKeybindHandler.isWaitingForKey) {
+                System.out.println("not waiting");
+                this.keyButton.active = false;
+                this.keyButton.setFocused(false);
+                DynamicKeybindHandler.waitForKeyInput(this); // Tell the DynamicKeybindHandler to start registring key inputs
+            }
         }).dimensions(this.width / 2 - 100, 150, 200, 20).build(); // Set dimensions and build the button
 
         // Delete button
         if (keybind != null) {// Keybind can't be null (because then you can't delete it ofc)
             this.deleteButton = ButtonWidget.builder(Text.literal("Delete"), button -> {
+                DynamicKeybindHandler.isWaitingForKey = false;
                 DynamicKeybindHandler.removeKeybind(keybind.getName()); // Remove keybind from keybind handler registry
                 KeybindRegistry.remove(keybind); // Remove keybind from keybind screen registry
                 DynamicKeybindHandler.saveKeybinds(); // Save all keybinds to config file
@@ -66,6 +73,7 @@ public class KeybindEditorScreen extends Screen {
 
         // Save and Cancel buttons
         this.saveButton = ButtonWidget.builder(Text.literal("Save"), button -> { // Start button widget builder
+            DynamicKeybindHandler.isWaitingForKey = false;
             // Save keybind data here (either update existing or create new)
             if (keybind == null) { // If the keybind is null, create a new one
                 KeybindEntry newKeybind = new KeybindEntry(this.nameField.getText(), this.commandField.getText(), keyList, shiftRequired, ctrlRequired); // Create a new keybind entry
@@ -92,6 +100,7 @@ public class KeybindEditorScreen extends Screen {
         }).dimensions(this.width / 2 - 50, this.height - 40, 100, 20).build(); // Set dimensions and build the button
 
         this.cancelButton = ButtonWidget.builder(Text.literal("Cancel"), button -> {
+            DynamicKeybindHandler.isWaitingForKey = false;
             MinecraftClient.getInstance().setScreen(new KeybindScreen(KeybindScreen.parent)); // Go back to the list
         }).dimensions(this.width / 2 - 50, this.height - 70, 100, 20).build(); // Set dimensions and build the button
 
@@ -113,6 +122,16 @@ public class KeybindEditorScreen extends Screen {
 
     public void setKeys(List<Integer> keys) { //TODO comment this
         keyList = keys;
+        String temp = "";
+        for (int i : keys) {
+            temp = temp.concat(" , " + i);
+        }
+        String temp2 = "";
+        System.out.println("set keys to: " + temp2);
+        for (int i : keyList) {
+            temp2 = temp2.concat(" , " + i);
+        }
+        System.out.println("new key value: " + temp2);
         keyButton.setMessage(Text.literal("Key: " + keyNameQuery(keyList)));
     }
 
@@ -126,8 +145,14 @@ public class KeybindEditorScreen extends Screen {
 
     @Override
     public void close() { //TODO comment this
+        DynamicKeybindHandler.isWaitingForKey = false;
         Redstonecomptools.shouldApplyButtonStyle = false;
         this.client.setScreen(null);
+    }
+
+    public void resetInputKey() {
+        this.keyButton.active = true;
+        System.out.println("reset button active state");
     }
 }
 

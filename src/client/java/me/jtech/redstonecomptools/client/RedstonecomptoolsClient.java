@@ -8,7 +8,7 @@ import me.jtech.redstonecomptools.client.axiomExtensions.tools.forceNeighborUpda
 import me.jtech.redstonecomptools.client.keybinds.DynamicKeybindHandler;
 import me.jtech.redstonecomptools.client.keybinds.DynamicKeybindProperties;
 import me.jtech.redstonecomptools.client.qolTools.SignalStrengthGiver;
-import me.jtech.redstonecomptools.client.rendering.BlockOverlay;
+import me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer;
 import me.jtech.redstonecomptools.client.screen.KeybindScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -74,7 +74,7 @@ public class RedstonecomptoolsClient implements ClientModInitializer { //TODO co
         registerCommand();
 
         WorldRenderEvents.BLOCK_OUTLINE.register((worldRenderContext, blockOutlineContext) -> {
-            BlockOverlay.renderAll(worldRenderContext.matrixStack(), worldRenderContext.consumers());
+            BlockOverlayRenderer.renderAll(worldRenderContext.matrixStack(), worldRenderContext.consumers());
             return true;
         });
     }
