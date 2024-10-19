@@ -14,7 +14,7 @@ public class RaycastingHelper {
         Vec3d lookVec = client.player.getRotationVec(1.0F); // Get the player's look direction
 
         // Create the end position for the ray
-        Vec3d endPos = cameraPos.add(lookVec.multiply(20.0));
+        Vec3d endPos = cameraPos.add(lookVec.multiply(40.0));
 
         // Perform the ray trace
         BlockHitResult blockHitResult = client.world.raycast(new RaycastContext(

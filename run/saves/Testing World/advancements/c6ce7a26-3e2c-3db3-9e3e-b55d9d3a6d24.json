@@ -5,17 +5,18 @@
     },
     "done": true
   },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:river": "2024-10-19 11:14:27 +0200",
+      "minecraft:plains": "2024-10-06 19:18:41 +0200"
+    },
+    "done": false
+  },
   "minecraft:recipes/decorations/chest": {
     "criteria": {
       "has_lots_of_items": "2024-10-06 19:19:20 +0200"
     },
     "done": true
-  },
-  "minecraft:adventure/adventuring_time": {
-    "criteria": {
-      "minecraft:plains": "2024-10-06 19:18:41 +0200"
-    },
-    "done": false
   },
   "DataVersion": 3953
 }

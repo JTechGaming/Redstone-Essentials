@@ -1,0 +1,189 @@
+---- Minecraft Network Protocol Error Report ----
+// Too many suspicious packets
+
+Time: 2024-10-19 11:14:59
+Description: Packet handling error
+
+io.netty.handler.codec.EncoderException: Failed to encode packet 'serverbound/minecraft:custom_payload' (redstonecomptools:server_send_ping)
+	at net.minecraft.network.handler.PacketCodecDispatcher.handler$zbi000$fabric-networking-api-v1$encode(PacketCodecDispatcher.java:547)
+	at net.minecraft.network.handler.PacketCodecDispatcher.encode(PacketCodecDispatcher.java:52)
+	at net.minecraft.network.handler.PacketCodecDispatcher.encode(PacketCodecDispatcher.java:21)
+	at net.minecraft.network.handler.EncoderHandler.encode(EncoderHandler.java:27)
+	at net.minecraft.network.handler.EncoderHandler.encode(EncoderHandler.java:20)
+	at io.netty.handler.codec.MessageToByteEncoder.write(MessageToByteEncoder.java:107)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeWrite0(AbstractChannelHandlerContext.java:881)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeWrite(AbstractChannelHandlerContext.java:863)
+	at io.netty.channel.AbstractChannelHandlerContext.write(AbstractChannelHandlerContext.java:968)
+	at io.netty.channel.AbstractChannelHandlerContext.write(AbstractChannelHandlerContext.java:856)
+	at io.netty.channel.ChannelOutboundHandlerAdapter.write(ChannelOutboundHandlerAdapter.java:113)
+	at net.minecraft.network.ClientConnection$2.write(ClientConnection.java:543)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeWrite0(AbstractChannelHandlerContext.java:881)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeWriteAndFlush(AbstractChannelHandlerContext.java:940)
+	at io.netty.channel.AbstractChannelHandlerContext.write(AbstractChannelHandlerContext.java:966)
+	at io.netty.channel.AbstractChannelHandlerContext.writeAndFlush(AbstractChannelHandlerContext.java:934)
+	at io.netty.channel.AbstractChannelHandlerContext.writeAndFlush(AbstractChannelHandlerContext.java:984)
+	at io.netty.channel.DefaultChannelPipeline.writeAndFlush(DefaultChannelPipeline.java:1025)
+	at io.netty.channel.AbstractChannel.writeAndFlush(AbstractChannel.java:306)
+	at net.minecraft.network.ClientConnection.sendInternal(ClientConnection.java:372)
+	at net.minecraft.network.ClientConnection.method_52917(ClientConnection.java:367)
+	at io.netty.util.concurrent.AbstractEventExecutor.runTask(AbstractEventExecutor.java:174)
+	at io.netty.channel.DefaultEventLoop.run(DefaultEventLoop.java:54)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.NullPointerException: Cannot invoke "net.minecraft.util.math.BlockPos.asLong()" because "pos" is null
+	at net.minecraft.network.PacketByteBuf.writeBlockPos(PacketByteBuf.java:835)
+	at net.minecraft.util.math.BlockPos$1.encode(BlockPos.java:51)
+	at net.minecraft.util.math.BlockPos$1.encode(BlockPos.java:47)
+	at net.minecraft.network.codec.PacketCodec$13.encode(PacketCodec.java:268)
+	at net.minecraft.network.packet.CustomPayload$1.encode(CustomPayload.java:38)
+	at net.minecraft.network.packet.CustomPayload$1.encode(CustomPayload.java:42)
+	at net.minecraft.network.packet.CustomPayload$1.encode(CustomPayload.java:29)
+	at net.minecraft.network.codec.PacketCodec$8.encode(PacketCodec.java:152)
+	at net.minecraft.network.codec.PacketCodec$9.encode(PacketCodec.java:166)
+	at net.minecraft.network.codec.PacketCodec$9.encode(PacketCodec.java:158)
+	... 25 more
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Netty Local Client IO #0
+Stacktrace:
+	at net.minecraft.network.listener.PacketListener.fillCrashReport(PacketListener.java:47)
+
+-- Connection --
+Details:
+	Protocol: play
+	Flow: CLIENTBOUND
+	Server type: <none>
+	Server brand: fabric
+Stacktrace:
+	at net.minecraft.network.listener.PacketListener.fillCrashReport(PacketListener.java:47)
+	at net.minecraft.network.NetworkThreadUtils.fillCrashReport(NetworkThreadUtils.java:62)
+	at net.minecraft.client.network.ClientCommonNetworkHandler.savePacketErrorReport(ClientCommonNetworkHandler.java:136)
+	at net.minecraft.client.network.ClientCommonNetworkHandler.createDisconnectionInfo(ClientCommonNetworkHandler.java:127)
+	at net.minecraft.network.ClientConnection.exceptionCaught(ClientConnection.java:178)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeExceptionCaught(AbstractChannelHandlerContext.java:346)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeExceptionCaught(AbstractChannelHandlerContext.java:325)
+	at io.netty.channel.AbstractChannelHandlerContext.fireExceptionCaught(AbstractChannelHandlerContext.java:317)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.exceptionCaught(DefaultChannelPipeline.java:1377)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeExceptionCaught(AbstractChannelHandlerContext.java:346)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeExceptionCaught(AbstractChannelHandlerContext.java:325)
+	at io.netty.channel.DefaultChannelPipeline.fireExceptionCaught(DefaultChannelPipeline.java:907)
+	at io.netty.channel.ChannelFutureListener$3.operationComplete(ChannelFutureListener.java:69)
+	at io.netty.channel.ChannelFutureListener$3.operationComplete(ChannelFutureListener.java:65)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:590)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:557)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:492)
+	at io.netty.util.concurrent.DefaultPromise.addListener(DefaultPromise.java:185)
+	at io.netty.channel.DefaultChannelPromise.addListener(DefaultChannelPromise.java:95)
+	at io.netty.channel.DefaultChannelPromise.addListener(DefaultChannelPromise.java:30)
+	at net.minecraft.network.ClientConnection.sendInternal(ClientConnection.java:387)
+	at net.minecraft.network.ClientConnection.method_52917(ClientConnection.java:367)
+	at io.netty.util.concurrent.AbstractEventExecutor.runTask(AbstractEventExecutor.java:174)
+	at io.netty.channel.DefaultEventLoop.run(DefaultEventLoop.java:54)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.21
+	Minecraft Version ID: 1.21
+	Operating System: Windows 11 (amd64) version 10.0
+	Java Version: 21.0.4, JetBrains s.r.o.
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), JetBrains s.r.o.
+	Memory: 449429128 bytes (428 MiB) / 1094713344 bytes (1044 MiB) up to 8547991552 bytes (8152 MiB)
+	CPUs: 20
+	Processor Vendor: GenuineIntel
+	Processor Name: 12th Gen Intel(R) Core(TM) i7-12700KF
+	Identifier: Intel64 Family 6 Model 151 Stepping 2
+	Microarchitecture: Alder Lake
+	Frequency (GHz): 3.61
+	Number of physical packages: 1
+	Number of physical CPUs: 12
+	Number of logical CPUs: 20
+	Graphics card #0 name: NVIDIA GeForce RTX 4070
+	Graphics card #0 vendor: NVIDIA
+	Graphics card #0 VRAM (MiB): 12282.00
+	Graphics card #0 deviceId: VideoController1
+	Graphics card #0 versionInfo: 32.0.15.6590
+	Memory slot #0 capacity (MiB): 16384.00
+	Memory slot #0 clockSpeed (GHz): 6.00
+	Memory slot #0 type: Unknown
+	Memory slot #1 capacity (MiB): 16384.00
+	Memory slot #1 clockSpeed (GHz): 6.00
+	Memory slot #1 type: Unknown
+	Virtual memory max (MiB): 48479.15
+	Virtual memory used (MiB): 19645.08
+	Swap memory total (MiB): 15872.00
+	Swap memory used (MiB): 0.00
+	Space in storage for jna.tmpdir (MiB): <path not set>
+	Space in storage for org.lwjgl.system.SharedLibraryExtractPath (MiB): <path not set>
+	Space in storage for io.netty.native.workdir (MiB): <path not set>
+	Space in storage for java.io.tmpdir (MiB): available: 540330.75, total: 952928.00
+	Space in storage for workdir (MiB): available: 123024.39, total: 1907712.00
+	JVM Flags: 4 total; -XX:+AllowEnhancedClassRedefinition -XX:HotswapAgent=core -XX:+AllowEnhancedClassRedefinition -XX:HotswapAgent=core
+	Fabric Mods: 
+		axiom: Axiom 4.0.0
+			com_moulberry_axiomclientapi_axiomclientapi_: axiomclientapi 1.0.0
+			com_moulberry_mixinconstraints: mixinconstraints 1.0.1
+		fabric-api: Fabric API 0.102.0+1.21
+		fabric-api-base: Fabric API Base 0.4.42+6573ed8cd1
+		fabric-api-lookup-api-v1: Fabric API Lookup API (v1) 1.6.68+b5597344d1
+		fabric-biome-api-v1: Fabric Biome API (v1) 13.0.29+5bd9f1bcd1
+		fabric-block-api-v1: Fabric Block API (v1) 1.0.22+0af3f5a7d1
+		fabric-block-view-api-v2: Fabric BlockView API (v2) 1.0.10+6573ed8cd1
+		fabric-blockrenderlayer-v1: Fabric BlockRenderLayer Registration (v1) 1.1.52+0af3f5a7d1
+		fabric-client-tags-api-v1: Fabric Client Tags 1.1.15+6573ed8cd1
+		fabric-command-api-v1: Fabric Command API (v1) 1.2.49+f71b366fd1
+		fabric-command-api-v2: Fabric Command API (v2) 2.2.28+6ced4dd9d1
+		fabric-commands-v0: Fabric Commands (v0) 0.2.66+df3654b3d1
+		fabric-content-registries-v0: Fabric Content Registries (v0) 8.0.16+b5597344d1
+		fabric-convention-tags-v1: Fabric Convention Tags 2.0.19+7f945d5bd1
+		fabric-convention-tags-v2: Fabric Convention Tags (v2) 2.5.0+c5e2b5c6d1
+		fabric-crash-report-info-v1: Fabric Crash Report Info (v1) 0.2.29+0af3f5a7d1
+		fabric-data-attachment-api-v1: Fabric Data Attachment API (v1) 1.1.27+6a6dfa19d1
+		fabric-data-generation-api-v1: Fabric Data Generation API (v1) 20.2.16+16c4ae25d1
+		fabric-dimensions-v1: Fabric Dimensions API (v1) 4.0.0+6fc22b99d1
+		fabric-entity-events-v1: Fabric Entity Events (v1) 1.6.12+6fc22b99d1
+		fabric-events-interaction-v0: Fabric Events Interaction (v0) 0.7.12+ba9dae06d1
+		fabric-game-rule-api-v1: Fabric Game Rule API (v1) 1.0.53+6ced4dd9d1
+		fabric-gametest-api-v1: Fabric Game Test API (v1) 2.0.4+6fc22b99d1
+		fabric-item-api-v1: Fabric Item API (v1) 11.0.0+afdfc921d1
+		fabric-item-group-api-v1: Fabric Item Group API (v1) 4.1.4+78017270d1
+		fabric-key-binding-api-v1: Fabric Key Binding API (v1) 1.0.47+0af3f5a7d1
+		fabric-keybindings-v0: Fabric Key Bindings (v0) 0.2.45+df3654b3d1
+		fabric-lifecycle-events-v1: Fabric Lifecycle Events (v1) 2.3.12+6c1df360d1
+		fabric-loot-api-v2: Fabric Loot API (v2) 3.0.14+3f89f5a5d1
+		fabric-loot-api-v3: Fabric Loot API (v3) 1.0.2+3f89f5a5d1
+		fabric-message-api-v1: Fabric Message API (v1) 6.0.13+6573ed8cd1
+		fabric-model-loading-api-v1: Fabric Model Loading API (v1) 2.0.0+fe474d6bd1
+		fabric-networking-api-v1: Fabric Networking API (v1) 4.2.2+60c3209bd1
+		fabric-object-builder-api-v1: Fabric Object Builder API (v1) 15.2.0+a551f7a4d1
+		fabric-particles-v1: Fabric Particles (v1) 4.0.2+6573ed8cd1
+		fabric-recipe-api-v1: Fabric Recipe API (v1) 5.0.12+65089712d1
+		fabric-registry-sync-v0: Fabric Registry Sync (v0) 5.1.2+60c3209bd1
+		fabric-renderer-api-v1: Fabric Renderer API (v1) 3.4.0+c705a49cd1
+		fabric-renderer-indigo: Fabric Renderer - Indigo 1.7.0+c705a49cd1
+		fabric-renderer-registries-v1: Fabric Renderer Registries (v1) 3.2.68+df3654b3d1
+		fabric-rendering-data-attachment-v1: Fabric Rendering Data Attachment (v1) 0.3.48+73761d2ed1
+		fabric-rendering-fluids-v1: Fabric Rendering Fluids (v1) 3.1.6+b5597344d1
+		fabric-rendering-v0: Fabric Rendering (v0) 1.1.71+df3654b3d1
+		fabric-rendering-v1: Fabric Rendering (v1) 5.0.5+df16efd0d1
+		fabric-resource-conditions-api-v1: Fabric Resource Conditions API (v1) 4.3.0+8dc279b1d1
+		fabric-resource-loader-v0: Fabric Resource Loader (v0) 1.3.0+56599129d1
+		fabric-screen-api-v1: Fabric Screen API (v1) 2.0.24+b5597344d1
+		fabric-screen-handler-api-v1: Fabric Screen Handler API (v1) 1.3.86+b5597344d1
+		fabric-sound-api-v1: Fabric Sound API (v1) 1.0.23+6573ed8cd1
+		fabric-transfer-api-v1: Fabric Transfer API (v1) 5.1.16+3dccd343d1
+		fabric-transitive-access-wideners-v1: Fabric Transitive Access Wideners (v1) 6.1.0+176f9036d1
+		fabricloader: Fabric Loader 0.16.5
+		java: OpenJDK 64-Bit Server VM 21
+		midnightlib: MidnightLib 1.6.3
+		minecraft: Minecraft 1.21
+		mixinextras: MixinExtras 0.4.1
+		modmenu: Mod Menu 11.0.0
+		redstonecomptools: RedstoneCompTools 1.0.3-SNAPSHOT

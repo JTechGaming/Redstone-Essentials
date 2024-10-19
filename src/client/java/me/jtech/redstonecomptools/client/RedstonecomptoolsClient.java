@@ -10,19 +10,23 @@ import me.jtech.redstonecomptools.client.keybinds.DynamicKeybindProperties;
 import me.jtech.redstonecomptools.client.qolTools.SignalStrengthGiver;
 import me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer;
 import me.jtech.redstonecomptools.client.screen.KeybindScreen;
+import me.jtech.redstonecomptools.networking.ClientsRenderPingPayload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.util.math.Vec3i;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,10 +77,16 @@ public class RedstonecomptoolsClient implements ClientModInitializer { //TODO co
 
         registerCommand();
 
-        WorldRenderEvents.BLOCK_OUTLINE.register((worldRenderContext, blockOutlineContext) -> {
-            BlockOverlayRenderer.renderAll(worldRenderContext.matrixStack(), worldRenderContext.consumers());
-            return true;
+        WorldRenderEvents.LAST.register((context) -> {
+            BlockOverlayRenderer.renderAll(context.matrixStack(), context.consumers());
         });
+
+        ClientPlayNetworking.registerGlobalReceiver(ClientsRenderPingPayload.ID, (((payload, context) -> {
+            context.client().execute(() -> {
+                Color color = Color.getHSBColor(payload.color().x, payload.color().y, payload.color().z);
+                BlockOverlayRenderer.addOverlay(payload.blockPos(), color, new Vec3i((int) payload.size().x, (int) payload.size().y, (int) payload.size().z));
+            });
+        })));
     }
 
     public static void registerCommand() {

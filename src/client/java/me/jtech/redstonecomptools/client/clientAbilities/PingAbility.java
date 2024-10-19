@@ -3,10 +3,15 @@ package me.jtech.redstonecomptools.client.clientAbilities;
 import me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer;
 import me.jtech.redstonecomptools.client.utility.RaycastingHelper;
 import me.jtech.redstonecomptools.client.utility.Toaster;
+import me.jtech.redstonecomptools.networking.ServerSendClientPingPayload;
+import me.jtech.redstonecomptools.networking.SetItemPayload;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3i;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
@@ -38,10 +43,12 @@ public class PingAbility extends BaseAbility{
             processedShift = false;
         }
 
-        BlockOverlayRenderer.addOverlay(RaycastingHelper.performRaycast(client), Color.RED);
+        if (RaycastingHelper.performRaycast(client) == null) {
+            return;
+        }
+        BlockOverlayRenderer.addOverlay(RaycastingHelper.performRaycast(client), Color.RED, new Vec3i(1, 1, 1));
 
-        // Clearing all overlays
-        //BlockOverlay.clearOverlays();
+        ClientPlayNetworking.send(new ServerSendClientPingPayload(RaycastingHelper.performRaycast(client), new Vector3f(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue()), new Vector3f(1, 1, 1)));
     }
 
     @Override

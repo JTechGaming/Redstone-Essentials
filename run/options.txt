@@ -138,10 +138,10 @@ key_axiom.keybind.toggle_bulldozer_cap:key.keyboard.unknown
 key_axiom.keybind.nudge_with_scroll:key.keyboard.unknown
 key_axiom.keybind.nudge_forwards:key.keyboard.unknown
 key_axiom.keybind.nudge_backwards:key.keyboard.unknown
-key_key.redstonecomptools.redstonecomptools:dust_place:key.keyboard.o
-key_key.redstonecomptools.redstonecomptools:ping_ability:key.keyboard.k
-key_key.redstonecomptools.redstonecomptools:swap_block:key.keyboard.j
-key_key.redstonecomptools.redstonecomptools:realtime_byte_output:key.keyboard.g
+key_key.redstonecomptools:dust_place:key.keyboard.o
+key_key.redstonecomptools:ping_ability:key.keyboard.k
+key_key.redstonecomptools:swap_block:key.keyboard.j
+key_key.redstonecomptools:realtime_byte_output:key.keyboard.g
 key_key.redstonecomptools.open_menu:key.keyboard.i
 key_key.redstonecomptools.barrel:key.keyboard.b
 key_key.redstonecomptools.shulker:key.keyboard.v
