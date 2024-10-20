@@ -1,24 +1,17 @@
 package me.jtech.redstonecomptools.client.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.StructureBlockBlockEntity;
-import net.minecraft.block.enums.StructureBlockMode;
+import me.jtech.redstonecomptools.config.Config;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.test.StructureTestUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class BlockOverlayRenderer {
@@ -26,18 +19,22 @@ public class BlockOverlayRenderer {
     private static final List<BlockOverlayRenderer> overlays = new ArrayList<>();
     private static final List<BlockPos> overlayPositions = new ArrayList<>();
 
-    private final BlockPos blockPos;
-    private final Color color; // You can use Java's Color class or an integer for RGBA.
-    private Vec3i size = new Vec3i(1, 1, 1);
+    private static final List<BlockOverlayRenderer> selectionOverlays = new ArrayList<>();
 
-    public BlockOverlayRenderer(BlockPos blockPos, Color color, Vec3i size) {
+    public BlockPos blockPos;
+    public Color color; // You can use Java's Color class or an integer for RGBA.
+    public Vec3i size = new Vec3i(1, 1, 1);
+    public boolean isMultiplayerPing;
+
+    public BlockOverlayRenderer(BlockPos blockPos, Color color, Vec3i size, boolean isMultiplayerPing) {
         this.blockPos = blockPos;
         this.color = color;
         this.size = size;
+        this.isMultiplayerPing = isMultiplayerPing;
     }
 
     // Method to add an overlay
-    public static void addOverlay(BlockPos blockPos, Color color, Vec3i size) {
+    public void addOverlay(BlockPos blockPos, Color color, Vec3i size, boolean isSelectionOverlay) {
         if (blockPos == null) {
             return;
         }
@@ -45,18 +42,42 @@ public class BlockOverlayRenderer {
             return;
         }
         overlayPositions.add(blockPos);
-        overlays.add(new BlockOverlayRenderer(blockPos, color, size));
+        //BlockOverlayRenderer renderer = new BlockOverlayRenderer(blockPos, color, size);
+        overlays.add(this);
+        if (isSelectionOverlay) {
+            selectionOverlays.add(this);
+        }
     }
 
     // Method to clear all overlays
     public static void clearOverlays() {
-        overlays.clear();
-        overlayPositions.clear();
+        Object[] overlayCopy = overlays.toArray();
+        for (Object r : overlayCopy) {
+            BlockOverlayRenderer renderer = (BlockOverlayRenderer) r;
+            if (!selectionOverlays.contains(renderer)) {
+                overlayPositions.remove(renderer.blockPos);
+                overlays.remove(renderer);
+            }
+        }
+    }
+
+    public static void clearSelectionOverlays() {
+        selectionOverlays.clear();
+    }
+
+    public static void removeSelectionOverlay(BlockOverlayRenderer renderer) {
+        selectionOverlays.remove(renderer);
     }
 
     // Call this method from your main rendering logic to render all overlays
     public static void renderAll(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
         for (BlockOverlayRenderer overlay : overlays) {
+            if ((!Config.pings_enabled && !selectionOverlays.contains(overlay)) || (!Config.selections_enabled && selectionOverlays.contains(overlay))) {
+                continue;
+            }
+            if (!selectionOverlays.contains(overlay)) {
+                overlay.color = Color.decode(overlay.isMultiplayerPing ? Config.multiplayer_ping_color : Config.ping_color);
+            }
             overlay.render(matrixStack, vertexConsumerProvider);
         }
     }

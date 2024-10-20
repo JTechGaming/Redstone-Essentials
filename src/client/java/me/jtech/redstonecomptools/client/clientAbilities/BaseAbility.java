@@ -59,10 +59,11 @@ public abstract class BaseAbility {
     public void toggle() {
         toggled = !toggled; // toggle the active state
         // Sends a toast to notify the player about the toggle (if shouldToast is enabled)
-        if (shouldToast)
-            Toaster.sendToast(MinecraftClient.getInstance(), Text.literal(name), Text.literal("Was toggled " + (toggled? "On" : "Off")));
         // This function is called after the toggle function is done processing. It can be overridden in an ability class to execute some custom code
         toggled(toggled);
+
+        if (shouldToast)
+            Toaster.sendToast(MinecraftClient.getInstance(), Text.literal(name), Text.literal("Was toggled " + (toggled? "On" : "Off")));
     }
 
     // This just force enables the ability and is not implemented by default

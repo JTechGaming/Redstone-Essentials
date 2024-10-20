@@ -131,12 +131,6 @@
     },
     "done": true
   },
-  "minecraft:adventure/adventuring_time": {
-    "criteria": {
-      "minecraft:plains": "2024-10-06 17:49:58 +0200"
-    },
-    "done": false
-  },
   "minecraft:recipes/redstone/note_block": {
     "criteria": {
       "has_redstone": "2024-10-06 17:49:57 +0200"
@@ -178,6 +172,12 @@
       "has_redstone": "2024-10-06 17:49:57 +0200"
     },
     "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:plains": "2024-10-06 17:49:58 +0200"
+    },
+    "done": false
   },
   "DataVersion": 3953
 }

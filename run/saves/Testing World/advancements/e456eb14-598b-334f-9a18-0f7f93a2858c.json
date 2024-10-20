@@ -29,12 +29,6 @@
     },
     "done": true
   },
-  "minecraft:adventure/adventuring_time": {
-    "criteria": {
-      "minecraft:plains": "2024-10-15 13:33:46 +0200"
-    },
-    "done": false
-  },
   "minecraft:recipes/redstone/redstone": {
     "criteria": {
       "has_redstone_block": "2024-10-15 13:33:45 +0200"
@@ -70,6 +64,12 @@
       "has_redstone": "2024-10-15 13:33:45 +0200"
     },
     "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:plains": "2024-10-15 13:33:46 +0200"
+    },
+    "done": false
   },
   "DataVersion": 3953
 }

@@ -12,12 +12,15 @@ import org.joml.Vector3f;
 
 import java.awt.*;
 
-public record ClientsRenderPingPayload(BlockPos blockPos, Vector3f color, Vector3f size) implements CustomPayload {
+public record ClientsRenderPingPayload(BlockPos blockPos, Vector3f rgb, Vector3f size, boolean isSelectionOverlay, boolean isRTBOOverlay, String label) implements CustomPayload {
     public static final Id<ClientsRenderPingPayload> ID = new Id<>(NetworkingPackets.CLIENTS_RENDER_PING);
     public static final PacketCodec<RegistryByteBuf, ClientsRenderPingPayload> CODEC = PacketCodec.tuple(
             BlockPos.PACKET_CODEC, ClientsRenderPingPayload::blockPos,
-            PacketCodecs.VECTOR3F, ClientsRenderPingPayload::color,
+            PacketCodecs.VECTOR3F, ClientsRenderPingPayload::rgb,
             PacketCodecs.VECTOR3F, ClientsRenderPingPayload::size,
+            PacketCodecs.BOOL,ClientsRenderPingPayload::isSelectionOverlay,
+            PacketCodecs.BOOL, ClientsRenderPingPayload::isRTBOOverlay,
+            PacketCodecs.STRING, ClientsRenderPingPayload::label,
             ClientsRenderPingPayload::new
     );
 

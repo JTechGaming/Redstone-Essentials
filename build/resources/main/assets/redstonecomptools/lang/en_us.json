@@ -7,6 +7,38 @@
   "key.redstonecomptools:dust_place": "Auto Dust Place",
   "key.redstonecomptools:ping_ability": "Ping",
   "key.redstonecomptools:swap_block": "Swap Block",
+  "key.redstonecomptools:select": "Select",
   "key.redstonecomptools:realtime_byte_output": "Realtime Byte Output",
-  "key.redstonecomptools.open_menu": "Open Dynamic Keybinds Menu"
+  "key.redstonecomptools.open_menu": "Open Dynamic Keybinds Menu",
+
+  "redstonecomptools.midnightconfig.category.settings": "Settings",
+  "redstonecomptools.midnightconfig.category.keybindings": "Keybindings",
+
+  "redstonecomptools.midnightconfig.generalComment":"General Settings",
+  "redstonecomptools.midnightconfig.use_toasts": "Use Toasts",
+
+  "redstonecomptools.midnightconfig.pingComment":"Ping Settings",
+  "redstonecomptools.midnightconfig.ping_color":"Ping Color",
+  "redstonecomptools.midnightconfig.pings_enabled":"Pings Enabled",
+  "redstonecomptools.midnightconfig.multiplayer_ping_color":"Other Player Ping Color",
+  "redstonecomptools.midnightconfig.send_pings":"Send your Pings To Other Players (Multiplayer Only)",
+  "redstonecomptools.midnightconfig.receive_pings":"Render Pings From Other Players (Multiplayer Only)",
+
+  "redstonecomptools.midnightconfig.selectionComment":"Selection Settings",
+  "redstonecomptools.midnightconfig.selections_enabled":"Selections Enabled",
+  "redstonecomptools.midnightconfig.send_selections":"Send your Selections To Other Players (Multiplayer Only)",
+  "redstonecomptools.midnightconfig.receive_selections":"Render Selections From Other Players (Multiplayer Only)",
+
+  "redstonecomptools.midnightconfig.rtboComment":"Realtime Byte Output Settings",
+  "redstonecomptools.midnightconfig.rtbo_enabled":"Byte Output Enabled",
+  "redstonecomptools.midnightconfig.use_output_labels":"Use Output Labels",
+  "redstonecomptools.midnightconfig.fill_to_min_size":"Should The Output Fill To The Min Output Byte Size",
+  "redstonecomptools.midnightconfig.min_byte_size":"Minimum Output Byte Size",
+  "redstonecomptools.midnightconfig.output_base_select":"The Output Base Of All Output Bytes",
+  "redstonecomptools.midnightconfig.enum.BaseMode.HEX":"Hexadecimal",
+  "redstonecomptools.midnightconfig.enum.BaseMode.BIN":"Binary",
+  "redstonecomptools.midnightconfig.enum.BaseMode.OCT":"Octal",
+  "redstonecomptools.midnightconfig.enum.BaseMode.DEC":"Decimal",
+  "redstonecomptools.midnightconfig.send_rtbo":"Send your (RTBO) Selections To Other Players (Multiplayer Only)",
+  "redstonecomptools.midnightconfig.receive_rtbo":"Render (RTBO) Selections From Other Players (Multiplayer Only)"
 }

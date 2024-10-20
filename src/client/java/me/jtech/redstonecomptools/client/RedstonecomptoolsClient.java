@@ -3,13 +3,18 @@ package me.jtech.redstonecomptools.client;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import me.jtech.redstonecomptools.RealtimeByteOutput;
 import me.jtech.redstonecomptools.client.axiomExtensions.ServiceHelper;
 import me.jtech.redstonecomptools.client.axiomExtensions.tools.forceNeighborUpdatesTool;
+import me.jtech.redstonecomptools.client.gui.RealtimeByteOutputRenderer;
 import me.jtech.redstonecomptools.client.keybinds.DynamicKeybindHandler;
 import me.jtech.redstonecomptools.client.keybinds.DynamicKeybindProperties;
 import me.jtech.redstonecomptools.client.qolTools.SignalStrengthGiver;
 import me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer;
 import me.jtech.redstonecomptools.client.screen.KeybindScreen;
+import me.jtech.redstonecomptools.client.utility.ClientSelectionHelper;
+import me.jtech.redstonecomptools.client.utility.DefaultSelectionContext;
+import me.jtech.redstonecomptools.config.Config;
 import me.jtech.redstonecomptools.networking.ClientsRenderPingPayload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -35,11 +40,19 @@ import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 public class RedstonecomptoolsClient implements ClientModInitializer { //TODO comment this
     public static final Logger LOGGER = LoggerFactory.getLogger("redstonecomptools");
     public static final String MOD_ID = "redstonecomptools";
+    public static final DefaultSelectionContext defaultSelectionContext = new DefaultSelectionContext();
 
     private static KeyBinding openDynamicKeybindMenuKeybinding;
 
     @Override
     public void onInitializeClient() {
+        openDynamicKeybindMenuKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.redstonecomptools.open_menu",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_I,
+                "category.redstonecomptools.main"
+        ));
+
         LOGGER.info("Initialising Registers...");
         AbilityManager.init();
         Abilities abilities = Abilities.getInstance();
@@ -48,13 +61,6 @@ public class RedstonecomptoolsClient implements ClientModInitializer { //TODO co
         LOGGER.info("Setting up Keybindings...");
         DynamicKeybindHandler.loadKeybinds();
 
-        openDynamicKeybindMenuKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.redstonecomptools.open_menu",
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_I,
-                "category.redstonecomptools.main"
-        ));
-
         LOGGER.info("Setting up QOL features...");
         // Setup keybinds for barrel and shulker giver
         SignalStrengthGiver.setupKeybinds();
@@ -62,6 +68,7 @@ public class RedstonecomptoolsClient implements ClientModInitializer { //TODO co
         LOGGER.info("Registering axiom extension tools...");
         ServiceHelper.getToolRegistryService().register(new forceNeighborUpdatesTool());
 
+        LOGGER.info("Registering Events");
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             SignalStrengthGiver.processBarrel();
             SignalStrengthGiver.processShulker();
@@ -78,13 +85,28 @@ public class RedstonecomptoolsClient implements ClientModInitializer { //TODO co
         registerCommand();
 
         WorldRenderEvents.LAST.register((context) -> {
+            ClientSelectionHelper.renderAll();
             BlockOverlayRenderer.renderAll(context.matrixStack(), context.consumers());
         });
 
+        LOGGER.info("Setting up Client-Side Packets...");
         ClientPlayNetworking.registerGlobalReceiver(ClientsRenderPingPayload.ID, (((payload, context) -> {
             context.client().execute(() -> {
-                Color color = Color.getHSBColor(payload.color().x, payload.color().y, payload.color().z);
-                BlockOverlayRenderer.addOverlay(payload.blockPos(), color, new Vec3i((int) payload.size().x, (int) payload.size().y, (int) payload.size().z));
+                if ((!payload.isSelectionOverlay() && !Config.receive_pings) || (payload.isSelectionOverlay() && !Config.receive_selections) || (payload.isRTBOOverlay() && !Config.receive_rtbo)) {
+                    return;
+                }
+
+                Color color = Color.getHSBColor(payload.rgb().x, payload.rgb().y, payload.rgb().z);
+                if (!payload.isSelectionOverlay()) {
+                    color = Color.decode(Config.multiplayer_ping_color);
+                }
+
+                Vec3i size = new Vec3i((int) payload.size().x, (int) payload.size().y, (int) payload.size().z);
+                new BlockOverlayRenderer(payload.blockPos(), color, size, true).addOverlay(payload.blockPos(), color, size, payload.isSelectionOverlay());
+
+                if (payload.isRTBOOverlay()) {
+                    RealtimeByteOutputRenderer.realtimeByteOutputList.add(new RealtimeByteOutput(payload.blockPos(), Color.getHSBColor(payload.rgb().x, payload.rgb().y, payload.rgb().z), size, context.player().getName().getString() + " : " + payload.label()));
+                }
             });
         })));
     }

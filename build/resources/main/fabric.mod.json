@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "id": "redstonecomptools",
-  "version": "1.0.3-SNAPSHOT",
+  "version": "1.0.4-SNAPSHOT",
   "name": "RedstoneCompTools",
-  "description": "",
-  "authors": [],
+  "description": "A mod that aims to improve the redstone experience when working with complex computational builds",
+  "authors": ["JTechGaming"],
   "contact": {},
   "license": "All-Rights-Reserved",
   "icon": "assets/redstonecomptools/icon.png",

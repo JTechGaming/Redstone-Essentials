@@ -1,5 +1,6 @@
 package me.jtech.redstonecomptools.utility;
 
+import me.jtech.redstonecomptools.Redstonecomptools;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.RedstoneLampBlock;
 import net.minecraft.util.math.BlockPos;
@@ -25,6 +26,7 @@ public class SelectionHelper { // TODO comment this
         this.pos2 = pos2;
         this.invertDirection = invertDirection;
 
+        // TODO might wanna figure out how to do invalid selection handling here
         // Determine if it's vertical (Y axis) or horizontal (X or Z axis)
         if (pos1.getX() == pos2.getX() && pos1.getZ() == pos2.getZ()) {
             isVertical = true;
@@ -36,7 +38,9 @@ public class SelectionHelper { // TODO comment this
             isVertical = false;
             selectionAxis = Axis.Z;
         } else {
-            throw new IllegalArgumentException("Positions do not form a valid vertical or horizontal line.");
+            isVertical = true; // Just use default values and hope its correct
+            selectionAxis = Axis.Z;
+            Redstonecomptools.LOGGER.warn("Inputted positions do not form a valid vertical or horizontal line. This might cause problems when trying to return the read value!");
         }
     }
 

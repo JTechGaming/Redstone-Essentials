@@ -16,6 +16,7 @@ public class Abilities { //TODO comment this
     public static final BaseAbility PING = register("ping_ability", new PingAbility("ping_ability"));
     public static final BaseAbility SWAP_BLOCK = register("swap_block", new SwapBlockTypeAbility("swap_block"));
     public static final BaseAbility RTB = register("realtime_byte_output", new RealtimeByteOutputAbility("realtime_byte_output"));
+    public static final BaseAbility SELECT = register("select", new SelectionAbility("select"));
 
 
 

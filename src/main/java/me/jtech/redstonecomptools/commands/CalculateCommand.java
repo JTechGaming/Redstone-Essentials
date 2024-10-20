@@ -2,15 +2,24 @@ package me.jtech.redstonecomptools.commands;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import me.jtech.redstonecomptools.RealtimeByteOutput;
+import me.jtech.redstonecomptools.ServerPlayerLabelStorage;
+import me.jtech.redstonecomptools.utility.SelectionHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 
@@ -52,7 +61,7 @@ public class CalculateCommand { // TODO comment this
     private static int executeCommand(CommandContext<ServerCommandSource> context) {
         String expression = StringArgumentType.getString(context, "expression");
 
-        String calcString = dissectFlags(expression);
+        String calcString = dissectFlags(expression, context.getSource().getPlayer());
 
         String result = Integer.toString((int) evaluateExpression(calcString));
         System.out.println(result);
@@ -108,7 +117,7 @@ public class CalculateCommand { // TODO comment this
         vertical = false;
     }
 
-    private static String dissectFlags(String value) {
+    private static String dissectFlags(String value, ServerPlayerEntity player) {
         if (value.contains("#")) {
             String flags = value.substring(value.indexOf('#'));
             String calc = value.substring(0, value.indexOf('#'));
@@ -127,12 +136,41 @@ public class CalculateCommand { // TODO comment this
             if (flags.contains("v")) {
                 vertical = true;
             }
+            return dissectPlaceholders(calc, player);
+        }
+        return dissectPlaceholders(value, player);
+    }
 
-            System.out.println(flags);
-            System.out.println(calc);
-            return calc;
+    private static String dissectPlaceholders(String value, ServerPlayerEntity player) {
+        if (value.contains("%")) {
+            String[] placeholders = extractVariables(value);
+            for (String placeholder : placeholders) {
+                System.out.println(placeholder);
+                List<RealtimeByteOutput> playerLabels = ServerPlayerLabelStorage.playerLabelList.get(player);
+                for (RealtimeByteOutput rtbo : playerLabels) {
+                    if (rtbo.label.equals(placeholder)) {
+                        int x = rtbo.blockPos.getX() + rtbo.size.getX() - 1;
+                        int y = rtbo.blockPos.getY() + rtbo.size.getY() - 1;
+                        int z = rtbo.blockPos.getZ() + rtbo.size.getZ() - 1;
+
+                        SelectionHelper selectionHelper = new SelectionHelper(rtbo.blockPos, new BlockPos(x, y, z), false);
+                        int data = selectionHelper.readData(player.getWorld(), 1);
+                        value = value.replace("%" + placeholder + "%", data + "");
+                    }
+                }
+            }
         }
         return value;
+    }
+
+    public static String[] extractVariables(String input) {
+        ArrayList<String> variables = new ArrayList<>();
+        Pattern pattern = Pattern.compile("%(.*?)%");  // Regex to match %variable%
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+            variables.add(matcher.group(1));
+        }
+        return variables.toArray(new String[0]);
     }
 
     private static double evaluateExpression(String expression) {

@@ -1,6 +1,8 @@
 package me.jtech.redstonecomptools.mixin.client;
 
 import me.jtech.redstonecomptools.client.Abilities;
+import me.jtech.redstonecomptools.networking.SetBlockPayload;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -39,7 +41,8 @@ public class BlockPlaceMixin {
                     BlockState redstoneWireState = Blocks.REDSTONE_WIRE.getPlacementState(context); // Convert the placementContext into a blockstate
 
                     if (redstoneWireState != null && redstoneWireState.canPlaceAt(world, dustLoc)) { // Only execute if the dust is able to be placed at that location
-                        placer.getWorld().setBlockState(dustLoc, Blocks.REDSTONE_WIRE.getPlacementState(context)); // Place the dust at the location
+                        //placer.getWorld().setBlockState(dustLoc, Blocks.REDSTONE_WIRE.getPlacementState(context)); // Place the dust at the location
+                        ClientPlayNetworking.send(new SetBlockPayload(dustLoc));
                     }
                 }
             }

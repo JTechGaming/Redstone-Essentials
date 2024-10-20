@@ -9,4 +9,5 @@ public class NetworkingPackets {
     public static final Identifier RUN_COMMAND_PACKET_ID = Identifier.of("redstonecomptools", "server_run_command");
     public static final Identifier CLIENTS_RENDER_PING = Identifier.of("redstonecomptools", "clients_render_ping");
     public static final Identifier SERVER_SEND_PING = Identifier.of("redstonecomptools", "server_send_ping");
+    public static final Identifier SERVER_SET_BLOCK = Identifier.of("redstonecomptools", "server_set_block");
 }

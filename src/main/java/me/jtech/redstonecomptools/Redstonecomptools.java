@@ -8,16 +8,23 @@ import me.jtech.redstonecomptools.networking.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.awt.*;
 
 public class Redstonecomptools implements ModInitializer { // TODO comment this
 
@@ -28,6 +35,7 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
 
     @Override
     public void onInitialize() {
+        LOGGER.info("Starting RedstoneCompTools v1.0.4-SNAPSHOT");
 //        try {
 //            Files.createDirectories(FabricLoader.getInstance().getConfigDir().resolve("/redstonecomptools/bitmaps/"));
 //        } catch (IOException e) {
@@ -41,12 +49,13 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
         BitmapPrinterCommand.registerCommand();
         ListBitmapsCommand.registerCommand();
 
-        LOGGER.info("Registering Packets...");
+        LOGGER.info("Setting up Server-Side Packets...");
 
         PayloadTypeRegistry.playC2S().register(GiveItemPayload.ID, GiveItemPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(SetItemPayload.ID, SetItemPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(RunCommandPayload.ID, RunCommandPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(ServerSendClientPingPayload.ID, ServerSendClientPingPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(SetBlockPayload.ID, SetBlockPayload.CODEC);
 
         PayloadTypeRegistry.playS2C().register(ClientsRenderPingPayload.ID, ClientsRenderPingPayload.CODEC);
 
@@ -70,6 +79,22 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
             });
         }));
 
+        ServerPlayNetworking.registerGlobalReceiver(SetBlockPayload.ID, ((payload, context) -> {
+            context.server().execute(() -> {
+                PlayerEntity placer = context.player();
+
+                boolean dropItems = placer.getWorld().getGameRules().getBoolean(GameRules.DO_TILE_DROPS);
+                placer.getWorld().getGameRules().get(GameRules.DO_TILE_DROPS).set(false, placer.getWorld().getServer());
+
+                ItemPlacementContext placementContext = new ItemPlacementContext(placer, Hand.MAIN_HAND, new ItemStack(Items.REDSTONE), new BlockHitResult(payload.blockPos().toCenterPos(), Direction.UP, payload.blockPos(), false));
+                BlockState redstoneWireState = Blocks.REDSTONE_WIRE.getPlacementState(placementContext); // Convert the placementContext into a blockstate
+
+                placer.getWorld().setBlockState(payload.blockPos(), Blocks.REDSTONE_WIRE.getPlacementState(placementContext));
+
+                placer.getWorld().getGameRules().get(GameRules.DO_TILE_DROPS).set(dropItems, placer.getWorld().getServer());
+            });
+        }));
+
         ServerPlayNetworking.registerGlobalReceiver(RunCommandPayload.ID, ((payload, context) -> {
             context.server().execute(() -> {
                 String command = payload.command();
@@ -87,8 +112,9 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
         ServerPlayNetworking.registerGlobalReceiver(ServerSendClientPingPayload.ID, ((payload, context) -> {
             context.server().execute(() -> {
                 for (ServerPlayerEntity player : context.server().getPlayerManager().getPlayerList()) {
+                    ServerPlayerLabelStorage.addPlayerRTBO(player, new RealtimeByteOutput(payload.blockPos(), Color.getHSBColor(payload.rgb().x, payload.rgb().y, payload.rgb().z), new Vec3i((int) payload.size().x, (int) payload.size().y, (int) payload.size().z), payload.label()));
                     if (player != context.player()) {
-                        ServerPlayNetworking.send(player, new ClientsRenderPingPayload(payload.blockPos(), payload.color(), payload.size()));
+                        ServerPlayNetworking.send(player, new ClientsRenderPingPayload(payload.blockPos(), payload.rgb(), payload.size(), payload.isSelectionOverlay(), payload.isRTBOOverlay(), payload.label()));
                     }
                 }
             });

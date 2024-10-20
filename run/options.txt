@@ -138,14 +138,15 @@ key_axiom.keybind.toggle_bulldozer_cap:key.keyboard.unknown
 key_axiom.keybind.nudge_with_scroll:key.keyboard.unknown
 key_axiom.keybind.nudge_forwards:key.keyboard.unknown
 key_axiom.keybind.nudge_backwards:key.keyboard.unknown
+key_key.modmenu.open_menu:key.keyboard.unknown
+key_key.redstonecomptools.open_menu:key.keyboard.i
 key_key.redstonecomptools:dust_place:key.keyboard.o
 key_key.redstonecomptools:ping_ability:key.keyboard.k
 key_key.redstonecomptools:swap_block:key.keyboard.j
 key_key.redstonecomptools:realtime_byte_output:key.keyboard.g
-key_key.redstonecomptools.open_menu:key.keyboard.i
+key_key.redstonecomptools:select:key.keyboard.y
 key_key.redstonecomptools.barrel:key.keyboard.b
 key_key.redstonecomptools.shulker:key.keyboard.v
-key_key.modmenu.open_menu:key.keyboard.unknown
 soundCategory_master:0.8024282560706402
 soundCategory_music:0.0
 soundCategory_record:1.0
