@@ -6,7 +6,7 @@
   "description": "A mod that aims to improve the redstone experience when working with complex computational builds",
   "authors": ["JTechGaming"],
   "contact": {},
-  "license": "All-Rights-Reserved",
+  "license": "GNU GPLv3",
   "icon": "assets/redstonecomptools/icon.png",
   "environment": "*",
   "entrypoints": {

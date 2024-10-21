@@ -1,23 +1,28 @@
 package me.jtech.redstonecomptools.commands;
 
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import me.jtech.redstonecomptools.Redstonecomptools;
+import me.jtech.redstonecomptools.SelectionData;
+import me.jtech.redstonecomptools.networking.FinishBitmapPrintPayload;
+import me.jtech.redstonecomptools.networking.OpenScreenPayload;
 import me.jtech.redstonecomptools.utility.Pair;
 import me.jtech.redstonecomptools.utility.SelectionHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.command.argument.DefaultPosArgument;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -30,77 +35,9 @@ public class BitmapPrinterCommand { // TODO comment all this
     public static void registerCommand() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             dispatcher.register(CommandManager.literal("pb")
-                    .executes(BitmapPrinterCommand::noArgs)
-                    .then(CommandManager.argument("file_path", StringArgumentType.string())
-                            .executes(BitmapPrinterCommand::noArgs)
-                            .then(CommandManager.argument("screen_width", IntegerArgumentType.integer())
-                                    .executes(BitmapPrinterCommand::noArgs)
-                                    .then(CommandManager.argument("screen_height", IntegerArgumentType.integer())
-                                            .executes(BitmapPrinterCommand::noArgs)
-                                            .then(CommandManager.argument("interval", IntegerArgumentType.integer())
-                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                    .then(CommandManager.argument("offset", IntegerArgumentType.integer())
-                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                            .then(CommandManager.argument("c1xpos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                    .then(CommandManager.argument("c1xpos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                                            .then(CommandManager.argument("c1ypos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                                    .then(CommandManager.argument("c1ypos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                                                            .then(CommandManager.argument("c2xpos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                                                    .then(CommandManager.argument("c2xpos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                                                                            .then(CommandManager.argument("c2ypos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                                                                    .then(CommandManager.argument("c2ypos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                                                                                            .then(CommandManager.argument("c3xpos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                                                                                    .then(CommandManager.argument("c3xpos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                                                                                                            .then(CommandManager.argument("c3ypos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                                                                                                    .then(CommandManager.argument("c3ypos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                                                            .executes(BitmapPrinterCommand::executeCommand)))))))))))))))))));
+                    .executes(BitmapPrinterCommand::executeCommand));
             dispatcher.register(CommandManager.literal("print_bitmap")
-                    .executes(BitmapPrinterCommand::noArgs)
-                    .then(CommandManager.argument("file_path", StringArgumentType.string())
-                            .executes(BitmapPrinterCommand::noArgs)
-                            .then(CommandManager.argument("screen_width", IntegerArgumentType.integer())
-                                    .executes(BitmapPrinterCommand::noArgs)
-                                    .then(CommandManager.argument("screen_height", IntegerArgumentType.integer())
-                                            .executes(BitmapPrinterCommand::noArgs)
-                                            .then(CommandManager.argument("interval", IntegerArgumentType.integer())
-                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                    .then(CommandManager.argument("offset", IntegerArgumentType.integer())
-                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                            .then(CommandManager.argument("c1xpos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                    .then(CommandManager.argument("c1xpos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                                            .then(CommandManager.argument("c1ypos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                                    .then(CommandManager.argument("c1ypos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                                                            .then(CommandManager.argument("c2xpos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                                                    .then(CommandManager.argument("c2xpos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                                                                            .then(CommandManager.argument("c2ypos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                                                                    .then(CommandManager.argument("c2ypos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                                                                                            .then(CommandManager.argument("c3xpos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                                                                                    .then(CommandManager.argument("c3xpos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                                            .executes(BitmapPrinterCommand::noArgs)
-                                                                                                                                            .then(CommandManager.argument("c3ypos1", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                                                    .executes(BitmapPrinterCommand::noArgs)
-                                                                                                                                                    .then(CommandManager.argument("c3ypos2", new net.minecraft.command.argument.BlockPosArgumentType())
-                                                                                                                                                            .executes(BitmapPrinterCommand::executeCommand)))))))))))))))))));
+                    .executes(BitmapPrinterCommand::executeCommand));
         });
     }
 
@@ -110,97 +47,72 @@ public class BitmapPrinterCommand { // TODO comment all this
     }
 
     private static int executeCommand(CommandContext<ServerCommandSource> context) {
-        String filePath = context.getArgument("file_path", String.class);
-        int width = context.getArgument("screen_width", Integer.class);
-        int height = context.getArgument("screen_height", Integer.class);
-        int interval = context.getArgument("interval", Integer.class);
-        int offset = context.getArgument("offset", Integer.class);
-        BlockPos channel1xPos1 = context.getArgument("c1xpos1", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel1xPos2 = context.getArgument("c1xpos2", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel1yPos1 = context.getArgument("c1ypos1", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel1yPos2 = context.getArgument("c1ypos2", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel2xPos1 = context.getArgument("c2xpos1", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel2xPos2 = context.getArgument("c2xpos2", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel2yPos1 = context.getArgument("c2ypos1", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel2yPos2 = context.getArgument("c2ypos2", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel3xPos1 = context.getArgument("c3xpos1", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel3xPos2 = context.getArgument("c3xpos2", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel3yPos1 = context.getArgument("c3ypos1", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
-        BlockPos channel3yPos2 = context.getArgument("c3ypos2", DefaultPosArgument.class).toAbsoluteBlockPos(context.getSource());
+        ServerPlayerEntity player = context.getSource().getPlayer();
+        assert player != null;
+        ServerPlayNetworking.send(player, new OpenScreenPayload(0)); // Open Bitmap Printer Screen
+        return 0;
+    }
 
+    public static void finaliseExecution(String filePath, List<SelectionData> selectionList, int width, int height, int interval, int channels, World world, PlayerEntity clientPlayer) {
         Path path = FabricLoader.getInstance().getConfigDir().resolve("redstonecomptools/bitmaps/").resolve(filePath);
-        System.out.println("hi");
-        System.out.println(path);
-
-        System.out.println(path);
+        System.out.println(channels);
+        List<Vec2f> writeLocations = new ArrayList<>();
         File file = path.toFile();
         try {
-            BufferedImage img = scale(ImageIO.read(file), width, height);
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(img, "bmp", baos);
-            byte[] bytes = baos.toByteArray();
-
-            int y = 1;
-            List<Vec2f> writeLocations = new ArrayList<>();
-            for (int i = 0; i < bytes.length; i++) {
-                if (i > (width * y)) {
-                    y++;
-                }
-                if (bytes[i] >= 0) {
-                    int x = i / y;
-                    writeLocations.add(new Vec2f(x, y));
-                    System.out.println("x: " + x + " , y: " + y);
+            BufferedImage scaledImg = scale(ImageIO.read(file), width, height);
+            for (int y = 0; y < scaledImg.getHeight(); y++) {
+                for (int x = 0; x < scaledImg.getWidth(); x++) {
+                    int pixel = scaledImg.getRGB(x, y);
+                    Color color = new Color(pixel, true);
+                    int addent = color.getRed() + color.getGreen() + color.getBlue();
+                    if (addent <= 0) {
+                        writeLocations.add(new Vec2f(scaledImg.getWidth()-x, scaledImg.getHeight()-y));
+                    }
                 }
             }
-
             AtomicBoolean isProcessing = new AtomicBoolean(true);
-
             AtomicInteger currentTick = new AtomicInteger();
+            AtomicInteger currentOffset = new AtomicInteger();
             ServerTickEvents.END_SERVER_TICK.register((server) -> {
                 if (isProcessing.get()) {
                     currentTick.getAndIncrement();
                     if (currentTick.get() == interval) {
                         currentTick.set(0);
-                        executePlacement(
-                                writeLocations,
-                                new Pair<>(new Pair<>(channel1xPos1, channel1xPos2), new Pair<>(channel1yPos1, channel1yPos2)),
-                                new Pair<>(new Pair<>(channel2xPos1, channel2xPos2), new Pair<>(channel2yPos1, channel2yPos2)),
-                                new Pair<>(new Pair<>(channel3xPos1, channel3xPos2), new Pair<>(channel3yPos1, channel3yPos2)),
-                                offset,
-                                false, // TODO add invert direction arguments
-                                context
-                        );
-                        if (writeLocations.size() <= 2) {
+                        if (writeLocations.size()-1 <= currentOffset.get()+channels) {
                             isProcessing.set(false);
-                            context.getSource().sendFeedback(() -> Text.literal("Completed bitmap print!").withColor(3136078), false);
+                            ServerPlayerEntity  player = server.getPlayerManager().getPlayer(clientPlayer.getUuid());
+                            if (player!=null) {
+                                ServerPlayNetworking.send(player, new FinishBitmapPrintPayload(true));
+                            } else {
+                                Redstonecomptools.LOGGER.error("Player doesnt exist");
+                            }
                             return;
                         }
-                        writeLocations.remove(0);
-                        writeLocations.remove(1);
-                        writeLocations.remove(2);
+                        executePlacement(selectionList, writeLocations, channels, world, currentOffset);
+                        currentOffset.incrementAndGet();
                     }
-                } // Test case: /print_bitmap "Test.bmp" 80 64 20 1 -57 68 -9 -57 68 -2 -57 72 -9 -57 72 -2 -57 68 1 -57 68 8 -57 72 1 -57 72 8 -57 68 10 -57 68 17 -57 72 10 -57 72 17
+                }
             });
         } catch (IOException e) {
             System.out.println(e);
         }
-
-        return 0;
     }
 
-    private static void executePlacement(List<Vec2f> writeLocations, Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> byteLoc1, Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> byteLoc2, Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> byteLoc3, int offset, boolean invertDirection, CommandContext<ServerCommandSource> context) {
-        Pair<Pair<BlockPos, BlockPos>, Pair<BlockPos, BlockPos>> currentByte = byteLoc1;
-        for (int i = 0; i < 3; i++) {
-            SelectionHelper selection = new SelectionHelper(currentByte.getFirst().getFirst(), currentByte.getFirst().getSecond(), invertDirection);
-            selection.writeData(context.getSource().getWorld(), (int) writeLocations.get(i).x, offset, SelectionHelper.Mode.WRITE);
-            selection = new SelectionHelper(currentByte.getSecond().getFirst(), currentByte.getSecond().getSecond(), invertDirection);
-            selection.writeData(context.getSource().getWorld(), (int) writeLocations.get(i).y, offset, SelectionHelper.Mode.WRITE);
-            if (i == 1) {
-                currentByte = byteLoc2;
-                continue;
+    private static void executePlacement(List<SelectionData> selectionList, List<Vec2f> writeLocations, int channels, World world, AtomicInteger currentOffset) {
+        for (int i=0; i<channels; i++) {
+            if (writeLocations.size()-1 <= i+currentOffset.get()) {
+                currentOffset.incrementAndGet();
+                return;
             }
-            currentByte = byteLoc3;
+            Pair<SelectionData, SelectionData> currentByte = new Pair<>(selectionList.get(i), selectionList.get(i+1));
+
+            System.out.println(i);
+
+
+            SelectionHelper selection = new SelectionHelper(currentByte.getFirst().getBlockPos(), currentByte.getFirst().getBlockPos().add(currentByte.getFirst().getSize().subtract(new Vec3i(1, 1, 1))), currentByte.getFirst().isInverted());
+            selection.writeData(world, (int) writeLocations.get(i+currentOffset.get()).x, currentByte.getFirst().getOffset(), SelectionHelper.Mode.WRITE);
+            selection = new SelectionHelper(currentByte.getSecond().getBlockPos(), currentByte.getSecond().getBlockPos().add(currentByte.getSecond().getSize().subtract(new Vec3i(1, 1, 1))), currentByte.getSecond().isInverted());
+            selection.writeData(world, (int) writeLocations.get(i+currentOffset.get()).y, currentByte.getSecond().getOffset(), SelectionHelper.Mode.WRITE);
         }
     }
 

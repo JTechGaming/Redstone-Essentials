@@ -1,10 +1,10 @@
 package me.jtech.redstonecomptools.client.clientAbilities;
 
-import me.jtech.redstonecomptools.RealtimeByteOutput;
+import me.jtech.redstonecomptools.SelectionData;
 import me.jtech.redstonecomptools.client.RedstonecomptoolsClient;
-import me.jtech.redstonecomptools.client.gui.RealtimeByteOutputRenderer;
-import me.jtech.redstonecomptools.client.screen.OutputLabelInputScreen;
-import me.jtech.redstonecomptools.client.utility.IClientSelectionContext;
+import me.jtech.redstonecomptools.client.rendering.gui.RealtimeByteOutputRenderer;
+import me.jtech.redstonecomptools.client.rendering.screen.OutputLabelInputScreen;
+import me.jtech.redstonecomptools.utility.IClientSelectionContext;
 import me.jtech.redstonecomptools.client.utility.Toaster;
 import me.jtech.redstonecomptools.config.Config;
 import net.minecraft.client.MinecraftClient;
@@ -22,7 +22,7 @@ public class RealtimeByteOutputAbility extends BaseAbility implements IClientSel
     RealtimeByteOutputRenderer renderer = new RealtimeByteOutputRenderer();
 
     public RealtimeByteOutputAbility(String identifier) {
-        super("Realtime Byte", false, GLFW.GLFW_KEY_G, true, false, Identifier.of("redstonecomptools", identifier));
+        super("Realtime Byte", false, GLFW.GLFW_KEY_G, false, false, Identifier.of("redstonecomptools", identifier));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class RealtimeByteOutputAbility extends BaseAbility implements IClientSel
         if (Config.use_output_labels) {
             client.setScreen(new OutputLabelInputScreen(blockPos, color, size));
         } else {
-            RealtimeByteOutput output = new RealtimeByteOutput(blockPos, color, size, "");
+            SelectionData output = new SelectionData(blockPos, color, size, "", true);
             RealtimeByteOutputRenderer.realtimeByteOutputList.add(output);
             SelectionAbility.finalizeSelection(output);
             SelectionAbility.selectionContext = RedstonecomptoolsClient.defaultSelectionContext;

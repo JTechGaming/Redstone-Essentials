@@ -1,10 +1,10 @@
 package me.jtech.redstonecomptools.client.clientAbilities;
 
-import me.jtech.redstonecomptools.RealtimeByteOutput;
+import me.jtech.redstonecomptools.SelectionData;
 import me.jtech.redstonecomptools.client.RedstonecomptoolsClient;
 import me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer;
 import me.jtech.redstonecomptools.client.utility.ClientSelectionHelper;
-import me.jtech.redstonecomptools.client.utility.IClientSelectionContext;
+import me.jtech.redstonecomptools.utility.IClientSelectionContext;
 import me.jtech.redstonecomptools.config.Config;
 import me.jtech.redstonecomptools.networking.ServerSendClientPingPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -40,7 +40,7 @@ public class SelectionAbility extends BaseAbility {
         } else {
             Vec3i selection = selectionHelper.endSelection();
             if (selection != null) {
-                BlockOverlayRenderer blockOverlayRenderer = new BlockOverlayRenderer(selectionHelper.renderer.blockPos, selectionHelper.renderer.color, selection, false);
+                BlockOverlayRenderer blockOverlayRenderer = new BlockOverlayRenderer(selectionHelper.renderer.blockPos, selectionHelper.renderer.color, selection, false, selectionContext instanceof RealtimeByteOutputAbility, selectionContext);
                 blockOverlayRenderer.addOverlay(selectionHelper.renderer.blockPos, selectionHelper.renderer.color, selection, true);
 
                 selectionHelper.renderer = null;
@@ -51,7 +51,7 @@ public class SelectionAbility extends BaseAbility {
         }
     }
 
-    public static void finalizeSelection(RealtimeByteOutput output) {
+    public static void finalizeSelection(SelectionData output) {
         if (!(selectionContext instanceof RealtimeByteOutputAbility) && Config.send_selections) {
             ClientPlayNetworking.send(new ServerSendClientPingPayload(
                     output.blockPos,

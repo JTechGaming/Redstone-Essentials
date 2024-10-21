@@ -1,7 +1,8 @@
 package me.jtech.redstonecomptools.client.utility;
 
-import me.jtech.redstonecomptools.client.RedstonecomptoolsClient;
+import me.jtech.redstonecomptools.client.clientAbilities.RealtimeByteOutputAbility;
 import me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer;
+import me.jtech.redstonecomptools.utility.IClientSelectionContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -27,7 +28,7 @@ public class ClientSelectionHelper {
         Color randomColor = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
 
         Vec3i area = new Vec3i(1, 1, 1);
-        renderer = new BlockOverlayRenderer(new BlockPos(0, 0, 0), randomColor, area, false);
+        renderer = new BlockOverlayRenderer(new BlockPos(0, 0, 0), randomColor, area, false, selectionContext instanceof RealtimeByteOutputAbility, selectionContext);
 
         clientSelectionHelpers.add(this);
     }
@@ -81,9 +82,12 @@ public class ClientSelectionHelper {
     }
 
     public Vec3i calculateAreaForPositions(BlockPos pos1, BlockPos pos2) {
-        /*int x = (pos2.getX() > pos1.getX() ? pos2.getX()-pos1.getX() : pos1.getX()-pos2.getX()) + 1;
-        int y = (pos2.getY() > pos1.getY() ? pos2.getY()-pos1.getY() : pos1.getY()-pos2.getY()) + 1;
-        int z = (pos2.getZ() > pos1.getZ() ? pos2.getZ()-pos1.getZ() : pos1.getZ()-pos2.getZ()) + 1;*/
+        // sizex = pos2.x-pos1.x + 1
+        // 6 = 10-5 + 1
+        // sizex = 6, pos2.x = 10, pos1.x = 5, 1
+        // pos2.x = sizex + pos1.x - 1
+        // 10 = 6+5 - 1
+
         int x = pos2.getX()-pos1.getX() + 1;
         int y = pos2.getY()-pos1.getY() + 1;
         int z = pos2.getZ()-pos1.getZ() + 1;

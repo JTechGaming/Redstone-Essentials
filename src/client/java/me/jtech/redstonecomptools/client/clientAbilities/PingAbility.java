@@ -1,5 +1,6 @@
 package me.jtech.redstonecomptools.client.clientAbilities;
 
+import me.jtech.redstonecomptools.client.RedstonecomptoolsClient;
 import me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer;
 import me.jtech.redstonecomptools.client.utility.RaycastingHelper;
 import me.jtech.redstonecomptools.client.utility.Toaster;
@@ -50,7 +51,7 @@ public class PingAbility extends BaseAbility {
         if (RaycastingHelper.performRaycast(client) == null) {
             return;
         }
-        BlockOverlayRenderer blockOverlayRenderer = new BlockOverlayRenderer(RaycastingHelper.performRaycast(client), Color.getColor(Config.ping_color), new Vec3i(1, 1, 1), false);
+        BlockOverlayRenderer blockOverlayRenderer = new BlockOverlayRenderer(RaycastingHelper.performRaycast(client), Color.getColor(Config.ping_color), new Vec3i(1, 1, 1), false, false, RedstonecomptoolsClient.defaultSelectionContext);
         blockOverlayRenderer.addOverlay(RaycastingHelper.performRaycast(client), Color.decode(Config.ping_color), new Vec3i(1, 1, 1), false);
 
         if (Config.send_pings) {

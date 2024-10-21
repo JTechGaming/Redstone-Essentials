@@ -3,6 +3,7 @@ package me.jtech.redstonecomptools.utility;
 import me.jtech.redstonecomptools.Redstonecomptools;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.RedstoneLampBlock;
+import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -127,7 +128,9 @@ public class SelectionHelper { // TODO comment this
     // Check if the block at the target position represents a set bit (1)
     private boolean isBitSet(World world, BlockPos pos) {
         return world.getBlockState(pos).isOf(Blocks.REDSTONE_BLOCK) ||
-                (world.getBlockState(pos).getBlock() instanceof RedstoneLampBlock && world.getBlockState(pos).get(RedstoneLampBlock.LIT));
+                (world.getBlockState(pos).getBlock() instanceof RedstoneLampBlock && world.getBlockState(pos).get(RedstoneLampBlock.LIT) ||
+                        (world.getBlockState(pos).getBlock() instanceof TrapdoorBlock && world.getBlockState(pos).get(TrapdoorBlock.POWERED))
+                );
     }
 }
 

@@ -1,6 +1,8 @@
 package me.jtech.redstonecomptools.client.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.jtech.redstonecomptools.client.rendering.gui.RealtimeByteOutputRenderer;
+import me.jtech.redstonecomptools.utility.IClientSelectionContext;
 import me.jtech.redstonecomptools.config.Config;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
@@ -22,15 +24,19 @@ public class BlockOverlayRenderer {
     private static final List<BlockOverlayRenderer> selectionOverlays = new ArrayList<>();
 
     public BlockPos blockPos;
-    public Color color; // You can use Java's Color class or an integer for RGBA.
+    public Color color;
     public Vec3i size = new Vec3i(1, 1, 1);
     public boolean isMultiplayerPing;
+    private boolean isRTBO;
+    private IClientSelectionContext selectionContext;
 
-    public BlockOverlayRenderer(BlockPos blockPos, Color color, Vec3i size, boolean isMultiplayerPing) {
+    public BlockOverlayRenderer(BlockPos blockPos, Color color, Vec3i size, boolean isMultiplayerPing, boolean isRTBO, IClientSelectionContext selectionContext) {
         this.blockPos = blockPos;
         this.color = color;
         this.size = size;
         this.isMultiplayerPing = isMultiplayerPing;
+        this.isRTBO = isRTBO;
+        this.selectionContext = selectionContext;
     }
 
     // Method to add an overlay
@@ -69,10 +75,22 @@ public class BlockOverlayRenderer {
         selectionOverlays.remove(renderer);
     }
 
+    public static void removePrinterOverlay(IClientSelectionContext context) {
+        for (BlockOverlayRenderer renderer : overlays) {
+            if (renderer.selectionContext == context) {
+                overlays.remove(renderer);
+                return;
+            }
+        }
+    }
+
     // Call this method from your main rendering logic to render all overlays
     public static void renderAll(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
         for (BlockOverlayRenderer overlay : overlays) {
             if ((!Config.pings_enabled && !selectionOverlays.contains(overlay)) || (!Config.selections_enabled && selectionOverlays.contains(overlay))) {
+                continue;
+            }
+            if ((overlay.isRTBO && !RealtimeByteOutputRenderer.isShouldRender()) || (overlay.isRTBO && !Config.rtbo_enabled)) {
                 continue;
             }
             if (!selectionOverlays.contains(overlay)) {

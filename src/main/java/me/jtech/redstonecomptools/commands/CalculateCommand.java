@@ -2,7 +2,7 @@ package me.jtech.redstonecomptools.commands;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import me.jtech.redstonecomptools.RealtimeByteOutput;
+import me.jtech.redstonecomptools.SelectionData;
 import me.jtech.redstonecomptools.ServerPlayerLabelStorage;
 import me.jtech.redstonecomptools.utility.SelectionHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -146,8 +146,8 @@ public class CalculateCommand { // TODO comment this
             String[] placeholders = extractVariables(value);
             for (String placeholder : placeholders) {
                 System.out.println(placeholder);
-                List<RealtimeByteOutput> playerLabels = ServerPlayerLabelStorage.playerLabelList.get(player);
-                for (RealtimeByteOutput rtbo : playerLabels) {
+                List<SelectionData> playerLabels = ServerPlayerLabelStorage.playerLabelList.get(player);
+                for (SelectionData rtbo : playerLabels) {
                     if (rtbo.label.equals(placeholder)) {
                         int x = rtbo.blockPos.getX() + rtbo.size.getX() - 1;
                         int y = rtbo.blockPos.getY() + rtbo.size.getY() - 1;

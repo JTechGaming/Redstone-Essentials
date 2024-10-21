@@ -11,13 +11,10 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.AutomaticItemPlacementContext;
 import net.minecraft.item.Items;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.GameRules;
@@ -35,7 +32,7 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
 
     @Override
     public void onInitialize() {
-        LOGGER.info("Starting RedstoneCompTools v1.0.4-SNAPSHOT");
+        LOGGER.info("Starting RedstoneCompTools v1.0.5-SNAPSHOT");
 //        try {
 //            Files.createDirectories(FabricLoader.getInstance().getConfigDir().resolve("/redstonecomptools/bitmaps/"));
 //        } catch (IOException e) {
@@ -58,6 +55,8 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
         PayloadTypeRegistry.playC2S().register(SetBlockPayload.ID, SetBlockPayload.CODEC);
 
         PayloadTypeRegistry.playS2C().register(ClientsRenderPingPayload.ID, ClientsRenderPingPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(OpenScreenPayload.ID, OpenScreenPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(FinishBitmapPrintPayload.ID, FinishBitmapPrintPayload.CODEC);
 
         ServerPlayNetworking.registerGlobalReceiver(GiveItemPayload.ID, ((payload, context) -> {
             context.server().execute(() -> {
@@ -86,10 +85,9 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
                 boolean dropItems = placer.getWorld().getGameRules().getBoolean(GameRules.DO_TILE_DROPS);
                 placer.getWorld().getGameRules().get(GameRules.DO_TILE_DROPS).set(false, placer.getWorld().getServer());
 
-                ItemPlacementContext placementContext = new ItemPlacementContext(placer, Hand.MAIN_HAND, new ItemStack(Items.REDSTONE), new BlockHitResult(payload.blockPos().toCenterPos(), Direction.UP, payload.blockPos(), false));
-                BlockState redstoneWireState = Blocks.REDSTONE_WIRE.getPlacementState(placementContext); // Convert the placementContext into a blockstate
+                BlockState state = Blocks.REDSTONE_WIRE.getPlacementState(new AutomaticItemPlacementContext(placer.getWorld(), payload.blockPos(), Direction.getFacing(payload.blockPos().toCenterPos()), Items.REDSTONE.getDefaultStack(), Direction.UP));
 
-                placer.getWorld().setBlockState(payload.blockPos(), Blocks.REDSTONE_WIRE.getPlacementState(placementContext));
+                placer.getWorld().setBlockState(payload.blockPos(), state);
 
                 placer.getWorld().getGameRules().get(GameRules.DO_TILE_DROPS).set(dropItems, placer.getWorld().getServer());
             });
@@ -112,7 +110,7 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
         ServerPlayNetworking.registerGlobalReceiver(ServerSendClientPingPayload.ID, ((payload, context) -> {
             context.server().execute(() -> {
                 for (ServerPlayerEntity player : context.server().getPlayerManager().getPlayerList()) {
-                    ServerPlayerLabelStorage.addPlayerRTBO(player, new RealtimeByteOutput(payload.blockPos(), Color.getHSBColor(payload.rgb().x, payload.rgb().y, payload.rgb().z), new Vec3i((int) payload.size().x, (int) payload.size().y, (int) payload.size().z), payload.label()));
+                    ServerPlayerLabelStorage.addPlayerRTBO(player, new SelectionData(payload.blockPos(), Color.getHSBColor(payload.rgb().x, payload.rgb().y, payload.rgb().z), new Vec3i((int) payload.size().x, (int) payload.size().y, (int) payload.size().z), payload.label(), payload.isRTBOOverlay()));
                     if (player != context.player()) {
                         ServerPlayNetworking.send(player, new ClientsRenderPingPayload(payload.blockPos(), payload.rgb(), payload.size(), payload.isSelectionOverlay(), payload.isRTBOOverlay(), payload.label()));
                     }
