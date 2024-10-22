@@ -56,7 +56,7 @@ public class WriteBinCommand { // TODO comment this
 
         SelectionHelper selection = new SelectionHelper(pos1, pos2, invertDirection);
 
-        selection.writeData(context.getSource().getWorld(), data, offset, SelectionHelper.Mode.WRITE);
+        selection.writeData(context.getSource().getWorld(), data, offset, SelectionHelper.Mode.WRITE, context.getSource().getPlayer());
         return 0;
     }
 }

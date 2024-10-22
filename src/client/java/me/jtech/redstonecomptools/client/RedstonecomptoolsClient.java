@@ -18,9 +18,7 @@ import me.jtech.redstonecomptools.client.utility.ClientSelectionHelper;
 import me.jtech.redstonecomptools.client.utility.DefaultSelectionContext;
 import me.jtech.redstonecomptools.client.utility.ServerAccessibleScreens;
 import me.jtech.redstonecomptools.config.Config;
-import me.jtech.redstonecomptools.networking.ClientsRenderPingPayload;
-import me.jtech.redstonecomptools.networking.FinishBitmapPrintPayload;
-import me.jtech.redstonecomptools.networking.OpenScreenPayload;
+import me.jtech.redstonecomptools.networking.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -133,6 +131,10 @@ public class RedstonecomptoolsClient implements ClientModInitializer { //TODO co
 
         ClientPlayNetworking.registerGlobalReceiver(FinishBitmapPrintPayload.ID, (((payload, context) -> {
             context.client().execute(BitmapPrinterScreen::finishPrint);
+        })));
+
+        ClientPlayNetworking.registerGlobalReceiver(ClientSetBlockPayload.ID, (((payload, context) -> {
+            context.client().execute(() -> ClientPlayNetworking.send(new SetBlockPayload(payload.blockPos(), payload.blockName())));
         })));
     }
 

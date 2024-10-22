@@ -92,12 +92,9 @@ public class DynamicKeybindHandler { //TODO comment this
          */
         ScreenKeyboardEvents.afterKeyRelease(client.currentScreen).register((screen, key, scancode, modifiers) -> {
             if (isWaitingForKey) {
-                System.out.println("detected key");
                 if (key == GLFW.GLFW_KEY_ENTER) {
-                    System.out.println("detected enter key");
                     currentHandler.resetInputKey();
                 } else {
-                    System.out.println("added key to list");
                     keyCombo.add(key);
                     currentHandler.setKeys(keyCombo);
                 }

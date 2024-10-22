@@ -52,6 +52,7 @@ public class BitmapPrinterScreen extends Screen implements IClientSelectionConte
 
     public static List<SelectionData> selectionList = new ArrayList<>();
     private boolean shouldClose = false;
+    private BitmapPrintListWidget scrollWidget;
 
     public BitmapPrinterScreen() {
         super(Text.literal("Setup Bitmap Print"));
@@ -78,7 +79,7 @@ public class BitmapPrinterScreen extends Screen implements IClientSelectionConte
         this.startSelect = ButtonWidget.builder(Text.literal("Start Next Selection"), button -> {
             startedSelecting = true;
             SelectionAbility.selectionContext = this;
-            currentGuiText = "Selecting Bitmap Printer Input For Channel " + ((completedSelections / 2) + 1) + " On The " + (((completedSelections & 1) == 0) ? "Y Axis" : "X Axis");
+            currentGuiText = "Selecting Bitmap Printer Input For Channel " + ((completedSelections / 2) + 1) + " On The " + (((completedSelections & 1) == 0) ? "X Axis" : "Y Axis");
             shouldClose = true;
             this.close();
         }).dimensions(this.width / 2 - 100, this.height - 50, 200, 20).build();
@@ -93,12 +94,18 @@ public class BitmapPrinterScreen extends Screen implements IClientSelectionConte
             this.close();
         }).dimensions(this.width / 2 - 100, this.height - 50, 200, 20).build();
 
+        this.scrollWidget = new BitmapPrintListWidget(client, this.width, 265, 20, 100);
+        scrollWidget.visible = false;
+
         this.addDrawableChild(nameField);
         this.addDrawableChild(filePathField);
         this.addDrawableChild(screenWidthField);
         this.addDrawableChild(screenHeightField);
         this.addDrawableChild(intervalField);
         this.addDrawableChild(channelsField);
+
+        this.addDrawableChild(scrollWidget);
+
         this.addDrawableChild(startSelect);
 
         this.addDrawableChild(startPrint);
@@ -118,7 +125,7 @@ public class BitmapPrinterScreen extends Screen implements IClientSelectionConte
             try {
                 requiredSelections = Integer.parseInt(channelsField.getText()) * 2;
             } catch (NumberFormatException e) {
-                System.out.println(e);
+                RedstonecomptoolsClient.LOGGER.error(String.valueOf(e));
                 return;
             }
         }
@@ -130,7 +137,11 @@ public class BitmapPrinterScreen extends Screen implements IClientSelectionConte
             currentScreenHeight = screenHeightField.getText();
             currentInterval = intervalField.getText();
             currentChannels = channelsField.getText();
+        } else {
+            scrollWidget.visible = true;
         }
+
+        scrollWidget.updateChildren();
 
         super.render(context, mouseX, mouseY, delta);
     }
@@ -152,7 +163,7 @@ public class BitmapPrinterScreen extends Screen implements IClientSelectionConte
 
         completedSelections++;
 
-        SelectionData data = new SelectionData(blockPos, color, size, currentName + completedSelections / 2 + (((completedSelections & 1) == 0) ? "y" : "x"), false);
+        SelectionData data = new SelectionData(blockPos, color, size, currentName + "♅" + ((completedSelections / 2) + 1) + "♅" + (((completedSelections & 1) == 0) ? "y" : "x"), false);
         data.setOffset(1); // TODO add option to change offset
         data.context = this;
         selectionList.add(data);
@@ -160,7 +171,6 @@ public class BitmapPrinterScreen extends Screen implements IClientSelectionConte
         Redstonecomptools.shouldApplyButtonStyle = true;
         shouldRender = false;
         MinecraftClient.getInstance().setScreen(this);
-
         if (completedSelections == requiredSelections) {
             doneSelecting = true;
         }

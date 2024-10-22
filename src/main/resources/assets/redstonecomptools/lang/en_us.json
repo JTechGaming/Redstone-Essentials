@@ -40,5 +40,11 @@
   "redstonecomptools.midnightconfig.enum.BaseMode.OCT":"Octal",
   "redstonecomptools.midnightconfig.enum.BaseMode.DEC":"Decimal",
   "redstonecomptools.midnightconfig.send_rtbo":"Send your (RTBO) Selections To Other Players (Multiplayer Only)",
-  "redstonecomptools.midnightconfig.receive_rtbo":"Render (RTBO) Selections From Other Players (Multiplayer Only)"
+  "redstonecomptools.midnightconfig.receive_rtbo":"Render (RTBO) Selections From Other Players (Multiplayer Only)",
+
+  "redstonecomptools.midnightconfig.bitmapComment":"Bitmap Printer Settings",
+  "redstonecomptools.midnightconfig.bitmap_enabled":"Bitmap Printer Enabled",
+  "redstonecomptools.midnightconfig.bitmap_reset_on_finish":"Selections Enabled",
+  "redstonecomptools.midnightconfig.send_bitmap":"Send your Print Selections To Other Players (Multiplayer Only)",
+  "redstonecomptools.midnightconfig.receive_bitmap":"Render Print Selections From Other Players (Multiplayer Only)"
 }

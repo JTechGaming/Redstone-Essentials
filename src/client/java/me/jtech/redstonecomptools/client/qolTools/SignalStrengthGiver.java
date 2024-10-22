@@ -98,14 +98,9 @@ public class SignalStrengthGiver { //TODO comment this
 
             Map<Integer, Pair<Integer, Integer>> keyData = setupKeycodes(shift);
 
-            if (InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_5)) {
-                System.out.println("pressed 5");
-            }
-
             // Check for pressed keys
             for (Map.Entry<Integer, Pair<Integer, Integer>> entry : keyData.entrySet()) {
                 if (InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), entry.getKey())) {
-                    System.out.println("pressed");
                     shulkerBtnHeld = true;
 
                     int ss = entry.getValue().getFirst();

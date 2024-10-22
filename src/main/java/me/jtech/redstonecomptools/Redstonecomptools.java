@@ -8,13 +8,15 @@ import me.jtech.redstonecomptools.networking.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AutomaticItemPlacementContext;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.GameRules;
@@ -57,6 +59,7 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
         PayloadTypeRegistry.playS2C().register(ClientsRenderPingPayload.ID, ClientsRenderPingPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(OpenScreenPayload.ID, OpenScreenPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(FinishBitmapPrintPayload.ID, FinishBitmapPrintPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(ClientSetBlockPayload.ID, ClientSetBlockPayload.CODEC);
 
         ServerPlayNetworking.registerGlobalReceiver(GiveItemPayload.ID, ((payload, context) -> {
             context.server().execute(() -> {
@@ -65,7 +68,6 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
                 player.getInventory().insertStack(slot, payload.item());
                 player.getInventory().selectedSlot = slot;
                 player.getInventory().updateItems();
-                System.out.println("received packet");
             });
         }));
 
@@ -81,13 +83,24 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
         ServerPlayNetworking.registerGlobalReceiver(SetBlockPayload.ID, ((payload, context) -> {
             context.server().execute(() -> {
                 PlayerEntity placer = context.player();
-
+                Item returnItem = Registries.ITEM.get(Identifier.ofVanilla(payload.blockName().toLowerCase()));
                 boolean dropItems = placer.getWorld().getGameRules().getBoolean(GameRules.DO_TILE_DROPS);
                 placer.getWorld().getGameRules().get(GameRules.DO_TILE_DROPS).set(false, placer.getWorld().getServer());
-
-                BlockState state = Blocks.REDSTONE_WIRE.getPlacementState(new AutomaticItemPlacementContext(placer.getWorld(), payload.blockPos(), Direction.getFacing(payload.blockPos().toCenterPos()), Items.REDSTONE.getDefaultStack(), Direction.UP));
-
-                placer.getWorld().setBlockState(payload.blockPos(), state);
+                BlockState state = null;
+                if (returnItem.equals(Items.REDSTONE)) {
+                    state = Blocks.REDSTONE_WIRE.getPlacementState(new AutomaticItemPlacementContext(placer.getWorld(), payload.blockPos(), Direction.getFacing(payload.blockPos().toCenterPos()), Items.REDSTONE.getDefaultStack(), Direction.UP));
+                } else if (returnItem.equals(Items.AIR)) {
+                    state = Blocks.AIR.getDefaultState();
+                } else if (BlockItem.BLOCK_ITEMS.containsValue(returnItem)){
+                    for (Block block : BlockItem.BLOCK_ITEMS.keySet()) {
+                        if (BlockItem.BLOCK_ITEMS.get(block).equals(returnItem)) {
+                            state = block.getPlacementState(new AutomaticItemPlacementContext(placer.getWorld(), payload.blockPos(), Direction.getFacing(payload.blockPos().toCenterPos()), returnItem.getDefaultStack(), Direction.UP));
+                        }
+                    }
+                }
+                if (state != null) {
+                    placer.getWorld().setBlockState(payload.blockPos(), state);
+                }
 
                 placer.getWorld().getGameRules().get(GameRules.DO_TILE_DROPS).set(dropItems, placer.getWorld().getServer());
             });

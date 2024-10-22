@@ -82,21 +82,10 @@ public class ClientSelectionHelper {
     }
 
     public Vec3i calculateAreaForPositions(BlockPos pos1, BlockPos pos2) {
-        // sizex = pos2.x-pos1.x + 1
-        // 6 = 10-5 + 1
-        // sizex = 6, pos2.x = 10, pos1.x = 5, 1
-        // pos2.x = sizex + pos1.x - 1
-        // 10 = 6+5 - 1
-
         int x = pos2.getX()-pos1.getX() + 1;
         int y = pos2.getY()-pos1.getY() + 1;
         int z = pos2.getZ()-pos1.getZ() + 1;
         return new Vec3i(x, y, z);
-    }
-
-    public static Box evaluateSelection(BlockPos pos1, Vec3i size) {
-        BlockPos pos2 = pos1.add(size);
-        return new Box(pos1.getX(), pos1.getY(), pos1.getZ(), pos2.getX(), pos2.getY(), pos2.getZ());
     }
 
     public static void renderAll() {

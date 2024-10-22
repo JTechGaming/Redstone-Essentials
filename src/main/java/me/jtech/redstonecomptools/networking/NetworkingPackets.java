@@ -10,6 +10,7 @@ public class NetworkingPackets {
     public static final Identifier CLIENTS_RENDER_PING = Identifier.of("redstonecomptools", "clients_render_ping");
     public static final Identifier SERVER_SEND_PING = Identifier.of("redstonecomptools", "server_send_ping");
     public static final Identifier SERVER_SET_BLOCK = Identifier.of("redstonecomptools", "server_set_block");
+    public static final Identifier CLIENT_SET_BLOCK = Identifier.of("redstonecomptools", "client_set_block");
     public static final Identifier CLIENT_OPEN_SCREEN = Identifier.of("redstonecomptools", "client_open_screen");
     public static final Identifier CLIENT_FINISH_BITMAP_PRINT = Identifier.of("redstonecomptools", "client_finish_bitmap_print");
 }

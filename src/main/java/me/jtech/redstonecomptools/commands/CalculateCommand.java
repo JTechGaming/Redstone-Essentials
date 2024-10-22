@@ -64,7 +64,6 @@ public class CalculateCommand { // TODO comment this
         String calcString = dissectFlags(expression, context.getSource().getPlayer());
 
         String result = Integer.toString((int) evaluateExpression(calcString));
-        System.out.println(result);
 
         result = switch (rBase) {
             case BIN -> baseConversion(result, 10, 2);
@@ -145,7 +144,6 @@ public class CalculateCommand { // TODO comment this
         if (value.contains("%")) {
             String[] placeholders = extractVariables(value);
             for (String placeholder : placeholders) {
-                System.out.println(placeholder);
                 List<SelectionData> playerLabels = ServerPlayerLabelStorage.playerLabelList.get(player);
                 for (SelectionData rtbo : playerLabels) {
                     if (rtbo.label.equals(placeholder)) {

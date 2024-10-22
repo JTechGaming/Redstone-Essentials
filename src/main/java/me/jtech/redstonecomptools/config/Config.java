@@ -34,13 +34,19 @@ public class Config extends MidnightConfig {
     @Entry(category = SETTINGS) public static boolean rtbo_enabled = true;
     @Entry(category = SETTINGS) public static boolean use_output_labels = true;
     @Entry(category = SETTINGS) public static boolean fill_to_min_size = true;
-    @Entry(category = SETTINGS) public static Integer min_byte_size = 8;
+    @Entry(category = SETTINGS) public static int min_byte_size = 8;
     @Entry(category = SETTINGS) public static BaseMode output_base_select = BaseMode.DEC;
     public enum BaseMode {
         HEX, BIN, DEC, OCT
     }
     @Entry(category = SETTINGS) public static boolean send_rtbo = true;
     @Entry(category = SETTINGS) public static boolean receive_rtbo = true;
+
+    @Comment(category = SETTINGS, centered = true) public static Comment bitmapComment;
+    @Entry(category = SETTINGS) public static boolean bitmap_enabled = true;
+    @Entry(category = SETTINGS) public static boolean bitmap_reset_on_finish = true;
+    @Entry(category = SETTINGS) public static boolean send_bitmap = true;
+    @Entry(category = SETTINGS) public static boolean receive_bitmap = true;
 
 
     // Keybindings

@@ -39,10 +39,9 @@ public class BlockPlaceMixin {
                     // Create a placementContext
                     ItemPlacementContext context = new ItemPlacementContext(player, Hand.MAIN_HAND, new ItemStack(Items.REDSTONE), new BlockHitResult(new Vec3d(dustLoc.getX(), dustLoc.getY(), dustLoc.getZ()), Direction.UP, dustLoc, false));
                     BlockState redstoneWireState = Blocks.REDSTONE_WIRE.getPlacementState(context); // Convert the placementContext into a blockstate
-
                     if (redstoneWireState != null && redstoneWireState.canPlaceAt(world, dustLoc)) { // Only execute if the dust is able to be placed at that location
                         //placer.getWorld().setBlockState(dustLoc, Blocks.REDSTONE_WIRE.getPlacementState(context)); // Place the dust at the location
-                        ClientPlayNetworking.send(new SetBlockPayload(dustLoc));
+                        ClientPlayNetworking.send(new SetBlockPayload(dustLoc, "redstone"));
                     }
                 }
             }

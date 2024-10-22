@@ -49,9 +49,7 @@ public class KeybindEditorScreen extends Screen {
 
         // Button to input the keys
         this.keyButton = ButtonWidget.builder(Text.literal(keybind == null ? "Key: ..." : "Key: " + keyNameQuery(keyList)), button -> {
-            System.out.println("pressed");
             if (!DynamicKeybindHandler.isWaitingForKey) {
-                System.out.println("not waiting");
                 this.keyButton.active = false;
                 this.keyButton.setFocused(false);
                 DynamicKeybindHandler.waitForKeyInput(this); // Tell the DynamicKeybindHandler to start registring key inputs
@@ -127,11 +125,9 @@ public class KeybindEditorScreen extends Screen {
             temp = temp.concat(" , " + i);
         }
         String temp2 = "";
-        System.out.println("set keys to: " + temp2);
         for (int i : keyList) {
             temp2 = temp2.concat(" , " + i);
         }
-        System.out.println("new key value: " + temp2);
         keyButton.setMessage(Text.literal("Key: " + keyNameQuery(keyList)));
     }
 
@@ -152,7 +148,6 @@ public class KeybindEditorScreen extends Screen {
     }
 
     public void resetInputKey() {
-        System.out.println("reset button active state");
         DynamicKeybindHandler.isWaitingForKey = false;
         this.keyButton.active = true;
     }

@@ -67,11 +67,16 @@ public class BlockOverlayRenderer {
         }
     }
 
+    public static void modifySelection() {
+
+    }
+
     public static void clearSelectionOverlays() {
         selectionOverlays.clear();
     }
 
     public static void removeSelectionOverlay(BlockOverlayRenderer renderer) {
+        overlays.remove(renderer);
         selectionOverlays.remove(renderer);
     }
 
@@ -79,6 +84,8 @@ public class BlockOverlayRenderer {
         for (BlockOverlayRenderer renderer : overlays) {
             if (renderer.selectionContext == context) {
                 overlays.remove(renderer);
+                selectionOverlays.remove(renderer);
+                overlayPositions.remove(renderer.blockPos);
                 return;
             }
         }

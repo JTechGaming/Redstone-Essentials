@@ -3,6 +3,7 @@ package me.jtech.redstonecomptools.commands;
 import com.mojang.brigadier.context.CommandContext;
 import me.jtech.redstonecomptools.Redstonecomptools;
 import me.jtech.redstonecomptools.SelectionData;
+import me.jtech.redstonecomptools.config.Config;
 import me.jtech.redstonecomptools.networking.FinishBitmapPrintPayload;
 import me.jtech.redstonecomptools.networking.OpenScreenPayload;
 import me.jtech.redstonecomptools.utility.Pair;
@@ -55,7 +56,6 @@ public class BitmapPrinterCommand { // TODO comment all this
 
     public static void finaliseExecution(String filePath, List<SelectionData> selectionList, int width, int height, int interval, int channels, World world, PlayerEntity clientPlayer) {
         Path path = FabricLoader.getInstance().getConfigDir().resolve("redstonecomptools/bitmaps/").resolve(filePath);
-        System.out.println(channels);
         List<Vec2f> writeLocations = new ArrayList<>();
         File file = path.toFile();
         try {
@@ -78,9 +78,25 @@ public class BitmapPrinterCommand { // TODO comment all this
                     currentTick.getAndIncrement();
                     if (currentTick.get() == interval) {
                         currentTick.set(0);
+                        ServerPlayerEntity  player = server.getPlayerManager().getPlayer(clientPlayer.getUuid());
                         if (writeLocations.size()-1 <= currentOffset.get()+channels) {
                             isProcessing.set(false);
-                            ServerPlayerEntity  player = server.getPlayerManager().getPlayer(clientPlayer.getUuid());
+
+                            if (Config.bitmap_reset_on_finish) {
+                                for (int i = 0; i < channels; i++) { // Make sure all channels x and y are reset to 0
+                                    if (writeLocations.size() - 1 <= i + currentOffset.get()) {
+                                        currentOffset.incrementAndGet();
+                                        return;
+                                    }
+                                    Pair<SelectionData, SelectionData> currentByte = new Pair<>(selectionList.get(i), selectionList.get(i + 1));
+
+                                    SelectionHelper selection = new SelectionHelper(currentByte.getFirst().getBlockPos(), currentByte.getFirst().getBlockPos().add(currentByte.getFirst().getSize().subtract(new Vec3i(1, 1, 1))), currentByte.getFirst().isInverted());
+                                    selection.writeData(world, 0, currentByte.getFirst().getOffset(), SelectionHelper.Mode.WRITE, player);
+                                    selection = new SelectionHelper(currentByte.getSecond().getBlockPos(), currentByte.getSecond().getBlockPos().add(currentByte.getSecond().getSize().subtract(new Vec3i(1, 1, 1))), currentByte.getSecond().isInverted());
+                                    selection.writeData(world, 0, currentByte.getSecond().getOffset(), SelectionHelper.Mode.WRITE, player);
+                                }
+                            }
+
                             if (player!=null) {
                                 ServerPlayNetworking.send(player, new FinishBitmapPrintPayload(true));
                             } else {
@@ -88,17 +104,17 @@ public class BitmapPrinterCommand { // TODO comment all this
                             }
                             return;
                         }
-                        executePlacement(selectionList, writeLocations, channels, world, currentOffset);
+                        executePlacement(selectionList, writeLocations, channels, world, currentOffset, player);
                         currentOffset.incrementAndGet();
                     }
                 }
             });
         } catch (IOException e) {
-            System.out.println(e);
+            Redstonecomptools.LOGGER.error(String.valueOf(e));
         }
     }
 
-    private static void executePlacement(List<SelectionData> selectionList, List<Vec2f> writeLocations, int channels, World world, AtomicInteger currentOffset) {
+    private static void executePlacement(List<SelectionData> selectionList, List<Vec2f> writeLocations, int channels, World world, AtomicInteger currentOffset, ServerPlayerEntity player) {
         for (int i=0; i<channels; i++) {
             if (writeLocations.size()-1 <= i+currentOffset.get()) {
                 currentOffset.incrementAndGet();
@@ -106,13 +122,10 @@ public class BitmapPrinterCommand { // TODO comment all this
             }
             Pair<SelectionData, SelectionData> currentByte = new Pair<>(selectionList.get(i), selectionList.get(i+1));
 
-            System.out.println(i);
-
-
             SelectionHelper selection = new SelectionHelper(currentByte.getFirst().getBlockPos(), currentByte.getFirst().getBlockPos().add(currentByte.getFirst().getSize().subtract(new Vec3i(1, 1, 1))), currentByte.getFirst().isInverted());
-            selection.writeData(world, (int) writeLocations.get(i+currentOffset.get()).x, currentByte.getFirst().getOffset(), SelectionHelper.Mode.WRITE);
+            selection.writeData(world, (int) writeLocations.get(i+currentOffset.get()).x, currentByte.getFirst().getOffset(), SelectionHelper.Mode.WRITE, player);
             selection = new SelectionHelper(currentByte.getSecond().getBlockPos(), currentByte.getSecond().getBlockPos().add(currentByte.getSecond().getSize().subtract(new Vec3i(1, 1, 1))), currentByte.getSecond().isInverted());
-            selection.writeData(world, (int) writeLocations.get(i+currentOffset.get()).y, currentByte.getSecond().getOffset(), SelectionHelper.Mode.WRITE);
+            selection.writeData(world, (int) writeLocations.get(i+currentOffset.get()).y, currentByte.getSecond().getOffset(), SelectionHelper.Mode.WRITE, player);
         }
     }
 

@@ -1,9 +1,13 @@
 package me.jtech.redstonecomptools.utility;
 
 import me.jtech.redstonecomptools.Redstonecomptools;
+import me.jtech.redstonecomptools.networking.ClientSetBlockPayload;
+import me.jtech.redstonecomptools.networking.SetBlockPayload;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.RedstoneLampBlock;
 import net.minecraft.block.TrapdoorBlock;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -46,18 +50,20 @@ public class SelectionHelper { // TODO comment this
     }
 
     // Write data into the selection (as redstone blocks and air)
-    public void writeData(World world, int data, int offset, Mode mode) {
+    public void writeData(World world, int data, int offset, Mode mode, ServerPlayerEntity player) {
         // Loop through the range between pos1 and pos2 based on the axis
         int length = getLengthWithoutOffset(getLength(), offset);
         for (int i = 0; i < length; i++) {
             boolean isBitSet = ((data >> i) & 1) == 1; // Extract the i-th bit from the data
 
-            BlockPos targetPos = getTargetPos((i + (offset * (i - 1))) + offset);
+            BlockPos targetPos = getTargetPos((i + (offset * (i - 1))) + offset, length);
             if (mode == Mode.WRITE) {
                 if (isBitSet) {
-                    world.setBlockState(targetPos, Blocks.REDSTONE_BLOCK.getDefaultState());
+                    ServerPlayNetworking.send(player, new ClientSetBlockPayload(targetPos, "redstone_block"));
+                    //world.setBlockState(targetPos, Blocks.REDSTONE_BLOCK.getDefaultState(), 3);
                 } else {
-                    world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+                    ServerPlayNetworking.send(player, new ClientSetBlockPayload(targetPos, "air"));
+                    //world.setBlockState(targetPos, Blocks.AIR.getDefaultState(), 3);
                 }
             }
         }
@@ -69,7 +75,7 @@ public class SelectionHelper { // TODO comment this
         int length = getLengthWithoutOffset(getLength(), offset);
 
         for (int i = 0; i < length; i++) {
-            BlockPos targetPos = getTargetPos((i + (offset * (i - 1))) + offset);
+            BlockPos targetPos = getTargetPos((i + (offset * (i - 1))) + offset, length);
             if (isBitSet(world, targetPos)) {
                 result |= (1 << i); // Set the i-th bit in result
             }
@@ -100,17 +106,17 @@ public class SelectionHelper { // TODO comment this
     }
 
     // Get the position for a specific index in the selection
-    private BlockPos getTargetPos(int index) {
+    private BlockPos getTargetPos(int index, int length) {
         if (invertDirection) {
             if (isVertical) {
                 int minY = Math.max(pos1.getY(), pos2.getY());
-                return new BlockPos(pos1.getX(), minY + index, pos1.getZ());
+                return new BlockPos(pos1.getX(), minY - index, pos1.getZ());
             } else if (selectionAxis == Axis.X) {
                 int minX = Math.max(pos1.getX(), pos2.getX());
-                return new BlockPos(minX + index, pos1.getY(), pos1.getZ());
+                return new BlockPos(minX - index, pos1.getY(), pos1.getZ());
             } else { // Axis.Z
                 int minZ = Math.max(pos1.getZ(), pos2.getZ());
-                return new BlockPos(pos1.getX(), pos1.getY(), minZ + index);
+                return new BlockPos(pos1.getX(), pos1.getY(), minZ - index);
             }
         }
         if (isVertical) {
