@@ -3,9 +3,9 @@ package me.jtech.redstonecomptools.client.utility;
 import me.jtech.redstonecomptools.client.clientAbilities.RealtimeByteOutputAbility;
 import me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer;
 import me.jtech.redstonecomptools.utility.IClientSelectionContext;
+import me.jtech.redstonecomptools.utility.SelectionContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3i;
 
 import java.awt.*;
@@ -19,16 +19,21 @@ public class ClientSelectionHelper {
     public BlockOverlayRenderer renderer;
     private boolean pos1Selected = false;
 
-    private final IClientSelectionContext selectionContext;
+    private final int selectionContext;
 
-    public ClientSelectionHelper(IClientSelectionContext selectionContext) {
+    private final boolean modify;
+    public final int modificationId;
+
+    public ClientSelectionHelper(int selectionContext, boolean modify, int modificationId) {
         this.selectionContext = selectionContext;
+        this.modify = modify;
+        this.modificationId = modificationId;
 
         Random random = new Random();
         Color randomColor = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
 
         Vec3i area = new Vec3i(1, 1, 1);
-        renderer = new BlockOverlayRenderer(new BlockPos(0, 0, 0), randomColor, area, false, selectionContext instanceof RealtimeByteOutputAbility, selectionContext);
+        renderer = new BlockOverlayRenderer(new BlockPos(0, 0, 0), randomColor, area, false, selectionContext == RealtimeByteOutputAbility.CONTEXT, selectionContext, "");
 
         clientSelectionHelpers.add(this);
     }
@@ -62,7 +67,12 @@ public class ClientSelectionHelper {
 
         renderer.size = calculateAreaForPositions(renderer.blockPos, blockPos);
 
-        selectionContext.recall(renderer.blockPos, renderer.color, renderer.size);
+        int id = BlockOverlayRenderer.getNextId();
+        if (modify) {
+            id = modificationId;
+        }
+
+        SelectionContext.get(selectionContext).recall(renderer.blockPos, renderer.color, renderer.size, id, modify);
 
         return renderer.size;
     }

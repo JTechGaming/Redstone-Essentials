@@ -1,7 +1,7 @@
 package me.jtech.redstonecomptools.client.clientAbilities;
 
 import me.jtech.redstonecomptools.client.utility.Toaster;
-import me.jtech.redstonecomptools.networking.SetItemPayload;
+import me.jtech.redstonecomptools.networking.payloads.c2s.SetItemPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;

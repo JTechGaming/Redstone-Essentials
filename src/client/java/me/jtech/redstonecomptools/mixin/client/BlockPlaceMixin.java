@@ -1,7 +1,7 @@
 package me.jtech.redstonecomptools.mixin.client;
 
 import me.jtech.redstonecomptools.client.Abilities;
-import me.jtech.redstonecomptools.networking.SetBlockPayload;
+import me.jtech.redstonecomptools.networking.payloads.c2s.SetBlockPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

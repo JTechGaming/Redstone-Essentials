@@ -1,8 +1,7 @@
 package me.jtech.redstonecomptools.utility;
 
 import me.jtech.redstonecomptools.Redstonecomptools;
-import me.jtech.redstonecomptools.networking.ClientSetBlockPayload;
-import me.jtech.redstonecomptools.networking.SetBlockPayload;
+import me.jtech.redstonecomptools.networking.payloads.s2c.ClientSetBlockPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.RedstoneLampBlock;
@@ -60,10 +59,8 @@ public class SelectionHelper { // TODO comment this
             if (mode == Mode.WRITE) {
                 if (isBitSet) {
                     ServerPlayNetworking.send(player, new ClientSetBlockPayload(targetPos, "redstone_block"));
-                    //world.setBlockState(targetPos, Blocks.REDSTONE_BLOCK.getDefaultState(), 3);
                 } else {
                     ServerPlayNetworking.send(player, new ClientSetBlockPayload(targetPos, "air"));
-                    //world.setBlockState(targetPos, Blocks.AIR.getDefaultState(), 3);
                 }
             }
         }

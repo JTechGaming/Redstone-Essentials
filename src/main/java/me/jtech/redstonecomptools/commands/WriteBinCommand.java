@@ -11,7 +11,6 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
-// TODO [HIGH PRIORITY] fix the weird bug where it doesnt work with some values at some offsets for some fucking reason
 public class WriteBinCommand { // TODO comment this
     public static void registerCommand() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {

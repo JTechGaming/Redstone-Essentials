@@ -3,11 +3,18 @@ package me.jtech.redstonecomptools;
 import com.mojang.brigadier.ParseResults;
 import eu.midnightdust.lib.config.MidnightConfig;
 import me.jtech.redstonecomptools.commands.*;
-import me.jtech.redstonecomptools.config.Config;
-import me.jtech.redstonecomptools.networking.*;
+import me.jtech.redstonecomptools.IO.Config;
+import me.jtech.redstonecomptools.networking.payloads.c2s.*;
+import me.jtech.redstonecomptools.networking.payloads.s2c.ClientSetBlockPayload;
+import me.jtech.redstonecomptools.networking.payloads.s2c.ClientsRenderPingPayload;
+import me.jtech.redstonecomptools.networking.payloads.s2c.FinishBitmapPrintPayload;
+import me.jtech.redstonecomptools.networking.payloads.s2c.OpenScreenPayload;
+import me.jtech.redstonecomptools.utility.IClientSelectionContext;
+import me.jtech.redstonecomptools.utility.SelectionContext;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -17,29 +24,38 @@ import net.minecraft.registry.Registries;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.chunk.ChunkStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
 
-public class Redstonecomptools implements ModInitializer { // TODO comment this
+public class Redstonecomptools implements ModInitializer, IClientSelectionContext { // TODO comment this
 
     public static final Logger LOGGER = LoggerFactory.getLogger("redstonecomptools");
     public static final String MOD_ID = "redstonecomptools";
 
     public static boolean shouldApplyButtonStyle = false;
 
+    private static Redstonecomptools instance;
+
+    public int DEFAULT_CONTEXT = SelectionContext.register(this);
+
     @Override
     public void onInitialize() {
-        LOGGER.info("Starting RedstoneCompTools v1.0.5-SNAPSHOT");
-//        try {
-//            Files.createDirectories(FabricLoader.getInstance().getConfigDir().resolve("/redstonecomptools/bitmaps/"));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        instance = this;
+        LOGGER.info("Starting RedstoneCompTools v1.0.6-BETA");
+        try {
+            Files.createDirectories(FabricLoader.getInstance().getConfigDir().resolve("redstonecomptools/bitmaps/"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         LOGGER.info("Registering Commands...");
         CalculateCommand.registerCommand();
@@ -99,7 +115,11 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
                     }
                 }
                 if (state != null) {
-                    placer.getWorld().setBlockState(payload.blockPos(), state);
+                    if (!placer.getWorld().isChunkLoaded(payload.blockPos().getX() >> 4, payload.blockPos().getY() >> 4)) { // Check if loaded
+                        placer.getWorld().getChunk(payload.blockPos().getX() >> 4, payload.blockPos().getY() >> 4, ChunkStatus.FULL, true); // If not loaded, load the chunk
+                    }
+
+                    placer.getWorld().setBlockState(payload.blockPos(), state); // Set the block
                 }
 
                 placer.getWorld().getGameRules().get(GameRules.DO_TILE_DROPS).set(dropItems, placer.getWorld().getServer());
@@ -133,5 +153,18 @@ public class Redstonecomptools implements ModInitializer { // TODO comment this
 
 
         MidnightConfig.init(MOD_ID, Config.class);
+    }
+
+    @Override
+    public void recall(BlockPos blockPos, Color color, Vec3i size, int id, boolean wasModified) {
+
+    }
+
+    public static Redstonecomptools getInstance() {
+        return instance;
+    }
+
+    public static void setInstance(Redstonecomptools instance) {
+        Redstonecomptools.instance = instance;
     }
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "redstonecomptools",
-  "version": "1.0.6-SNAPSHOT",
+  "version": "1.0.6-BETA",
   "name": "RedstoneCompTools",
   "description": "A mod that aims to improve the redstone experience when working with complex computational builds",
   "authors": ["JTechGaming"],

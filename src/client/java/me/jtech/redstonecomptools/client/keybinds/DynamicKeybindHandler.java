@@ -2,11 +2,12 @@ package me.jtech.redstonecomptools.client.keybinds;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import me.jtech.redstonecomptools.client.rendering.screen.DynamicKeybind.KeybindEditorScreen;
-import me.jtech.redstonecomptools.client.rendering.screen.DynamicKeybind.KeybindEntry;
-import me.jtech.redstonecomptools.client.rendering.screen.DynamicKeybind.KeybindRegistry;
+import me.jtech.redstonecomptools.client.RedstonecomptoolsClient;
+import me.jtech.redstonecomptools.client.rendering.screen.keybinds.KeybindEditorScreen;
+import me.jtech.redstonecomptools.client.rendering.screen.keybinds.KeybindEntry;
+import me.jtech.redstonecomptools.client.rendering.screen.keybinds.KeybindRegistry;
 import me.jtech.redstonecomptools.utility.Pair;
-import me.jtech.redstonecomptools.networking.RunCommandPayload;
+import me.jtech.redstonecomptools.networking.payloads.c2s.RunCommandPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.client.MinecraftClient;
@@ -107,7 +108,7 @@ public class DynamicKeybindHandler { //TODO comment this
         try (Writer writer = Files.newBufferedWriter(CONFIG_FILE)) {
             GSON.toJson(keyBinds, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            RedstonecomptoolsClient.LOGGER.error(String.valueOf(e));
         }
     }
 
@@ -119,7 +120,7 @@ public class DynamicKeybindHandler { //TODO comment this
                 keyBinds = GSON.fromJson(reader, type);
                 setupScreenRegister();
             } catch (IOException e) {
-                e.printStackTrace();
+                RedstonecomptoolsClient.LOGGER.error(String.valueOf(e));
             }
         }
     }

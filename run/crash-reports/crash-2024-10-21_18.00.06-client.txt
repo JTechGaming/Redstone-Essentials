@@ -4,8 +4,8 @@
 Time: 2024-10-21 18:00:06
 Description: Rendering screen
 
-java.lang.NullPointerException: Cannot invoke "String.isEmpty()" because "me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinter.BitmapPrinterScreen.currentName" is null
-	at me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinter.BitmapPrinterScreen.render(BitmapPrinterScreen.java:126)
+java.lang.NullPointerException: Cannot invoke "String.isEmpty()" because "me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinterScreen.currentName" is null
+	at me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinterScreen.render(BitmapPrinterScreen.java:126)
 	at net.minecraft.client.gui.screen.Screen.renderWithTooltip(Screen.java:117)
 	at net.minecraft.client.render.GameRenderer.mixinextras$bridge$renderWithTooltip$183(GameRenderer.java)
 	at net.minecraft.client.render.GameRenderer.wrapOperation$zec000$fabric-screen-api-v1$onRenderScreen(GameRenderer.java:1586)
@@ -25,14 +25,14 @@ A detailed walkthrough of the error, its code path and all known details is as f
 -- Head --
 Thread: Render thread
 Stacktrace:
-	at me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinter.BitmapPrinterScreen.render(BitmapPrinterScreen.java:126)
+	at me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinterScreen.render(BitmapPrinterScreen.java:126)
 	at net.minecraft.client.gui.screen.Screen.renderWithTooltip(Screen.java:117)
 	at net.minecraft.client.render.GameRenderer.mixinextras$bridge$renderWithTooltip$183(GameRenderer.java)
 	at net.minecraft.client.render.GameRenderer.wrapOperation$zec000$fabric-screen-api-v1$onRenderScreen(GameRenderer.java:1586)
 
 -- Screen render details --
 Details:
-	Screen name: me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinter.BitmapPrinterScreen
+	Screen name: me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinterScreen
 	Mouse location: Scaled: (213, 120). Absolute: (427.000000, 240.000000)
 	Screen size: Scaled: (427, 240). Absolute: (854, 480). Scale factor of 2.000000
 Stacktrace:

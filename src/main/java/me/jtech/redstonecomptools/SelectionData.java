@@ -14,7 +14,8 @@ public class SelectionData {
     public boolean isRTBO;
     public int offset = 1;
     public boolean isInverted = false;
-    public IClientSelectionContext context;
+    public int context;
+    public int id;
 
     public SelectionData(BlockPos blockPos, Color color, Vec3i size, String label, boolean isRTBO) {
         this.blockPos = blockPos;
@@ -80,11 +81,19 @@ public class SelectionData {
         isInverted = inverted;
     }
 
-    public IClientSelectionContext getContext() {
+    public int getContext() {
         return context;
     }
 
-    public void setContext(IClientSelectionContext context) {
+    public void setContext(int context) {
         this.context = context;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

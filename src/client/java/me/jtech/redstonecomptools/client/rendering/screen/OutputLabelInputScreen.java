@@ -1,8 +1,10 @@
 package me.jtech.redstonecomptools.client.rendering.screen;
 
+import me.jtech.redstonecomptools.Redstonecomptools;
 import me.jtech.redstonecomptools.SelectionData;
 import me.jtech.redstonecomptools.client.RedstonecomptoolsClient;
 import me.jtech.redstonecomptools.client.clientAbilities.SelectionAbility;
+import me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer;
 import me.jtech.redstonecomptools.client.rendering.gui.RealtimeByteOutputRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -36,8 +38,12 @@ public class OutputLabelInputScreen extends Screen {
         this.confirmButton = ButtonWidget.builder(Text.literal("Confirm"), button -> {
             SelectionData output = new SelectionData(blockPos, color, size, nameField.getText(), true);
             RealtimeByteOutputRenderer.realtimeByteOutputList.add(output);
+            BlockOverlayRenderer renderer = BlockOverlayRenderer.getSelection(output.id);
+            if (renderer != null) {
+                renderer.setLabel(output.label);
+            }
             SelectionAbility.finalizeSelection(output);
-            SelectionAbility.selectionContext = RedstonecomptoolsClient.defaultSelectionContext;
+            SelectionAbility.selectionContext = Redstonecomptools.getInstance().DEFAULT_CONTEXT;
             MinecraftClient.getInstance().setScreen(null);
         }).dimensions(this.width / 2 - 100, this.height/2+40, 200, 20).build();
 

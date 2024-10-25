@@ -8,7 +8,7 @@ java.lang.NumberFormatException: For input string: ""
 	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
 	at java.base/java.lang.Integer.parseInt(Integer.java:672)
 	at java.base/java.lang.Integer.parseInt(Integer.java:778)
-	at me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinter.BitmapPrinterScreen.render(BitmapPrinterScreen.java:85)
+	at me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinterScreen.render(BitmapPrinterScreen.java:85)
 	at net.minecraft.client.gui.screen.Screen.renderWithTooltip(Screen.java:117)
 	at net.minecraft.client.render.GameRenderer.mixinextras$bridge$renderWithTooltip$183(GameRenderer.java)
 	at net.minecraft.client.render.GameRenderer.wrapOperation$zbn000$fabric-screen-api-v1$onRenderScreen(GameRenderer.java:1586)
@@ -31,14 +31,14 @@ Stacktrace:
 	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
 	at java.base/java.lang.Integer.parseInt(Integer.java:672)
 	at java.base/java.lang.Integer.parseInt(Integer.java:778)
-	at me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinter.BitmapPrinterScreen.render(BitmapPrinterScreen.java:85)
+	at me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinterScreen.render(BitmapPrinterScreen.java:85)
 	at net.minecraft.client.gui.screen.Screen.renderWithTooltip(Screen.java:117)
 	at net.minecraft.client.render.GameRenderer.mixinextras$bridge$renderWithTooltip$183(GameRenderer.java)
 	at net.minecraft.client.render.GameRenderer.wrapOperation$zbn000$fabric-screen-api-v1$onRenderScreen(GameRenderer.java:1586)
 
 -- Screen render details --
 Details:
-	Screen name: me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinter.BitmapPrinterScreen
+	Screen name: me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinterScreen
 	Mouse location: Scaled: (320, 180). Absolute: (960.000000, 540.000000)
 	Screen size: Scaled: (640, 360). Absolute: (1920, 1080). Scale factor of 3.000000
 Stacktrace:

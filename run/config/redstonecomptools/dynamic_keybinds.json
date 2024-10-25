@@ -1,1 +1,1 @@
-{}
+{"Test Keybind":{"first":[72],"second":{"command":"say test","hasToggleState":false,"hasToggleInterval":false,"interval":0,"copyText":false,"hasCycleState":false,"hasHoldKey":false,"hasSendToast":false}}}

@@ -3,9 +3,9 @@ package me.jtech.redstonecomptools.commands;
 import com.mojang.brigadier.context.CommandContext;
 import me.jtech.redstonecomptools.Redstonecomptools;
 import me.jtech.redstonecomptools.SelectionData;
-import me.jtech.redstonecomptools.config.Config;
-import me.jtech.redstonecomptools.networking.FinishBitmapPrintPayload;
-import me.jtech.redstonecomptools.networking.OpenScreenPayload;
+import me.jtech.redstonecomptools.IO.Config;
+import me.jtech.redstonecomptools.networking.payloads.s2c.FinishBitmapPrintPayload;
+import me.jtech.redstonecomptools.networking.payloads.s2c.OpenScreenPayload;
 import me.jtech.redstonecomptools.utility.Pair;
 import me.jtech.redstonecomptools.utility.SelectionHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -26,9 +26,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -75,10 +77,10 @@ public class BitmapPrinterCommand { // TODO comment all this
             AtomicInteger currentOffset = new AtomicInteger();
             ServerTickEvents.END_SERVER_TICK.register((server) -> {
                 if (isProcessing.get()) {
+                    ServerPlayerEntity player = server.getPlayerManager().getPlayer(clientPlayer.getUuid());
                     currentTick.getAndIncrement();
                     if (currentTick.get() == interval) {
                         currentTick.set(0);
-                        ServerPlayerEntity  player = server.getPlayerManager().getPlayer(clientPlayer.getUuid());
                         if (writeLocations.size()-1 <= currentOffset.get()+channels) {
                             isProcessing.set(false);
 

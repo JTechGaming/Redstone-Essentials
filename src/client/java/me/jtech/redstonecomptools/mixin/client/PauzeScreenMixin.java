@@ -1,7 +1,7 @@
 package me.jtech.redstonecomptools.mixin.client;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import me.jtech.redstonecomptools.client.rendering.screen.DynamicKeybind.KeybindScreen;
+import me.jtech.redstonecomptools.client.rendering.screen.keybinds.KeybindScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;

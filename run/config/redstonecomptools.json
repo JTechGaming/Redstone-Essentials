@@ -1,4 +1,5 @@
 {
+  "use_toasts": true,
   "pings_enabled": true,
   "ping_color": "#ff0000",
   "multiplayer_ping_color": "#f59e42",
@@ -11,7 +12,7 @@
   "use_output_labels": true,
   "fill_to_min_size": true,
   "min_byte_size": 8,
-  "output_base_select": "DEC",
+  "output_base_select": "BIN",
   "send_rtbo": true,
   "receive_rtbo": true
 }

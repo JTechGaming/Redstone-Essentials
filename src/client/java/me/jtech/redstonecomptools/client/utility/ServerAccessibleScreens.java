@@ -1,6 +1,6 @@
 package me.jtech.redstonecomptools.client.utility;
 
-import me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinter.BitmapPrinterScreen;
+import me.jtech.redstonecomptools.client.rendering.screen.BitmapPrinterScreen;
 import net.minecraft.client.gui.screen.Screen;
 
 import java.util.HashMap;

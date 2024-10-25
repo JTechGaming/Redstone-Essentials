@@ -1,7 +1,7 @@
 package me.jtech.redstonecomptools.client.rendering.gui;
 
 import me.jtech.redstonecomptools.SelectionData;
-import me.jtech.redstonecomptools.config.Config;
+import me.jtech.redstonecomptools.IO.Config;
 import me.jtech.redstonecomptools.utility.SelectionHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;

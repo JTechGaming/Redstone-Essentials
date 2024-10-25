@@ -1,6 +1,6 @@
 package me.jtech.redstonecomptools.client.utility;
 
-import me.jtech.redstonecomptools.config.Config;
+import me.jtech.redstonecomptools.IO.Config;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.Text;

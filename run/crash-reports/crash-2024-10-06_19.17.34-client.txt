@@ -4,7 +4,7 @@
 Time: 2024-10-06 19:17:34
 Description: Unexpected error
 
-java.lang.NullPointerException: CustomPayload#getId() cannot return null for payload class: class me.jtech.redstonecomptools.networking.GiveItemPayload
+java.lang.NullPointerException: CustomPayload#getId() cannot return null for payload class: class me.jtech.redstonecomptools.networking.payloads.c2s.GiveItemPayload
 	at java.base/java.util.Objects.requireNonNull(Objects.java:259)
 	at net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(ClientPlayNetworking.java:243)
 	at me.jtech.redstonecomptools.client.RedstonecomptoolsClient.lambda$onInitializeClient$0(RedstonecomptoolsClient.java:152)

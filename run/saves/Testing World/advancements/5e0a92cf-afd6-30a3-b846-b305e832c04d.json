@@ -125,12 +125,6 @@
     },
     "done": true
   },
-  "minecraft:adventure/adventuring_time": {
-    "criteria": {
-      "minecraft:plains": "2024-10-05 15:42:28 +0200"
-    },
-    "done": false
-  },
   "minecraft:recipes/redstone/note_block": {
     "criteria": {
       "has_redstone": "2024-10-05 15:42:27 +0200"
@@ -170,6 +164,18 @@
   "minecraft:recipes/redstone/piston": {
     "criteria": {
       "has_redstone": "2024-10-05 15:42:27 +0200"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:plains": "2024-10-05 15:42:28 +0200"
+    },
+    "done": false
+  },
+  "minecraft:recipes/redstone/redstone": {
+    "criteria": {
+      "has_redstone_block": "2024-10-22 15:21:54 +0200"
     },
     "done": true
   },
