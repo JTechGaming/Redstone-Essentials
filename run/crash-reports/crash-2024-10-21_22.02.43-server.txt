@@ -5,7 +5,7 @@ Time: 2024-10-21 22:02:43
 Description: Exception in server tick loop
 
 java.lang.ClassCastException: class net.minecraft.client.network.ClientPlayerEntity cannot be cast to class net.minecraft.server.network.ServerPlayerEntity (net.minecraft.client.network.ClientPlayerEntity and net.minecraft.server.network.ServerPlayerEntity are in unnamed module of loader net.fabricmc.loader.impl.launch.knot.KnotClassLoader @6631f5ca)
-	at me.jtech.redstonecomptools.commands.BitmapPrinterCommand.lambda$finaliseExecution$2(BitmapPrinterCommand.java:91)
+	at me.jtech.redstone_essentials.commands.BitmapPrinterCommand.lambda$finaliseExecution$2(BitmapPrinterCommand.java:91)
 	at net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.lambda$static$2(ServerTickEvents.java:43)
 	at net.minecraft.server.MinecraftServer.handler$zhe000$fabric-lifecycle-events-v1$onEndTick(MinecraftServer.java:3890)
 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:977)

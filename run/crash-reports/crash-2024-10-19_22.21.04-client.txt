@@ -4,11 +4,11 @@
 Time: 2024-10-19 22:21:04
 Description: Unexpected error
 
-java.lang.NullPointerException: Cannot invoke "me.jtech.redstonecomptools.utility.IClientSelectionContext.recall(net.minecraft.util.math.BlockPos, java.awt.Color, net.minecraft.util.math.Vec3i)" because "this.selectionContext" is null
-	at me.jtech.redstonecomptools.client.utility.ClientSelectionHelper.endSelection(ClientSelectionHelper.java:64)
-	at me.jtech.redstonecomptools.client.clientAbilities.SelectionAbility.toggled(SelectionAbility.java:39)
-	at me.jtech.redstonecomptools.client.clientAbilities.BaseAbility.toggle(BaseAbility.java:63)
-	at me.jtech.redstonecomptools.client.clientAbilities.BaseAbility.lambda$init$0(BaseAbility.java:37)
+java.lang.NullPointerException: Cannot invoke "me.jtech.redstone_essentials.utility.IClientSelectionContext.recall(net.minecraft.util.math.BlockPos, java.awt.Color, net.minecraft.util.math.Vec3i)" because "this.selectionContext" is null
+	at me.jtech.redstone_essentials.client.utility.ClientSelectionHelper.endSelection(ClientSelectionHelper.java:64)
+	at me.jtech.redstone_essentials.client.clientAbilities.SelectionAbility.toggled(SelectionAbility.java:39)
+	at me.jtech.redstone_essentials.client.clientAbilities.BaseAbility.toggle(BaseAbility.java:63)
+	at me.jtech.redstone_essentials.client.clientAbilities.BaseAbility.lambda$init$0(BaseAbility.java:37)
 	at net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.lambda$static$2(ClientTickEvents.java:43)
 	at net.minecraft.client.MinecraftClient.handler$zmf000$fabric-lifecycle-events-v1$onEndTick(MinecraftClient.java:4183)
 	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:2012)
@@ -27,10 +27,10 @@ A detailed walkthrough of the error, its code path and all known details is as f
 -- Head --
 Thread: Render thread
 Stacktrace:
-	at me.jtech.redstonecomptools.client.utility.ClientSelectionHelper.endSelection(ClientSelectionHelper.java:64)
-	at me.jtech.redstonecomptools.client.clientAbilities.SelectionAbility.toggled(SelectionAbility.java:39)
-	at me.jtech.redstonecomptools.client.clientAbilities.BaseAbility.toggle(BaseAbility.java:63)
-	at me.jtech.redstonecomptools.client.clientAbilities.BaseAbility.lambda$init$0(BaseAbility.java:37)
+	at me.jtech.redstone_essentials.client.utility.ClientSelectionHelper.endSelection(ClientSelectionHelper.java:64)
+	at me.jtech.redstone_essentials.client.clientAbilities.SelectionAbility.toggled(SelectionAbility.java:39)
+	at me.jtech.redstone_essentials.client.clientAbilities.BaseAbility.toggle(BaseAbility.java:63)
+	at me.jtech.redstone_essentials.client.clientAbilities.BaseAbility.lambda$init$0(BaseAbility.java:37)
 	at net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.lambda$static$2(ClientTickEvents.java:43)
 	at net.minecraft.client.MinecraftClient.handler$zmf000$fabric-lifecycle-events-v1$onEndTick(MinecraftClient.java:4183)
 

@@ -5,10 +5,10 @@ Time: 2024-10-09 20:47:30
 Description: Rendering screen
 
 java.lang.NullPointerException: Cannot assign field "visible" because "this.button" is null
-	at me.jtech.redstonecomptools.client.screen.KeybindWidget.renderWidget(KeybindWidget.java:56)
+	at me.jtech.redstone_essentials.client.screen.KeybindWidget.renderWidget(KeybindWidget.java:56)
 	at net.minecraft.client.gui.widget.ClickableWidget.render(ClickableWidget.java:66)
 	at net.minecraft.client.gui.screen.Screen.render(Screen.java:128)
-	at me.jtech.redstonecomptools.client.screen.KeybindScreen.render(KeybindScreen.java:49)
+	at me.jtech.redstone_essentials.client.screen.KeybindScreen.render(KeybindScreen.java:49)
 	at net.minecraft.client.gui.screen.Screen.renderWithTooltip(Screen.java:117)
 	at net.minecraft.client.render.GameRenderer.mixinextras$bridge$renderWithTooltip$184(GameRenderer.java)
 	at net.minecraft.client.render.GameRenderer.wrapOperation$bbh000$fabric-screen-api-v1$onRenderScreen(GameRenderer.java:2586)
@@ -28,17 +28,17 @@ A detailed walkthrough of the error, its code path and all known details is as f
 -- Head --
 Thread: Render thread
 Stacktrace:
-	at me.jtech.redstonecomptools.client.screen.KeybindWidget.renderWidget(KeybindWidget.java:56)
+	at me.jtech.redstone_essentials.client.screen.KeybindWidget.renderWidget(KeybindWidget.java:56)
 	at net.minecraft.client.gui.widget.ClickableWidget.render(ClickableWidget.java:66)
 	at net.minecraft.client.gui.screen.Screen.render(Screen.java:128)
-	at me.jtech.redstonecomptools.client.screen.KeybindScreen.render(KeybindScreen.java:49)
+	at me.jtech.redstone_essentials.client.screen.KeybindScreen.render(KeybindScreen.java:49)
 	at net.minecraft.client.gui.screen.Screen.renderWithTooltip(Screen.java:117)
 	at net.minecraft.client.render.GameRenderer.mixinextras$bridge$renderWithTooltip$184(GameRenderer.java)
 	at net.minecraft.client.render.GameRenderer.wrapOperation$bbh000$fabric-screen-api-v1$onRenderScreen(GameRenderer.java:2586)
 
 -- Screen render details --
 Details:
-	Screen name: me.jtech.redstonecomptools.client.screen.KeybindScreen
+	Screen name: me.jtech.redstone_essentials.client.screen.KeybindScreen
 	Mouse location: Scaled: (215, 213). Absolute: (431.000000, 426.000000)
 	Screen size: Scaled: (427, 240). Absolute: (854, 480). Scale factor of 2.000000
 Stacktrace:

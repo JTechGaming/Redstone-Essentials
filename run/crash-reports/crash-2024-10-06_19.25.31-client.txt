@@ -4,7 +4,7 @@
 Time: 2024-10-06 19:25:31
 Description: Unexpected error
 
-java.lang.IncompatibleClassChangeError: Expecting non-static method 'void me.jtech.redstonecomptools.client.RedstonecomptoolsClient.lambda$onInitializeClient$0(net.minecraft.client.MinecraftClient)'
+java.lang.IncompatibleClassChangeError: Expecting non-static method 'void me.jtech.redstone_essentials.client.Redstone_Essentials_Client.lambda$onInitializeClient$0(net.minecraft.client.MinecraftClient)'
 	at net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.lambda$static$2(ClientTickEvents.java:43)
 	at net.minecraft.client.MinecraftClient.handler$zeb000$fabric-lifecycle-events-v1$onEndTick(MinecraftClient.java:5183)
 	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:2012)

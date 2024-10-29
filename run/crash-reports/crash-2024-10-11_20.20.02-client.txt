@@ -4,7 +4,7 @@
 Time: 2024-10-11 20:20:02
 Description: Initializing game
 
-java.lang.RuntimeException: Could not execute entrypoint stage 'client' due to errors, provided by 'redstonecomptools' at 'me.jtech.redstonecomptools.client.RedstonecomptoolsClient'!
+java.lang.RuntimeException: Could not execute entrypoint stage 'client' due to errors, provided by 'redstonecomptools' at 'me.jtech.redstone_essentials.client.Redstone_Essentials_Client'!
 	at net.fabricmc.loader.impl.FabricLoaderImpl.lambda$invokeEntrypoints$2(FabricLoaderImpl.java:403)
 	at net.fabricmc.loader.impl.util.ExceptionUtil.gatherExceptions(ExceptionUtil.java:33)
 	at net.fabricmc.loader.impl.FabricLoaderImpl.invokeEntrypoints(FabricLoaderImpl.java:401)
@@ -18,9 +18,9 @@ java.lang.RuntimeException: Could not execute entrypoint stage 'client' due to e
 Caused by: java.lang.IllegalArgumentException: Attempted to register two key bindings with equal ID: key.redstonecomptools.null!
 	at net.fabricmc.fabric.impl.client.keybinding.KeyBindingRegistryImpl.registerKeyBinding(KeyBindingRegistryImpl.java:63)
 	at net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper.registerKeyBinding(KeyBindingHelper.java:51)
-	at me.jtech.redstonecomptools.client.clientAbilities.BaseAbility.init(BaseAbility.java:31)
-	at me.jtech.redstonecomptools.client.AbilityManager.initAbilities(AbilityManager.java:31)
-	at me.jtech.redstonecomptools.client.RedstonecomptoolsClient.onInitializeClient(RedstonecomptoolsClient.java:36)
+	at me.jtech.redstone_essentials.client.clientAbilities.BaseAbility.init(BaseAbility.java:31)
+	at me.jtech.redstone_essentials.client.AbilityManager.initAbilities(AbilityManager.java:31)
+	at me.jtech.redstone_essentials.client.Redstone_Essentials_Client.onInitializeClient(RedstonecomptoolsClient.java:36)
 	at net.fabricmc.loader.impl.FabricLoaderImpl.invokeEntrypoints(FabricLoaderImpl.java:399)
 	... 7 more
 

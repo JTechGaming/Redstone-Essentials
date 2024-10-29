@@ -5,10 +5,10 @@ Time: 2024-10-19 21:20:49
 Description: Unexpected error
 
 java.lang.NullPointerException: Cannot invoke "java.awt.Color.getRed()" because "color" is null
-	at me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer.renderOutline(BlockOverlayRenderer.java:90)
-	at me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer.render(BlockOverlayRenderer.java:86)
-	at me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer.renderAll(BlockOverlayRenderer.java:74)
-	at me.jtech.redstonecomptools.client.RedstonecomptoolsClient.lambda$onInitializeClient$1(RedstonecomptoolsClient.java:85)
+	at me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer.renderOutline(BlockOverlayRenderer.java:90)
+	at me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer.render(BlockOverlayRenderer.java:86)
+	at me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer.renderAll(BlockOverlayRenderer.java:74)
+	at me.jtech.redstone_essentials.client.Redstone_Essentials_Client.lambda$onInitializeClient$1(RedstonecomptoolsClient.java:85)
 	at net.minecraft.client.render.WorldRenderer.handler$bbg000$fabric-rendering-v1$onChunkDebugRender(WorldRenderer.java:4300)
 	at net.minecraft.client.render.WorldRenderer.render(WorldRenderer.java:1288)
 	at net.minecraft.client.render.GameRenderer.renderWorld(GameRenderer.java:1087)
@@ -28,10 +28,10 @@ A detailed walkthrough of the error, its code path and all known details is as f
 -- Head --
 Thread: Render thread
 Stacktrace:
-	at me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer.renderOutline(BlockOverlayRenderer.java:90)
-	at me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer.render(BlockOverlayRenderer.java:86)
-	at me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer.renderAll(BlockOverlayRenderer.java:74)
-	at me.jtech.redstonecomptools.client.RedstonecomptoolsClient.lambda$onInitializeClient$1(RedstonecomptoolsClient.java:85)
+	at me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer.renderOutline(BlockOverlayRenderer.java:90)
+	at me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer.render(BlockOverlayRenderer.java:86)
+	at me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer.renderAll(BlockOverlayRenderer.java:74)
+	at me.jtech.redstone_essentials.client.Redstone_Essentials_Client.lambda$onInitializeClient$1(RedstonecomptoolsClient.java:85)
 	at net.minecraft.client.render.WorldRenderer.handler$bbg000$fabric-rendering-v1$onChunkDebugRender(WorldRenderer.java:4300)
 	at net.minecraft.client.render.WorldRenderer.render(WorldRenderer.java:1288)
 	at net.minecraft.client.render.GameRenderer.renderWorld(GameRenderer.java:1087)

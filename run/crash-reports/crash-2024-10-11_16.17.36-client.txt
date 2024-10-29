@@ -4,8 +4,8 @@
 Time: 2024-10-11 16:17:36
 Description: mouseClicked event handler
 
-java.lang.NullPointerException: Cannot invoke "me.jtech.redstonecomptools.client.screen.KeybindEntry.getName()" because "this.keybind" is null
-	at me.jtech.redstonecomptools.client.screen.KeybindEditorScreen.lambda$init$1(KeybindEditorScreen.java:60)
+java.lang.NullPointerException: Cannot invoke "me.jtech.redstone_essentials.client.screen.KeybindEntry.getName()" because "this.keybind" is null
+	at me.jtech.redstone_essentials.client.screen.KeybindEditorScreen.lambda$init$1(KeybindEditorScreen.java:60)
 	at net.minecraft.client.gui.widget.ButtonWidget.onPress(ButtonWidget.java:96)
 	at net.minecraft.client.gui.widget.PressableWidget.onClick(PressableWidget.java:48)
 	at net.minecraft.client.gui.widget.ClickableWidget.mouseClicked(ClickableWidget.java:141)
@@ -39,7 +39,7 @@ A detailed walkthrough of the error, its code path and all known details is as f
 -- Head --
 Thread: Render thread
 Stacktrace:
-	at me.jtech.redstonecomptools.client.screen.KeybindEditorScreen.lambda$init$1(KeybindEditorScreen.java:60)
+	at me.jtech.redstone_essentials.client.screen.KeybindEditorScreen.lambda$init$1(KeybindEditorScreen.java:60)
 	at net.minecraft.client.gui.widget.ButtonWidget.onPress(ButtonWidget.java:96)
 	at net.minecraft.client.gui.widget.PressableWidget.onClick(PressableWidget.java:48)
 	at net.minecraft.client.gui.widget.ClickableWidget.mouseClicked(ClickableWidget.java:141)
@@ -60,7 +60,7 @@ Stacktrace:
 
 -- Affected screen --
 Details:
-	Screen name: me.jtech.redstonecomptools.client.screen.KeybindEditorScreen
+	Screen name: me.jtech.redstone_essentials.client.screen.KeybindEditorScreen
 Stacktrace:
 	at net.minecraft.client.gui.screen.Screen.wrapScreenError(Screen.java:431)
 	at net.minecraft.client.Mouse.onMouseButton(Mouse.java:107)

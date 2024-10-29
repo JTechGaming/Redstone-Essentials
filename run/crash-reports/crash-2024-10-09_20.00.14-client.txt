@@ -5,7 +5,7 @@ Time: 2024-10-09 20:00:14
 Description: mouseClicked event handler
 
 java.lang.NullPointerException: Cannot invoke "java.util.List.iterator()" because "this.keybindEntries" is null
-	at me.jtech.redstonecomptools.client.screen.KeybindScreen.init(KeybindScreen.java:31)
+	at me.jtech.redstone_essentials.client.screen.KeybindScreen.init(KeybindScreen.java:31)
 	at net.minecraft.client.gui.screen.Screen.init(Screen.java:309)
 	at net.minecraft.client.MinecraftClient.setScreen(MinecraftClient.java:1143)
 	at net.minecraft.client.gui.screen.GameMenuScreen.mdfdc441$redstonecomptools$lambda$addCustomButton$0$0(GameMenuScreen.java:532)
@@ -42,7 +42,7 @@ A detailed walkthrough of the error, its code path and all known details is as f
 -- Head --
 Thread: Render thread
 Stacktrace:
-	at me.jtech.redstonecomptools.client.screen.KeybindScreen.init(KeybindScreen.java:31)
+	at me.jtech.redstone_essentials.client.screen.KeybindScreen.init(KeybindScreen.java:31)
 	at net.minecraft.client.gui.screen.Screen.init(Screen.java:309)
 	at net.minecraft.client.MinecraftClient.setScreen(MinecraftClient.java:1143)
 	at net.minecraft.client.gui.screen.GameMenuScreen.mdfdc441$redstonecomptools$lambda$addCustomButton$0$0(GameMenuScreen.java:532)

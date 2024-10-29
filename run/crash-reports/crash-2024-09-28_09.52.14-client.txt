@@ -4,7 +4,7 @@
 Time: 2024-09-28 09:52:14
 Description: Initializing game
 
-java.lang.RuntimeException: Could not execute entrypoint stage 'client' due to errors, provided by 'redstonecomptools' at 'me.jtech.redstonecomptools.client.RedstonecomptoolsClient'!
+java.lang.RuntimeException: Could not execute entrypoint stage 'client' due to errors, provided by 'redstonecomptools' at 'me.jtech.redstone_essentials.client.Redstone_Essentials_Client'!
 	at net.fabricmc.loader.impl.FabricLoaderImpl.lambda$invokeEntrypoints$2(FabricLoaderImpl.java:403)
 	at net.fabricmc.loader.impl.util.ExceptionUtil.gatherExceptions(ExceptionUtil.java:33)
 	at net.fabricmc.loader.impl.FabricLoaderImpl.invokeEntrypoints(FabricLoaderImpl.java:401)

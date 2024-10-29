@@ -21,7 +21,7 @@ java.lang.NullPointerException: mouseClicked event handler
 	at net.minecraft.client.gui.screen.Screen.narrateScreenIfNarrationEnabled(Screen.java:502)
 	at net.minecraft.client.gui.screen.Screen.init(Screen.java:315)
 	at net.minecraft.client.MinecraftClient.setScreen(MinecraftClient.java:1143)
-	at me.jtech.redstonecomptools.client.screen.KeybindScreen.lambda$init$0(KeybindScreen.java:42)
+	at me.jtech.redstone_essentials.client.screen.KeybindScreen.lambda$init$0(KeybindScreen.java:42)
 	at net.minecraft.client.gui.widget.ButtonWidget.onPress(ButtonWidget.java:96)
 	at net.minecraft.client.gui.widget.PressableWidget.onClick(PressableWidget.java:48)
 	at net.minecraft.client.gui.widget.ClickableWidget.mouseClicked(ClickableWidget.java:141)
@@ -71,7 +71,7 @@ Stacktrace:
 	at net.minecraft.client.gui.screen.Screen.narrateScreenIfNarrationEnabled(Screen.java:502)
 	at net.minecraft.client.gui.screen.Screen.init(Screen.java:315)
 	at net.minecraft.client.MinecraftClient.setScreen(MinecraftClient.java:1143)
-	at me.jtech.redstonecomptools.client.screen.KeybindScreen.lambda$init$0(KeybindScreen.java:42)
+	at me.jtech.redstone_essentials.client.screen.KeybindScreen.lambda$init$0(KeybindScreen.java:42)
 	at net.minecraft.client.gui.widget.ButtonWidget.onPress(ButtonWidget.java:96)
 	at net.minecraft.client.gui.widget.PressableWidget.onClick(PressableWidget.java:48)
 	at net.minecraft.client.gui.widget.ClickableWidget.mouseClicked(ClickableWidget.java:141)
@@ -92,7 +92,7 @@ Stacktrace:
 
 -- Affected screen --
 Details:
-	Screen name: me.jtech.redstonecomptools.client.screen.KeybindScreen
+	Screen name: me.jtech.redstone_essentials.client.screen.KeybindScreen
 Stacktrace:
 	at net.minecraft.client.gui.screen.Screen.wrapScreenError(Screen.java:431)
 	at net.minecraft.client.Mouse.onMouseButton(Mouse.java:107)

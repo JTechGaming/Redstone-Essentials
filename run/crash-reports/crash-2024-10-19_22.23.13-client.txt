@@ -5,9 +5,9 @@ Time: 2024-10-19 22:23:13
 Description: Unexpected error
 
 java.lang.IllegalArgumentException: Positions do not form a valid vertical or horizontal line.
-	at me.jtech.redstonecomptools.utility.SelectionHelper.<init>(SelectionHelper.java:39)
-	at me.jtech.redstonecomptools.client.gui.RealtimeByteOutputRenderer.getData(RealtimeByteOutputRenderer.java:37)
-	at me.jtech.redstonecomptools.client.gui.RealtimeByteOutputRenderer.lambda$setup$0(RealtimeByteOutputRenderer.java:26)
+	at me.jtech.redstone_essentials.utility.SelectionHelper.<init>(SelectionHelper.java:39)
+	at me.jtech.redstone_essentials.client.gui.RealtimeByteOutputRenderer.getData(RealtimeByteOutputRenderer.java:37)
+	at me.jtech.redstone_essentials.client.gui.RealtimeByteOutputRenderer.lambda$setup$0(RealtimeByteOutputRenderer.java:26)
 	at net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback.lambda$static$0(HudRenderCallback.java:28)
 	at net.minecraft.client.gui.hud.InGameHud.handler$zkj000$fabric-rendering-v1$render(InGameHud.java:1538)
 	at net.minecraft.client.gui.hud.InGameHud.render(InGameHud.java:220)
@@ -27,9 +27,9 @@ A detailed walkthrough of the error, its code path and all known details is as f
 -- Head --
 Thread: Render thread
 Stacktrace:
-	at me.jtech.redstonecomptools.utility.SelectionHelper.<init>(SelectionHelper.java:39)
-	at me.jtech.redstonecomptools.client.gui.RealtimeByteOutputRenderer.getData(RealtimeByteOutputRenderer.java:37)
-	at me.jtech.redstonecomptools.client.gui.RealtimeByteOutputRenderer.lambda$setup$0(RealtimeByteOutputRenderer.java:26)
+	at me.jtech.redstone_essentials.utility.SelectionHelper.<init>(SelectionHelper.java:39)
+	at me.jtech.redstone_essentials.client.gui.RealtimeByteOutputRenderer.getData(RealtimeByteOutputRenderer.java:37)
+	at me.jtech.redstone_essentials.client.gui.RealtimeByteOutputRenderer.lambda$setup$0(RealtimeByteOutputRenderer.java:26)
 	at net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback.lambda$static$0(HudRenderCallback.java:28)
 	at net.minecraft.client.gui.hud.InGameHud.handler$zkj000$fabric-rendering-v1$render(InGameHud.java:1538)
 	at net.minecraft.client.gui.hud.InGameHud.render(InGameHud.java:220)

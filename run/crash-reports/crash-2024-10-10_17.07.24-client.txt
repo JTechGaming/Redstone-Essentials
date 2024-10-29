@@ -8,7 +8,7 @@ java.util.ConcurrentModificationException
 	at java.base/java.util.ArrayList$Itr.checkForComodification(ArrayList.java:1095)
 	at java.base/java.util.ArrayList$Itr.next(ArrayList.java:1049)
 	at net.minecraft.client.gui.screen.Screen.render(Screen.java:127)
-	at me.jtech.redstonecomptools.client.screen.KeybindScreen.render(KeybindScreen.java:49)
+	at me.jtech.redstone_essentials.client.screen.KeybindScreen.render(KeybindScreen.java:49)
 	at net.minecraft.client.gui.screen.Screen.renderWithTooltip(Screen.java:117)
 	at net.minecraft.client.render.GameRenderer.mixinextras$bridge$renderWithTooltip$183(GameRenderer.java)
 	at net.minecraft.client.render.GameRenderer.wrapOperation$zfn000$fabric-screen-api-v1$onRenderScreen(GameRenderer.java:1586)
@@ -31,14 +31,14 @@ Stacktrace:
 	at java.base/java.util.ArrayList$Itr.checkForComodification(ArrayList.java:1095)
 	at java.base/java.util.ArrayList$Itr.next(ArrayList.java:1049)
 	at net.minecraft.client.gui.screen.Screen.render(Screen.java:127)
-	at me.jtech.redstonecomptools.client.screen.KeybindScreen.render(KeybindScreen.java:49)
+	at me.jtech.redstone_essentials.client.screen.KeybindScreen.render(KeybindScreen.java:49)
 	at net.minecraft.client.gui.screen.Screen.renderWithTooltip(Screen.java:117)
 	at net.minecraft.client.render.GameRenderer.mixinextras$bridge$renderWithTooltip$183(GameRenderer.java)
 	at net.minecraft.client.render.GameRenderer.wrapOperation$zfn000$fabric-screen-api-v1$onRenderScreen(GameRenderer.java:1586)
 
 -- Screen render details --
 Details:
-	Screen name: me.jtech.redstonecomptools.client.screen.KeybindScreen
+	Screen name: me.jtech.redstone_essentials.client.screen.KeybindScreen
 	Mouse location: Scaled: (243, 31). Absolute: (487.000000, 62.000000)
 	Screen size: Scaled: (427, 240). Absolute: (854, 480). Scale factor of 2.000000
 Stacktrace:

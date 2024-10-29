@@ -42,7 +42,7 @@ Stacktrace:
 
 -- Screen details --
 Details:
-	Screen name: me.jtech.redstonecomptools.client.screen.KeybindScreen
+	Screen name: me.jtech.redstone_essentials.client.screen.KeybindScreen
 Stacktrace:
 	at net.minecraft.client.render.GameRenderer.render(GameRenderer.java:928)
 	at net.minecraft.client.MinecraftClient.render(MinecraftClient.java:1285)

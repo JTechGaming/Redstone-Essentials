@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Axiom-4.0.0-for-MC1.21">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Axiom-4.0.0-for-MC1.21.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

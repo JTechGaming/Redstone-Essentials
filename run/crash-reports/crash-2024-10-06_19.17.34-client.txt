@@ -4,10 +4,10 @@
 Time: 2024-10-06 19:17:34
 Description: Unexpected error
 
-java.lang.NullPointerException: CustomPayload#getId() cannot return null for payload class: class me.jtech.redstonecomptools.networking.payloads.c2s.GiveItemPayload
+java.lang.NullPointerException: CustomPayload#getId() cannot return null for payload class: class me.jtech.redstone_essentials.networking.payloads.c2s.GiveItemPayload
 	at java.base/java.util.Objects.requireNonNull(Objects.java:259)
 	at net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(ClientPlayNetworking.java:243)
-	at me.jtech.redstonecomptools.client.RedstonecomptoolsClient.lambda$onInitializeClient$0(RedstonecomptoolsClient.java:152)
+	at me.jtech.redstone_essentials.client.Redstone_Essentials_Client.lambda$onInitializeClient$0(RedstonecomptoolsClient.java:152)
 	at net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.lambda$static$2(ClientTickEvents.java:43)
 	at net.minecraft.client.MinecraftClient.handler$zeo000$fabric-lifecycle-events-v1$onEndTick(MinecraftClient.java:4183)
 	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:2012)
@@ -28,7 +28,7 @@ Thread: Render thread
 Stacktrace:
 	at java.base/java.util.Objects.requireNonNull(Objects.java:259)
 	at net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(ClientPlayNetworking.java:243)
-	at me.jtech.redstonecomptools.client.RedstonecomptoolsClient.lambda$onInitializeClient$0(RedstonecomptoolsClient.java:152)
+	at me.jtech.redstone_essentials.client.Redstone_Essentials_Client.lambda$onInitializeClient$0(RedstonecomptoolsClient.java:152)
 	at net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.lambda$static$2(ClientTickEvents.java:43)
 	at net.minecraft.client.MinecraftClient.handler$zeo000$fabric-lifecycle-events-v1$onEndTick(MinecraftClient.java:4183)
 

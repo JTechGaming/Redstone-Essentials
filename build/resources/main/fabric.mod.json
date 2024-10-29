@@ -1,26 +1,26 @@
 {
   "schemaVersion": 1,
-  "id": "redstonecomptools",
-  "version": "1.0.6-BETA",
-  "name": "RedstoneCompTools",
+  "id": "redstone_essentials",
+  "version": "1.0.7-BETA",
+  "name": "Redstone Essentials",
   "description": "A mod that aims to improve the redstone experience when working with complex computational builds",
   "authors": ["JTechGaming"],
   "contact": {},
   "license": "GNU GPLv3",
-  "icon": "assets/redstonecomptools/icon.png",
+  "icon": "assets/redstone_essentials/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
-      "me.jtech.redstonecomptools.client.RedstonecomptoolsClient"
+      "me.jtech.redstone_essentials.client.Redstone_Essentials_Client"
     ],
     "main": [
-      "me.jtech.redstonecomptools.Redstonecomptools"
+      "me.jtech.redstone_essentials.Redstone_Essentials"
     ]
   },
   "mixins": [
-    "redstonecomptools.mixins.json",
+    "redstone_essentials.mixins.json",
     {
-      "config": "redstonecomptools.client.mixins.json",
+      "config": "redstone_essentials.client.mixins.json",
       "environment": "client"
     }
   ],

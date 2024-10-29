@@ -5,9 +5,9 @@ Time: 2024-10-19 10:52:23
 Description: Unexpected error
 
 java.lang.NullPointerException: Cannot invoke "net.minecraft.util.math.BlockPos.getX()" because "this.blockPos" is null
-	at me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer.render(BlockOverlayRenderer.java:58)
-	at me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer.renderAll(BlockOverlayRenderer.java:51)
-	at me.jtech.redstonecomptools.client.RedstonecomptoolsClient.lambda$onInitializeClient$1(RedstonecomptoolsClient.java:77)
+	at me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer.render(BlockOverlayRenderer.java:58)
+	at me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer.renderAll(BlockOverlayRenderer.java:51)
+	at me.jtech.redstone_essentials.client.Redstone_Essentials_Client.lambda$onInitializeClient$1(RedstonecomptoolsClient.java:77)
 	at net.minecraft.client.render.WorldRenderer.handler$zjg000$fabric-rendering-v1$beforeDebugRender(WorldRenderer.java:3784)
 	at net.minecraft.client.render.WorldRenderer.render(WorldRenderer.java:1194)
 	at net.minecraft.client.render.GameRenderer.renderWorld(GameRenderer.java:1087)
@@ -27,9 +27,9 @@ A detailed walkthrough of the error, its code path and all known details is as f
 -- Head --
 Thread: Render thread
 Stacktrace:
-	at me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer.render(BlockOverlayRenderer.java:58)
-	at me.jtech.redstonecomptools.client.rendering.BlockOverlayRenderer.renderAll(BlockOverlayRenderer.java:51)
-	at me.jtech.redstonecomptools.client.RedstonecomptoolsClient.lambda$onInitializeClient$1(RedstonecomptoolsClient.java:77)
+	at me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer.render(BlockOverlayRenderer.java:58)
+	at me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer.renderAll(BlockOverlayRenderer.java:51)
+	at me.jtech.redstone_essentials.client.Redstone_Essentials_Client.lambda$onInitializeClient$1(RedstonecomptoolsClient.java:77)
 	at net.minecraft.client.render.WorldRenderer.handler$zjg000$fabric-rendering-v1$beforeDebugRender(WorldRenderer.java:3784)
 	at net.minecraft.client.render.WorldRenderer.render(WorldRenderer.java:1194)
 	at net.minecraft.client.render.GameRenderer.renderWorld(GameRenderer.java:1087)

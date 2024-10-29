@@ -5,9 +5,9 @@ Time: 2024-10-13 10:09:01
 Description: Exception in server tick loop
 
 java.lang.IllegalArgumentException: Positions do not form a valid vertical or horizontal line.
-	at me.jtech.redstonecomptools.utility.SelectionHelper.<init>(SelectionHelper.java:37)
-	at me.jtech.redstonecomptools.commands.BitmapPrinterCommand.executePlacement(BitmapPrinterCommand.java:186)
-	at me.jtech.redstonecomptools.commands.BitmapPrinterCommand.lambda$executeCommand$2(BitmapPrinterCommand.java:161)
+	at me.jtech.redstone_essentials.utility.SelectionHelper.<init>(SelectionHelper.java:37)
+	at me.jtech.redstone_essentials.commands.BitmapPrinterCommand.executePlacement(BitmapPrinterCommand.java:186)
+	at me.jtech.redstone_essentials.commands.BitmapPrinterCommand.lambda$executeCommand$2(BitmapPrinterCommand.java:161)
 	at net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.lambda$static$2(ServerTickEvents.java:43)
 	at net.minecraft.server.MinecraftServer.handler$zjh000$fabric-lifecycle-events-v1$onEndTick(MinecraftServer.java:3390)
 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:977)

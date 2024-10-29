@@ -12,7 +12,7 @@ java.lang.IllegalStateException: Missing elements in vertex: Normal
 	at net.minecraft.client.gui.DrawContext.fill(DrawContext.java:220)
 	at net.minecraft.client.gui.DrawContext.fill(DrawContext.java:203)
 	at net.minecraft.client.gui.DrawContext.drawHorizontalLine(DrawContext.java:144)
-	at me.jtech.redstonecomptools.client.screen.KeybindScreen.render(KeybindScreen.java:58)
+	at me.jtech.redstone_essentials.client.screen.KeybindScreen.render(KeybindScreen.java:58)
 	at net.minecraft.client.gui.screen.Screen.renderWithTooltip(Screen.java:117)
 	at net.minecraft.client.render.GameRenderer.mixinextras$bridge$renderWithTooltip$184(GameRenderer.java)
 	at net.minecraft.client.render.GameRenderer.wrapOperation$zmm000$fabric-screen-api-v1$onRenderScreen(GameRenderer.java:2086)
@@ -39,14 +39,14 @@ Stacktrace:
 	at net.minecraft.client.gui.DrawContext.fill(DrawContext.java:220)
 	at net.minecraft.client.gui.DrawContext.fill(DrawContext.java:203)
 	at net.minecraft.client.gui.DrawContext.drawHorizontalLine(DrawContext.java:144)
-	at me.jtech.redstonecomptools.client.screen.KeybindScreen.render(KeybindScreen.java:58)
+	at me.jtech.redstone_essentials.client.screen.KeybindScreen.render(KeybindScreen.java:58)
 	at net.minecraft.client.gui.screen.Screen.renderWithTooltip(Screen.java:117)
 	at net.minecraft.client.render.GameRenderer.mixinextras$bridge$renderWithTooltip$184(GameRenderer.java)
 	at net.minecraft.client.render.GameRenderer.wrapOperation$zmm000$fabric-screen-api-v1$onRenderScreen(GameRenderer.java:2086)
 
 -- Screen render details --
 Details:
-	Screen name: me.jtech.redstonecomptools.client.screen.KeybindScreen
+	Screen name: me.jtech.redstone_essentials.client.screen.KeybindScreen
 	Mouse location: Scaled: (315, 195). Absolute: (947.000000, 587.000000)
 	Screen size: Scaled: (640, 360). Absolute: (1920, 1080). Scale factor of 3.000000
 Stacktrace:

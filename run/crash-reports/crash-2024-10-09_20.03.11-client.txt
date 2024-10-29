@@ -4,7 +4,7 @@
 Time: 2024-10-09 20:03:11
 Description: Unexpected error
 
-java.lang.IllegalAccessError: class me.jtech.redstonecomptools.client.RedstonecomptoolsClient$$Lambda/0x0000023b01dd1000 tried to access private method 'void me.jtech.redstonecomptools.client.RedstonecomptoolsClient.lambda$onInitializeClient$0(net.minecraft.client.MinecraftClient)' (me.jtech.redstonecomptools.client.RedstonecomptoolsClient$$Lambda/0x0000023b01dd1000 and me.jtech.redstonecomptools.client.RedstonecomptoolsClient are in unnamed module of loader net.fabricmc.loader.impl.launch.knot.KnotClassLoader @6a84a97d)
+java.lang.IllegalAccessError: class me.jtech.redstone_essentials.client.Redstone_Essentials_Client$$Lambda/0x0000023b01dd1000 tried to access private method 'void me.jtech.redstone_essentials.client.Redstone_Essentials_Client.lambda$onInitializeClient$0(net.minecraft.client.MinecraftClient)' (me.jtech.redstone_essentials.client.Redstone_Essentials_Client$$Lambda/0x0000023b01dd1000 and me.jtech.redstone_essentials.client.Redstone_Essentials_Client are in unnamed module of loader net.fabricmc.loader.impl.launch.knot.KnotClassLoader @6a84a97d)
 	at net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.lambda$static$2(ClientTickEvents.java:43)
 	at net.minecraft.client.MinecraftClient.handler$zpd000$fabric-lifecycle-events-v1$onEndTick(MinecraftClient.java:5683)
 	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:2012)

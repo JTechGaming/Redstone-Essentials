@@ -1,0 +1,50 @@
+{
+  "key.redstone_essentials.barrel": "Signal Barrel",
+  "key.redstone_essentials.shulker": "Signal Shulker",
+  "category.redstone_essentials.main": "Redstone Essentials",
+  "category.redstone_essentials.qol": "Redstone Essentials QOL",
+  "category.redstone_essentials.abilities": "Redstone Essentials Abilities",
+  "key.redstone_essentials:dust_place": "Auto Dust Place",
+  "key.redstone_essentials:ping_ability": "Ping",
+  "key.redstone_essentials:swap_block": "Swap Block",
+  "key.redstone_essentials:select": "Select",
+  "key.redstone_essentials:realtime_byte_output": "Realtime Byte Output",
+  "key.redstone_essentials.open_menu": "Open Dynamic Keybinds Menu",
+
+  "redstone_essentials.midnightconfig.category.settings": "Settings",
+  "redstone_essentials.midnightconfig.category.keybindings": "Keybindings",
+
+  "redstone_essentials.midnightconfig.generalComment":"General Settings",
+  "redstone_essentials.midnightconfig.use_toasts": "Use Toasts",
+
+  "redstone_essentials.midnightconfig.pingComment":"Ping Settings",
+  "redstone_essentials.midnightconfig.ping_color":"Ping Color",
+  "redstone_essentials.midnightconfig.pings_enabled":"Pings Enabled",
+  "redstone_essentials.midnightconfig.multiplayer_ping_color":"Other Player Ping Color",
+  "redstone_essentials.midnightconfig.send_pings":"Send your Pings To Other Players (Multiplayer Only)",
+  "redstone_essentials.midnightconfig.receive_pings":"Render Pings From Other Players (Multiplayer Only)",
+
+  "redstone_essentials.midnightconfig.selectionComment":"Selection Settings",
+  "redstone_essentials.midnightconfig.selections_enabled":"Selections Enabled",
+  "redstone_essentials.midnightconfig.send_selections":"Send your Selections To Other Players (Multiplayer Only)",
+  "redstone_essentials.midnightconfig.receive_selections":"Render Selections From Other Players (Multiplayer Only)",
+
+  "redstone_essentials.midnightconfig.rtboComment":"Realtime Byte Output Settings",
+  "redstone_essentials.midnightconfig.rtbo_enabled":"Byte Output Enabled",
+  "redstone_essentials.midnightconfig.use_output_labels":"Use Output Labels",
+  "redstone_essentials.midnightconfig.fill_to_min_size":"Should The Output Fill To The Min Output Byte Size",
+  "redstone_essentials.midnightconfig.min_byte_size":"Minimum Output Byte Size",
+  "redstone_essentials.midnightconfig.output_base_select":"The Output Base Of All Output Bytes",
+  "redstone_essentials.midnightconfig.enum.BaseMode.HEX":"Hexadecimal",
+  "redstone_essentials.midnightconfig.enum.BaseMode.BIN":"Binary",
+  "redstone_essentials.midnightconfig.enum.BaseMode.OCT":"Octal",
+  "redstone_essentials.midnightconfig.enum.BaseMode.DEC":"Decimal",
+  "redstone_essentials.midnightconfig.send_rtbo":"Send your (RTBO) Selections To Other Players (Multiplayer Only)",
+  "redstone_essentials.midnightconfig.receive_rtbo":"Render (RTBO) Selections From Other Players (Multiplayer Only)",
+
+  "redstone_essentials.midnightconfig.bitmapComment":"Bitmap Printer Settings",
+  "redstone_essentials.midnightconfig.bitmap_enabled":"Bitmap Printer Enabled",
+  "redstone_essentials.midnightconfig.bitmap_reset_on_finish":"Selections Enabled",
+  "redstone_essentials.midnightconfig.send_bitmap":"Send your Print Selections To Other Players (Multiplayer Only)",
+  "redstone_essentials.midnightconfig.receive_bitmap":"Render Print Selections From Other Players (Multiplayer Only)"
+}
