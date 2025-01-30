@@ -17,10 +17,6 @@ public class SelectionHelper { // TODO comment this
     private final boolean invertDirection;
     private final Axis selectionAxis;
 
-    public enum Mode {
-        READ, WRITE
-    }
-
     public enum Axis {
         X, Y, Z
     }
@@ -49,18 +45,18 @@ public class SelectionHelper { // TODO comment this
     }
 
     // Write data into the selection (as redstone blocks and air)
-    public void writeData(World world, int data, int offset, Mode mode, ServerPlayerEntity player) {
+    public void writeData(World world, int data, int offset, ServerPlayerEntity player) {
         // Loop through the range between pos1 and pos2 based on the axis
         int length = getLengthWithoutOffset(getLength(), offset);
         for (int i = 0; i < length; i++) {
             boolean isBitSet = ((data >> i) & 1) == 1; // Extract the i-th bit from the data
 
             BlockPos targetPos = getTargetPos((i + (offset * (i - 1))) + offset, length);
-            if (mode == Mode.WRITE) {
+            if (!Redstone_Essentials.outdatedClients.contains(player)) {
                 if (isBitSet) {
-                    ServerPlayNetworking.send(player, new ClientSetBlockPayload(targetPos, "redstone_block"));
+                    ServerPlayNetworking.send(player, new ClientSetBlockPayload(targetPos, "redstone_block", "none"));
                 } else {
-                    ServerPlayNetworking.send(player, new ClientSetBlockPayload(targetPos, "air"));
+                    ServerPlayNetworking.send(player, new ClientSetBlockPayload(targetPos, "air", "none"));
                 }
             }
         }

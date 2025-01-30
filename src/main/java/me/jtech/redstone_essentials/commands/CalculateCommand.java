@@ -231,7 +231,7 @@ public class CalculateCommand { // TODO comment this
     }
 
     private static boolean isOperator(char op) {
-        return op == '+' || op == '-' || op == '*' || op == '/';
+        return op == '+' || op == '-' || op == '*' || op == '/' || op == '^';
     }
 
     private static int precedence(char op) {
@@ -249,6 +249,7 @@ public class CalculateCommand { // TODO comment this
             case '-' -> a - b;
             case '*' -> a * b;
             case '/' -> a / b;
+            case '^' -> Math.pow(a, b);
             default -> 0;
         };
     }

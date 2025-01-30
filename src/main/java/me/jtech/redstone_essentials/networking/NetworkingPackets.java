@@ -6,7 +6,6 @@ import net.minecraft.util.Identifier;
 public class NetworkingPackets {
     public static final Identifier GIVE_ITEM_PACKET_ID = Identifier.of("redstone_essentials", "server_give_item");
     public static final Identifier SET_ITEM_PACKET_ID = Identifier.of("redstone_essentials", "server_set_item");
-    public static final Identifier RUN_COMMAND_PACKET_ID = Identifier.of("redstone_essentials", "server_run_command");
     public static final Identifier CLIENTS_RENDER_PING = Identifier.of("redstone_essentials", "clients_render_ping");
     public static final Identifier SERVER_SEND_PING = Identifier.of("redstone_essentials", "server_send_ping");
     public static final Identifier SERVER_SET_BLOCK = Identifier.of("redstone_essentials", "server_set_block");

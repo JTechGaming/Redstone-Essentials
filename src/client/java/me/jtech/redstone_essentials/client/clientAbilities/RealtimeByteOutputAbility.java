@@ -70,7 +70,7 @@ public class RealtimeByteOutputAbility extends BaseAbility implements IClientSel
         if (Config.use_output_labels) {
             client.setScreen(new OutputLabelInputScreen(blockPos, color, size));
         } else {
-            SelectionData output = new SelectionData(blockPos, color, size, "", true);
+            SelectionData output = new SelectionData(blockPos, color, size, "", true, client.player.getUuid().toString());
             RealtimeByteOutputRenderer.realtimeByteOutputList.add(output);
             SelectionAbility.finalizeSelection(output);
             SelectionAbility.selectionContext = Redstone_Essentials.getInstance().DEFAULT_CONTEXT;

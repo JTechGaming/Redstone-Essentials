@@ -1,5 +1,6 @@
 package me.jtech.redstone_essentials.client.utility;
 
+import me.jtech.redstone_essentials.IO.Config;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -14,7 +15,7 @@ public class RaycastingHelper {
         Vec3d lookVec = client.player.getRotationVec(1.0F); // Get the player's look direction
 
         // Create the end position for the ray
-        Vec3d endPos = cameraPos.add(lookVec.multiply(40.0));
+        Vec3d endPos = cameraPos.add(lookVec.multiply(Config.ping_range));
 
         // Perform the ray trace
         BlockHitResult blockHitResult = client.world.raycast(new RaycastContext(

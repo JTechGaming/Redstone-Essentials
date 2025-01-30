@@ -1,5 +1,6 @@
 package me.jtech.redstone_essentials.client.clientAbilities;
 
+import me.jtech.redstone_essentials.client.Redstone_Essentials_Client;
 import me.jtech.redstone_essentials.client.utility.Toaster;
 import me.jtech.redstone_essentials.networking.payloads.c2s.SetItemPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -57,7 +58,8 @@ public class SwapBlockTypeAbility extends BaseAbility{ //TODO comment this
         returnItem.set(DataComponentTypes.ITEM_NAME, item.get(DataComponentTypes.ITEM_NAME));
         returnItem.setCount(item.getCount());
 
-        ClientPlayNetworking.send(new SetItemPayload(returnItem, client.player.getInventory().selectedSlot));
+        if (Redstone_Essentials_Client.packetsEnabled)
+            ClientPlayNetworking.send(new SetItemPayload(returnItem, client.player.getInventory().selectedSlot));
     }
 
     @Override

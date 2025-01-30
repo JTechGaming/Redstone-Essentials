@@ -4,13 +4,13 @@
   "package": "me.jtech.redstone_essentials.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "GUIButtonMixin"
+    "GUIButtonMixin",
+    "OptionsScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
-    "BlockPlaceMixin",
-    "PauzeScreenMixin"
+    "BlockPlaceMixin"
   ]
 }

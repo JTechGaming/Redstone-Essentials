@@ -2,6 +2,7 @@ package me.jtech.redstone_essentials.client.rendering.screen.widgets;
 
 import com.google.common.collect.ImmutableList;
 import me.jtech.redstone_essentials.SelectionData;
+import me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer;
 import me.jtech.redstone_essentials.client.rendering.screen.BitmapPrinterScreen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,6 +14,7 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 
 import java.util.*;
@@ -39,27 +41,26 @@ public class BitmapPrintListWidget extends ElementListWidget<BitmapPrintListWidg
         private final ButtonWidget editButton;
         private final ButtonWidget invertButton;
         private final SelectionData selection;
-        private final PlaceholderTextFieldWidget offsetField;
+        private final TextFieldWidget offsetField;
 
         SelectionEntry(final SelectionData selection, final Text selectionName) {
             this.selection = selection;
             this.selectionName = selectionName;
-            this.offsetField = new PlaceholderTextFieldWidget(MinecraftClient.getInstance().textRenderer, 0, 0, 85, 20, Text.literal("Offset"));
-            offsetField.setMessage(Text.literal("1"));
+            this.offsetField = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, 0, 0, 85, 20, Text.literal("Offset"));
+            this.offsetField.setMessage(Text.literal("1"));
             this.editButton = ButtonWidget.builder(Text.literal("Edit Selection"), (button) -> {
-//                BlockOverlayRenderer.modifySelection(selection.id);
-//                BitmapPrinterScreen.currentGuiText = "Selecting Bitmap Printer Input For Channel " + ((BitmapPrinterScreen.completedSelections / 2) + 1) + " On The " + (((BitmapPrinterScreen.completedSelections & 1) == 0) ? "X Axis" : "Y Axis");
-//                parent.shouldClose = true;
-//                BitmapPrinterScreen.shouldRender = true;
-//                parent.close();
+                BlockOverlayRenderer.modifySelection(selection.id);
+                BitmapPrinterScreen.currentGuiText = "Selecting Bitmap Printer Input For Channel " + ((BitmapPrinterScreen.completedSelections / 2) + 1) + " On The " + (((BitmapPrinterScreen.completedSelections & 1) == 0) ? "X Axis" : "Y Axis");
+                parent.shouldClose = true;
+                BitmapPrinterScreen.shouldRender = true;
+                parent.close();
             }).dimensions(0, 0, 85, 20).build();
-            editButton.active = false;
-            editButton.setTooltip(Tooltip.of(Text.literal("(Coming in 1.1) Edit this selection")));
             this.invertButton = ButtonWidget.builder(Text.literal("IsInverted: " + (selection.isInverted?"Yes":"No")), (button) -> {
                 selection.setInverted(!selection.isInverted);
             }).dimensions(0, 0, 85, 20).build();
             invertButton.setTooltip(Tooltip.of(Text.literal("Invert the byte direction (default least significant on north or west)")));
-            offsetField.setTooltip(Tooltip.of(Text.literal("(Coming in 1.1) The offset between bits")));
+            offsetField.setTooltip(Tooltip.of(Text.literal("(Coming in 1.1.1) The offset between bits")));
+            editButton.setTooltip(Tooltip.of(Text.literal("(Coming in 1.1.1) Edit the selection")));
         }
 
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
@@ -75,9 +76,10 @@ public class BitmapPrintListWidget extends ElementListWidget<BitmapPrintListWidg
             Objects.requireNonNull(BitmapPrintListWidget.this.client.textRenderer);
 
             //BitmapPrinterScreen.setOffset(selection, Integer.parseInt(offsetField.getText()));
-            offsetField.setEditable(true);
-            offsetField.active = true;
-            offsetField.visible = true;
+            offsetField.setEditable(false);
+            offsetField.active = false;
+
+            this.editButton.active = false;
 
             String name = this.selectionName.getString();
             String printer = name.substring(0, name.indexOf("♅"));

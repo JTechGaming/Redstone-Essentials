@@ -28,10 +28,15 @@ public class RealtimeByteOutputRenderer {
                 }
                 for (SelectionData realtimeByteOutput : realtimeByteOutputList) {
                     String data = String.valueOf(getData(realtimeByteOutput));
-                    switch (Config.output_base_select) {
+                    boolean hasCustomBase = realtimeByteOutput.base != 0;
+                    Config.BaseMode baseMode = hasCustomBase ? Config.getEnum(realtimeByteOutput.base-1) : Config.output_base_select;
+                    switch (baseMode) {
                         case HEX -> data = "0x".concat(Config.fill_to_min_size ? fillZeros(Integer.toHexString(Integer.parseInt(data)), Config.min_byte_size) : Integer.toHexString(Integer.parseInt(data)));
                         case BIN -> data = Config.fill_to_min_size ? fillZeros(Integer.toBinaryString(Integer.parseInt(data)), Config.min_byte_size) : Integer.toBinaryString(Integer.parseInt(data));
                         case OCT -> data = Config.fill_to_min_size ? fillZeros(Integer.toOctalString(Integer.parseInt(data)), Config.min_byte_size) : Integer.toOctalString(Integer.parseInt(data));
+                    }
+                    if (hasCustomBase) {
+                        data = "[" + baseMode + "]  " + data;
                     }
                     if (Config.use_output_labels) {
                         data = "(" + realtimeByteOutput.label + "):  " + data;

@@ -1,3 +1,2 @@
 v1	named	intermediary
 FIELD	me/jtech/redstone_essentials/mixin/client/GUIButtonMixin	Lnet/minecraft/client/gui/screen/ButtonTextures;	TEXTURES	field_45339
-METHOD	me/jtech/redstone_essentials/mixin/client/PauzeScreenMixin	(Lnet/minecraft/text/Text;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/widget/ButtonWidget;	createButton	method_47900

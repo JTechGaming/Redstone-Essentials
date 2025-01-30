@@ -120,7 +120,8 @@ public class BitmapPrinterScreen extends Screen implements IClientSelectionConte
             }
             currentGuiText = "Printing...";
             String flag2 = currentScreenWidth + "♅" + currentScreenHeight + "♅" + currentInterval + "♅" + currentChannels;
-            ClientPlayNetworking.send(new C2SInfoPacket(0, currentPath, flag2, "", selectionList));
+            if (Redstone_Essentials_Client.packetsEnabled)
+                ClientPlayNetworking.send(new C2SInfoPacket(0, currentPath, flag2, "", selectionList));
             //BitmapPrinterCommand.finaliseExecution(currentPath, selectionList, Integer.parseInt(currentScreenWidth), Integer.parseInt(currentScreenHeight), Integer.parseInt(currentInterval), Integer.parseInt(currentChannels), MinecraftClient.getInstance().player.getWorld(), MinecraftClient.getInstance().player);
             shouldClose = true;
             shouldRender = true;
@@ -144,7 +145,8 @@ public class BitmapPrinterScreen extends Screen implements IClientSelectionConte
 
         this.addDrawableChild(startPrint);
 
-        ClientPlayNetworking.send(new ClientGetServerBitmapsPayload(""));
+        if (Redstone_Essentials_Client.packetsEnabled)
+            ClientPlayNetworking.send(new ClientGetServerBitmapsPayload(""));
     }
 
     public static void removePrintSelections() {
@@ -204,7 +206,7 @@ public class BitmapPrinterScreen extends Screen implements IClientSelectionConte
         if (!wasModified) {
             completedSelections++;
         }
-        SelectionData data = new SelectionData(blockPos, color, size, currentName + "♅" + ((completedSelections / 2) + 1) + "♅" + (((completedSelections & 1) == 0) ? "y" : "x"), false);
+        SelectionData data = new SelectionData(blockPos, color, size, currentName + "♅" + ((completedSelections / 2) + 1) + "♅" + (((completedSelections & 1) == 0) ? "y" : "x"), false, MinecraftClient.getInstance().player.getName().getString());
         data.setContext(CONTEXT);
         data.setId(id);
         if (wasModified) {

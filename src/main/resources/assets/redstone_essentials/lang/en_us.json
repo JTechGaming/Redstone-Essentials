@@ -10,6 +10,7 @@
   "key.redstone_essentials:select": "Select",
   "key.redstone_essentials:realtime_byte_output": "Realtime Byte Output",
   "key.redstone_essentials.open_menu": "Open Dynamic Keybinds Menu",
+  "key.redstone_essentials.open_rtbo_menu": "Open RTBO Menu",
 
   "redstone_essentials.midnightconfig.category.settings": "Settings",
   "redstone_essentials.midnightconfig.category.keybindings": "Keybindings",
@@ -19,10 +20,16 @@
 
   "redstone_essentials.midnightconfig.pingComment":"Ping Settings",
   "redstone_essentials.midnightconfig.ping_color":"Ping Color",
+  "redstone_essentials.midnightconfig.ping_range":"Ping Range",
   "redstone_essentials.midnightconfig.pings_enabled":"Pings Enabled",
+  "redstone_essentials.midnightconfig.player_colors1":"Player Colors (Name)",
+  "redstone_essentials.midnightconfig.player_colors2":"Pings Colors (Color)",
+  "redstone_essentials.midnightconfig.ping_skip_depth_test":"Render Pings Behind Blocks",
+  "redstone_essentials.midnightconfig.ping_render_faces":"Render The Faces Of The Pings",
   "redstone_essentials.midnightconfig.multiplayer_ping_color":"Other Player Ping Color",
   "redstone_essentials.midnightconfig.send_pings":"Send your Pings To Other Players (Multiplayer Only)",
   "redstone_essentials.midnightconfig.receive_pings":"Render Pings From Other Players (Multiplayer Only)",
+  "redstone_essentials.midnightconfig.announce_clear":"Announce Other Player Clear Pings",
 
   "redstone_essentials.midnightconfig.selectionComment":"Selection Settings",
   "redstone_essentials.midnightconfig.selections_enabled":"Selections Enabled",

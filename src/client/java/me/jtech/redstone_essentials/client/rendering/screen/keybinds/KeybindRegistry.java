@@ -9,9 +9,8 @@ import java.util.List;
 public class KeybindRegistry { //TODO comment this
     private static List<KeybindEntry> keybinds = new ArrayList<>();
 
-    public static void register(KeybindEntry keybind) {
+    public static void register(KeybindEntry keybind, DynamicKeybindProperties properties) {
         keybinds.add(keybind);
-        DynamicKeybindProperties properties = new DynamicKeybindProperties();
         properties.command = keybind.getCommand();
         DynamicKeybindHandler.addKeybind(keybind.getName(), keybind.getKey(), properties);
     }

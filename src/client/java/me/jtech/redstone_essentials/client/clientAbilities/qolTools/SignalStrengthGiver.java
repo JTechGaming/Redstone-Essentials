@@ -1,5 +1,6 @@
 package me.jtech.redstone_essentials.client.clientAbilities.qolTools;
 
+import me.jtech.redstone_essentials.client.Redstone_Essentials_Client;
 import me.jtech.redstone_essentials.networking.payloads.c2s.SetItemPayload;
 import me.jtech.redstone_essentials.utility.Pair;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -76,7 +77,8 @@ public class SignalStrengthGiver { //TODO comment this
                     barrelItem.set(DataComponentTypes.CUSTOM_NAME, Text.literal("Signal Strength " + ss));
 
                     // Send item packet to the server
-                    ClientPlayNetworking.send(new SetItemPayload(barrelItem, MinecraftClient.getInstance().player.getInventory().getEmptySlot()));
+                    if (Redstone_Essentials_Client.packetsEnabled)
+                        ClientPlayNetworking.send(new SetItemPayload(barrelItem, MinecraftClient.getInstance().player.getInventory().getEmptySlot()));
 
                     break;  // Exit loop since a key has been processed
                 }
@@ -118,7 +120,8 @@ public class SignalStrengthGiver { //TODO comment this
                     shulkerItem.set(DataComponentTypes.CUSTOM_NAME, Text.literal("Signal Strength " + ss));
 
                     // Send item packet to the server
-                    ClientPlayNetworking.send(new SetItemPayload(shulkerItem, MinecraftClient.getInstance().player.getInventory().getEmptySlot()));
+                    if (Redstone_Essentials_Client.packetsEnabled)
+                        ClientPlayNetworking.send(new SetItemPayload(shulkerItem, MinecraftClient.getInstance().player.getInventory().getEmptySlot()));
 
                     break;  // Exit loop since a key has been processed
                 }

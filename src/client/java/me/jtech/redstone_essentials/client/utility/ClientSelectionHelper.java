@@ -32,7 +32,7 @@ public class ClientSelectionHelper {
         Color randomColor = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
 
         Vec3i area = new Vec3i(1, 1, 1);
-        renderer = new BlockOverlayRenderer(new BlockPos(0, 0, 0), randomColor, area, false, selectionContext == RealtimeByteOutputAbility.CONTEXT, selectionContext, "");
+        renderer = new BlockOverlayRenderer(new BlockPos(0, 0, 0), randomColor, area, false, selectionContext == RealtimeByteOutputAbility.CONTEXT, selectionContext, "", MinecraftClient.getInstance().player.getName().getString());
 
         clientSelectionHelpers.add(this);
     }

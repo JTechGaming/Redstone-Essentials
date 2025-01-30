@@ -2,18 +2,25 @@ package me.jtech.redstone_essentials.client.keybinds;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.mojang.brigadier.ParseResults;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.jtech.redstone_essentials.client.Redstone_Essentials_Client;
 import me.jtech.redstone_essentials.client.rendering.screen.keybinds.KeybindEditorScreen;
 import me.jtech.redstone_essentials.client.rendering.screen.keybinds.KeybindEntry;
 import me.jtech.redstone_essentials.client.rendering.screen.keybinds.KeybindRegistry;
+import me.jtech.redstone_essentials.client.utility.Toaster;
 import me.jtech.redstone_essentials.utility.Pair;
-import me.jtech.redstone_essentials.networking.payloads.c2s.RunCommandPayload;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.Text;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.lwjgl.glfw.GLFW;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -21,19 +28,20 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.List;
 
 public class DynamicKeybindHandler { //TODO comment this
     public static Map<String, Pair<List<Integer>, DynamicKeybindProperties>> keyBinds = new HashMap<>();
-    public static boolean isWaitingForKey = false;
-    private static boolean hasProcessedKey = false;
-    private static boolean wasWaitingForKey = false;
-
-    private static List<Integer> keyCombo = new ArrayList<>();
 
     private static final Gson GSON = new Gson();
     private static final Path CONFIG_FILE = MinecraftClient.getInstance().runDirectory.toPath().resolve("config/redstone_essentials/dynamic_keybinds.json");
     private static boolean isInitialised = false;
-    private static KeybindEditorScreen currentHandler;
+    private static boolean hasProcessedKey = false;
+
+    public static boolean isReceiving = false;
+
+    private static final List<Integer> pressedKeys = new ArrayList<>();
+    private static KeybindEditorScreen parentScreen;
 
     public static void addKeybind(String name, List<Integer> key, DynamicKeybindProperties properties) {
         keyBinds.put(name, new Pair<>(key, properties));
@@ -41,6 +49,49 @@ public class DynamicKeybindHandler { //TODO comment this
 
     public static void removeKeybind(String name) {
         keyBinds.remove(name);
+    }
+
+    public static void setupKeyDetection(KeybindEditorScreen scr) {
+        DynamicKeybindHandler.parentScreen = scr;
+        if (!isInitialised) {
+            ScreenKeyboardEvents.beforeKeyPress(parentScreen).register((screen, keyCode, scanCode, modifiers) -> {
+                if (isReceiving) {
+                    if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT || keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT) {
+                        if (!pressedKeys.contains(GLFW.GLFW_KEY_LEFT_SHIFT) && !pressedKeys.contains(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
+                            pressedKeys.add(GLFW.GLFW_KEY_LEFT_SHIFT);
+                        }
+                    } else if (keyCode == GLFW.GLFW_KEY_LEFT_CONTROL || keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL) {
+                        if (!pressedKeys.contains(GLFW.GLFW_KEY_LEFT_CONTROL) && !pressedKeys.contains(GLFW.GLFW_KEY_RIGHT_CONTROL)) {
+                            pressedKeys.add(GLFW.GLFW_KEY_LEFT_CONTROL);
+                        }
+                    } else {
+                        if (!pressedKeys.contains(keyCode)) {
+                            pressedKeys.add(keyCode);
+                        }
+                    }
+                    parentScreen.setKeys(new ArrayList<>(pressedKeys));
+                }
+            });
+
+            ScreenKeyboardEvents.beforeKeyRelease(parentScreen).register((screen, keyCode, scanCode, modifiers) -> {
+                if (isReceiving) {
+                    for (Integer pressedKey : pressedKeys) {
+                        System.out.println(pressedKey);
+                    }
+                    endKeyDetection(parentScreen);
+                }
+            });
+
+            isInitialised = true;
+        }
+    }
+
+    public static void endKeyDetection(KeybindEditorScreen parentScreen) {
+        if (!isReceiving) return;
+        isReceiving = false;
+        parentScreen.setKeys(new ArrayList<>(pressedKeys));
+        pressedKeys.clear();
+        parentScreen.resetInputKey();
     }
 
     public static void checkKeyPresses() {
@@ -55,52 +106,49 @@ public class DynamicKeybindHandler { //TODO comment this
                         DynamicKeybindProperties properties = pair.getSecond();
                         if (!hasProcessedKey && shouldProcessKey) {
                             hasProcessedKey = !properties.hasHoldKey; // Hold key implementation
-                            handleKeyPress(pair.getSecond()); // Handle the keypress
+                            if (properties.hasSendToast) {
+                                Toaster.sendToast(MinecraftClient.getInstance(), Text.literal(properties.name), Text.literal(properties.toastMessage));
+                            }
+
+                            if (properties.hasToggleInterval) {
+                                properties.setIntervalToggled(!properties.isIntervalToggled());
+                            }
+
+                            handleKeyPress(properties); // Handle the keypress
                         }
                     }
                 } else {
                     hasProcessedKey = false;
                 }
             }
+
+            if (pair.getSecond().hasToggleInterval && pair.getSecond().isIntervalToggled()) {
+                DynamicKeybindProperties properties = pair.getSecond();
+                properties.setCurrentInterval(properties.getCurrentInterval() + 1);
+                if (properties.getCurrentInterval() >= properties.interval) {
+                    properties.setCurrentInterval(0);
+                    handleKeyPress(properties);
+                }
+            }
         }
     }
 
     public static void handleKeyPress(DynamicKeybindProperties properties) {
-        ClientPlayNetworking.send(new RunCommandPayload(properties.command));
-    }
-
-    public static void waitForKeyInput(KeybindEditorScreen handler) {
-        keyCombo.clear();
-        currentHandler = handler;
-        isWaitingForKey = true;
-        if (!isInitialised) {
-            initKeyDetection();
+        String command = properties.command;
+        if (properties.hasCycleState && !properties.cycleStates.isEmpty()) {
+            properties.setCurrentCycleState((properties.getCurrentCycleState() + 1) % properties.cycleStates.size());
+            if (properties.cycleStates.get(properties.getCurrentCycleState()).isBlank()) properties.setCurrentCycleState((properties.getCurrentCycleState() + 1) % properties.cycleStates.size());
+            command = properties.cycleStates.get(properties.getCurrentCycleState());
         }
-    }
-
-    public static void initKeyDetection() {
-        isInitialised = true;
+        if (properties.copyText) {
+            StringSelection selection = new StringSelection(properties.copyTextMessage);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, null);
+        }
         MinecraftClient client = MinecraftClient.getInstance();
-        assert client.currentScreen != null;/**
-         * Called right after a key press is handled.
-         *
-         * @param screen the screen in which the key was pressed
-         * @param key the named key code which can be identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW}
-         * @param scancode the unique/platform-specific scan code of the keyboard input
-         * @param modifiers a GLFW bitfield describing the modifier keys that are held down
-         * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
-         * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
-         */
-        ScreenKeyboardEvents.afterKeyRelease(client.currentScreen).register((screen, key, scancode, modifiers) -> {
-            if (isWaitingForKey) {
-                if (key == GLFW.GLFW_KEY_ENTER) {
-                    currentHandler.resetInputKey();
-                } else {
-                    keyCombo.add(key);
-                    currentHandler.setKeys(keyCombo);
-                }
-            }
-        });
+        if (client.player != null) {
+            client.player.networkHandler.sendChatCommand(command);
+        }
     }
 
     // Save keybinds to a config file
@@ -129,7 +177,7 @@ public class DynamicKeybindHandler { //TODO comment this
         for (String key : keyBinds.keySet()) {
             Pair<List<Integer>, DynamicKeybindProperties> value = keyBinds.get(key);
             KeybindEntry entry = new KeybindEntry(key, value.getSecond().command, value.getFirst(), false, false);
-            KeybindRegistry.register(entry);
+            KeybindRegistry.register(entry, value.getSecond());
         }
     }
 
@@ -137,9 +185,11 @@ public class DynamicKeybindHandler { //TODO comment this
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.currentScreen != null)
             return false;
-        if (client.inGameHud.getChatHud().isChatFocused())
-            return false;
+        return !client.inGameHud.getChatHud().isChatFocused();
+    }
 
-        return true;
+    public static DynamicKeybindProperties getKeybindProperties(String keybindName) {
+        Pair<List<Integer>, DynamicKeybindProperties> keybind = keyBinds.get(keybindName);
+        return keybind != null ? keybind.getSecond() : null;
     }
 }

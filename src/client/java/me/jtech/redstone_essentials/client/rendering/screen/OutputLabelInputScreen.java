@@ -35,12 +35,13 @@ public class OutputLabelInputScreen extends Screen {
         super.init();
         this.nameField = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, this.width / 2 - 100, this.height/2, 200, 20, Text.literal("Output Label"));
         this.confirmButton = ButtonWidget.builder(Text.literal("Confirm"), button -> {
-            SelectionData output = new SelectionData(blockPos, color, size, nameField.getText(), true);
+            SelectionData output = new SelectionData(blockPos, color, size, nameField.getText(), true, MinecraftClient.getInstance().player.getName().getString());
             RealtimeByteOutputRenderer.realtimeByteOutputList.add(output);
             BlockOverlayRenderer renderer = BlockOverlayRenderer.getSelection(output.id);
             if (renderer != null) {
                 renderer.setLabel(output.label);
             }
+            BlockOverlayRenderer.changeSelectionLabel(output.id, output.label);
             SelectionAbility.finalizeSelection(output);
             SelectionAbility.selectionContext = Redstone_Essentials.getInstance().DEFAULT_CONTEXT;
             MinecraftClient.getInstance().setScreen(null);

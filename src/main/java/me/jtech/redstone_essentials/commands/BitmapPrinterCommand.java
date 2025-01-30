@@ -50,6 +50,7 @@ public class BitmapPrinterCommand { // TODO comment all this
     private static int executeCommand(CommandContext<ServerCommandSource> context) {
         ServerPlayerEntity player = context.getSource().getPlayer();
         assert player != null;
+        if (Redstone_Essentials.outdatedClients.contains(player)) return 1;
         ServerPlayNetworking.send(player, new OpenScreenPayload(0)); // Open Bitmap Printer Screen
         return 0;
     }
@@ -93,16 +94,16 @@ public class BitmapPrinterCommand { // TODO comment all this
                                     Pair<SelectionData, SelectionData> currentByte = new Pair<>(selectionList.get(i), selectionList.get(i + 1));
 
                                     SelectionHelper selection = new SelectionHelper(currentByte.getFirst().getBlockPos(), currentByte.getFirst().getBlockPos().add(currentByte.getFirst().getSize().subtract(new Vec3i(1, 1, 1))), currentByte.getFirst().isInverted());
-                                    selection.writeData(world, 0, currentByte.getFirst().getOffset(), SelectionHelper.Mode.WRITE, player);
+                                    selection.writeData(world, 0, currentByte.getFirst().getOffset(), player);
                                     selection = new SelectionHelper(currentByte.getSecond().getBlockPos(), currentByte.getSecond().getBlockPos().add(currentByte.getSecond().getSize().subtract(new Vec3i(1, 1, 1))), currentByte.getSecond().isInverted());
-                                    selection.writeData(world, 0, currentByte.getSecond().getOffset(), SelectionHelper.Mode.WRITE, player);
+                                    selection.writeData(world, 0, currentByte.getSecond().getOffset(), player);
                                 }
                             }
 
-                            if (player!=null) {
+                            if (player!=null && !Redstone_Essentials.outdatedClients.contains(player)) {
                                 ServerPlayNetworking.send(player, new FinishBitmapPrintPayload(true));
                             } else {
-                                Redstone_Essentials.LOGGER.error("Player doesnt exist");
+                                Redstone_Essentials.LOGGER.error("Player doesnt exist or has an outdated version");
                             }
                             return;
                         }
@@ -127,9 +128,9 @@ public class BitmapPrinterCommand { // TODO comment all this
             Pair<SelectionData, SelectionData> currentByte = new Pair<>(selectionList.get(i), selectionList.get(i+1));
 
             SelectionHelper selection = new SelectionHelper(currentByte.getFirst().getBlockPos(), currentByte.getFirst().getBlockPos().add(currentByte.getFirst().getSize().subtract(new Vec3i(1, 1, 1))), currentByte.getFirst().isInverted());
-            selection.writeData(world, (int) writeLocations.get(i+currentOffset.get()).x, currentByte.getFirst().getOffset(), SelectionHelper.Mode.WRITE, player);
+            selection.writeData(world, (int) writeLocations.get(i+currentOffset.get()).x, currentByte.getFirst().getOffset(), player);
             selection = new SelectionHelper(currentByte.getSecond().getBlockPos(), currentByte.getSecond().getBlockPos().add(currentByte.getSecond().getSize().subtract(new Vec3i(1, 1, 1))), currentByte.getSecond().isInverted());
-            selection.writeData(world, (int) writeLocations.get(i+currentOffset.get()).y, currentByte.getSecond().getOffset(), SelectionHelper.Mode.WRITE, player);
+            selection.writeData(world, (int) writeLocations.get(i+currentOffset.get()).y, currentByte.getSecond().getOffset(), player);
         }
     }
 

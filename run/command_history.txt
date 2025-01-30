@@ -1,44 +1,3 @@
-/print_bitmap "Test.bmp" 80 64 5 1 -57 68 -9 -57 68 -2 -57 72 -9 -57 72 -2 -57 68 1 -57 68 8 -57 72 1 -57 72 8 -57 68 10 -57 68 17 -57 72 10 -57 72 17
-/calc 1 * 10
-/calc 9 * 9
-/calc 9 * 9 / 2
-/calc b0101 + 5
-/calc b0101 + 5 #b
-/clear
-/kill @e[type=item]
-/calc %test% + 1
-/calc 1 + %test%
-/calc %test%*2
-/calc %test% + %test%
-/calc %test% + %tes%
-/calc %test% + %test%
-/pb
-/print_bitmap
-/pb
-/tick rate 200
-/tick rate 500
-/tick rate 20
-/pb
-/tick rate 500
-/pb
-/tick rate 500
-/pb
-/tick rate 500
-/tick rate 1000
-/pb
-/tick rate 1000
-/tick rate 5000
-/pb
-/tick rate 5000
-/pb
-/tick rate 5000
-/pb
-/tick rate 10000
-/tick rate 20
-/pb
-/print_bitmap
-/tick rate 200
-/tick rate 20
 /pb
 /tick rate 10000
 /tick rate 20
@@ -48,3 +7,44 @@
 /wb false -72 63 1 -72 63 -5 1 2
 /wb false -72 63 1 -72 63 -5 1 1
 /pb
+/print_bitmap
+/calc 1+1
+/calc 2^2
+/calc 2^3
+/calc 2^5
+/calc 2^3
+/calc 2^3-1
+/calc (2^3)-1
+/calc b0101
+/calc b0101 + b10
+/calc b0101 + b10 #b
+/calc b0101 + b10 #d
+/calc b0101 + b10 #h
+/calc b0101 + 5
+/calc 5 + %value
+/calc %value
+/setblock ~ ~ ~ minecraft:redstone_wire
+/setblock ~ ~ ~ minecraft:redstone_wire keep
+/setblock ~ ~ ~ minecraft:redstone_wire replace
+/setblock ~ ~-1 ~ minecraft:redstone_wire replace
+/setblock ~ ~-1 ~ minecraft:white_concrete replace
+/setblock ~ ~-1 ~ minecraft:redstone_wire replace
+/setblock ~ ~-1 ~ minecraft:white_concrete replace
+/setblock ~ ~ ~ minecraft:redstone_wire replace
+/setblock ~ ~ ~ stone
+/read
+/write
+/read
+/write
+/pb
+/tick rate 200
+/tick rate 400
+/tick rate 600
+/tick rate 20
+/pb
+/tick rate 200
+/tick rate 20
+/tp JTechGaming
+/write
+/tp 0 0 0
+/write

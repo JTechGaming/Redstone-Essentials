@@ -1,6 +1,8 @@
 package me.jtech.redstone_essentials.client.rendering.screen.keybinds;
 
 import me.jtech.redstone_essentials.Redstone_Essentials;
+import me.jtech.redstone_essentials.client.rendering.screen.widgets.BitmapPrintListWidget;
+import me.jtech.redstone_essentials.client.rendering.screen.widgets.DynamicKeybindListWidget;
 import me.jtech.redstone_essentials.client.rendering.screen.widgets.KeybindWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -21,8 +23,9 @@ public class KeybindScreen extends Screen {
     private static final Logger log = LoggerFactory.getLogger(KeybindScreen.class);
     public static Screen parent;
 
-    private List<KeybindEntry> keybindEntries = KeybindRegistry.getKeybinds(); // Holds keybind data
+    public static List<KeybindEntry> keybindEntries = KeybindRegistry.getKeybinds(); // Holds keybind data
     private ButtonWidget addButton;
+    private DynamicKeybindListWidget scrollWidget;
 
     public KeybindScreen(Screen parent) {
         super(Text.literal("Dynamic Keybinding Editor"));
@@ -36,14 +39,7 @@ public class KeybindScreen extends Screen {
 
         addDrawableChild(new TextWidget(this.width/2-100, -15, 200, 50, Text.literal("Dynamic Keybinds"), client.textRenderer));
 
-        // Add all existing keybinds in the array to the UI list
-        //KeybindListWidget keybindListWidget = this.addDrawableChild(new KeybindListWidget());
-        int y = 20;
-        for (KeybindEntry keybind : keybindEntries) {
-            // Render each keybind entry
-            this.addDrawableChild(new KeybindWidget(this, keybind, this.width / 2 - 100, y, 200, 20));
-            y += 30;
-        }
+        this.scrollWidget = new DynamicKeybindListWidget(client, this.width, 300, 20, 80);
 
         // Build the button to create a new keybind
         addButton = ButtonWidget.builder(Text.literal("Add Keybinding"), button -> {
@@ -51,6 +47,7 @@ public class KeybindScreen extends Screen {
         }).dimensions(this.width / 2 - 50, this.height - 30, 100, 20).build();
         // Add the button to the screen
         this.addDrawableChild(addButton);
+        this.addDrawableChild(scrollWidget);
     }
 
     @Override

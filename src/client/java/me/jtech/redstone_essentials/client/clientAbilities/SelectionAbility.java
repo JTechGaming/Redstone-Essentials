@@ -2,11 +2,13 @@ package me.jtech.redstone_essentials.client.clientAbilities;
 
 import me.jtech.redstone_essentials.Redstone_Essentials;
 import me.jtech.redstone_essentials.SelectionData;
+import me.jtech.redstone_essentials.client.Redstone_Essentials_Client;
 import me.jtech.redstone_essentials.client.rendering.BlockOverlayRenderer;
 import me.jtech.redstone_essentials.client.utility.ClientSelectionHelper;
 import me.jtech.redstone_essentials.IO.Config;
 import me.jtech.redstone_essentials.networking.payloads.c2s.ServerSendClientPingPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3i;
 import org.joml.Vector3f;
@@ -41,7 +43,7 @@ public class SelectionAbility extends BaseAbility {
         } else {
             Vec3i selection = selectionHelper.endSelection();
             if (selection != null) {
-                BlockOverlayRenderer blockOverlayRenderer = new BlockOverlayRenderer(selectionHelper.renderer.blockPos, selectionHelper.renderer.color, selection, false, selectionContext == RealtimeByteOutputAbility.CONTEXT, selectionContext, "");
+                BlockOverlayRenderer blockOverlayRenderer = new BlockOverlayRenderer(selectionHelper.renderer.blockPos, selectionHelper.renderer.color, selection, false, selectionContext == RealtimeByteOutputAbility.CONTEXT, selectionContext, "", MinecraftClient.getInstance().player.getName().getString());
                 blockOverlayRenderer.addOverlay(selectionHelper.renderer.blockPos, selectionHelper.renderer.color, selection, true);
 
                 selectionHelper.renderer = null;
@@ -53,7 +55,7 @@ public class SelectionAbility extends BaseAbility {
     }
 
     public static void finalizeSelection(SelectionData output) {
-        if (!(selectionContext == RealtimeByteOutputAbility.CONTEXT) && Config.send_selections) {
+        if (!(selectionContext == RealtimeByteOutputAbility.CONTEXT) && Config.send_selections && Redstone_Essentials_Client.packetsEnabled) {
             ClientPlayNetworking.send(new ServerSendClientPingPayload(
                     output.blockPos,
                     new Vector3f(
@@ -66,17 +68,18 @@ public class SelectionAbility extends BaseAbility {
                     output.label)
             );
         } else if ((selectionContext == RealtimeByteOutputAbility.CONTEXT) && Config.send_rtbo) {
-            ClientPlayNetworking.send(new ServerSendClientPingPayload(
-                    output.blockPos,
-                    new Vector3f(
-                            output.color.getRed(),
-                            output.color.getGreen(),
-                            output.color.getBlue()),
-                    new Vector3f(output.size.getX(), output.size.getY(), output.size.getZ()),
-                    true,
-                    true,
-                    output.label)
-            );
+            if (Redstone_Essentials_Client.packetsEnabled)
+                ClientPlayNetworking.send(new ServerSendClientPingPayload(
+                        output.blockPos,
+                        new Vector3f(
+                                output.color.getRed(),
+                                output.color.getGreen(),
+                                output.color.getBlue()),
+                        new Vector3f(output.size.getX(), output.size.getY(), output.size.getZ()),
+                        true,
+                        true,
+                        output.label)
+                );
         }
     }
 

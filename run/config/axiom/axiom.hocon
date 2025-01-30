@@ -32,7 +32,7 @@ capabilities {
     infiniteReach=false
     infiniteReachLimit=-1
     # Move through blocks while flying
-    noClip=false
+    noClip=true
     # Prevent triggering neighbor updates when placing/breaking
     noUpdates=false
     # Right-click blocks to replace them with the held block

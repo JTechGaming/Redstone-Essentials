@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "redstone_essentials",
-  "version": "1.0.7-BETA",
+  "version": "1.0.9+d187",
   "name": "Redstone Essentials",
   "description": "A mod that aims to improve the redstone experience when working with complex computational builds",
   "authors": ["JTechGaming"],

@@ -32,13 +32,7 @@ public class SessionStorage {
                 Type type = new TypeToken<Map<String, Data>>() {
                 }.getType();
                 Map<String, Data> data = GSON.fromJson(reader, type);
-                if (data == null) {
-                    return null;
-                }
-                if (data.isEmpty()) {
-                    return null;
-                }
-                if (!data.containsKey(ip)) {
+                if (data == null || data.isEmpty() || !data.containsKey(ip)) {
                     return null;
                 }
                 return data.get(ip);
@@ -51,8 +45,6 @@ public class SessionStorage {
 
     public static void storeSelectionsForServer(Data data, String ip) {
         Map<String, Data> map = new HashMap<>();
-
-        // Step 1: Read the existing file if it exists
         if (Files.exists(CONFIG_FILE)) {
             try (Reader reader = Files.newBufferedReader(CONFIG_FILE)) {
                 Type type = new TypeToken<Map<String, Data>>() {
@@ -66,8 +58,6 @@ public class SessionStorage {
             map = new HashMap<>();
         }
         map.put(ip, data);
-
-        // Step 3: Write the updated map back to the file
         try (Writer writer = Files.newBufferedWriter(CONFIG_FILE)) {
             GSON.toJson(map, writer); // Write the updated map with all IP entries
         } catch (IOException e) {

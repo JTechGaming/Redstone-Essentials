@@ -8,15 +8,15 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3f;
 
-public record ClientsRenderPingPayload(BlockPos blockPos, Vector3f rgb, Vector3f size, boolean isSelectionOverlay, boolean isRTBOOverlay, String label) implements CustomPayload {
+public record ClientsRenderPingPayload(BlockPos blockPos, Vector3f rgb, Vector3f size, Vector3f bools, String label, String owningPlayer) implements CustomPayload {
     public static final Id<ClientsRenderPingPayload> ID = new Id<>(NetworkingPackets.CLIENTS_RENDER_PING);
     public static final PacketCodec<RegistryByteBuf, ClientsRenderPingPayload> CODEC = PacketCodec.tuple(
             BlockPos.PACKET_CODEC, ClientsRenderPingPayload::blockPos,
             PacketCodecs.VECTOR3F, ClientsRenderPingPayload::rgb,
             PacketCodecs.VECTOR3F, ClientsRenderPingPayload::size,
-            PacketCodecs.BOOL,ClientsRenderPingPayload::isSelectionOverlay,
-            PacketCodecs.BOOL, ClientsRenderPingPayload::isRTBOOverlay,
+            PacketCodecs.VECTOR3F, ClientsRenderPingPayload::bools,
             PacketCodecs.STRING, ClientsRenderPingPayload::label,
+            PacketCodecs.STRING, ClientsRenderPingPayload::owningPlayer,
             ClientsRenderPingPayload::new
     );
 

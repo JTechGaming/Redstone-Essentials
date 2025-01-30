@@ -3,30 +3,25 @@ package me.jtech.redstone_essentials.client.keybinds;
 import java.util.List;
 
 public class DynamicKeybindProperties {
-    public String command; // the command to execute when the keybind is used
+    public String name; // the name of the keybind
 
-    // If toggleState is enabled, the 'command' string won't be used.
-    // Instead, tState1 and tState 2 will be used depending on the current toggle state.
-    // State handling is done in the DynamicKeybindHandler class.
-    public boolean hasToggleState; // the toggleState setting
-    public String tState1; // toggle state 1
-    public String tState2; // toggle state 2
+    public String command; // the command to execute when the keybind is used
 
     /*
     If toggleInterval is enabled, the command in the 'command' string will be executed on a timer,
     specified in the 'intervalTime' variable.
-    if toggleInterval AND toggleState are enabled for the command, it will toggle state every timer cycle.
+    if toggleInterval AND cycleState are enabled for the command, it will cycle state every timer cycle.
     */
     public boolean hasToggleInterval; // the toggleInterval setting
     public long interval; // interval time in game ticks
 
     // If copyText is enabled, instead of sending the command, it will copy the value in the 'command' string to
     // your clipboard.
-    // When used with toggleState
+    // When used with cycleState or toggleState, it will copy the current state to your clipboard.
     public boolean copyText;
+    public String copyTextMessage;
 
-    // CycleState does the same thing toggleState does, but isnt limited to just 2 commands to cycle between, but can have
-    // millions of commands to cycle between.
+    // CycleState can have millions of commands to cycle between.
     // Holding the key and pressing a number key will jump to that cycle.
     // Pressing 1 and then 2 will jump to 12 for example. This means that if you type the wrong number, you have to let go of the key and
     // repeat the process.
@@ -41,4 +36,32 @@ public class DynamicKeybindProperties {
     public boolean hasSendToast;
     public String toastTitle;
     public String toastMessage;
+
+    private int currentCycleState = 0;
+    private int currentInterval = 0;
+    private boolean isIntervalToggled = false;
+
+    public int getCurrentCycleState() {
+        return currentCycleState;
+    }
+
+    public void setCurrentCycleState(int currentCycleState) {
+        this.currentCycleState = currentCycleState;
+    }
+
+    public int getCurrentInterval() {
+        return currentInterval;
+    }
+
+    public void setCurrentInterval(int currentInterval) {
+        this.currentInterval = currentInterval;
+    }
+
+    public boolean isIntervalToggled() {
+        return isIntervalToggled;
+    }
+
+    public void setIntervalToggled(boolean isIntervalToggled) {
+        this.isIntervalToggled = isIntervalToggled;
+    }
 }

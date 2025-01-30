@@ -20,13 +20,16 @@ public class SelectionData {
     public boolean isInverted = false;
     public int context;
     public int id;
+    public String owningPlayer;
+    public int base = 0;
 
-    public SelectionData(BlockPos blockPos, Color color, Vec3i size, String label, boolean isRTBO) {
+    public SelectionData(BlockPos blockPos, Color color, Vec3i size, String label, boolean isRTBO, String owningPlayer) {
         this.blockPos = blockPos;
         this.color = color;
         this.size = size;
         this.label = label;
         this.isRTBO = isRTBO;
+        this.owningPlayer = owningPlayer;
     }
 
     public int getOffset() {
@@ -101,6 +104,22 @@ public class SelectionData {
         this.id = id;
     }
 
+    public String getOwningPlayer() {
+        return owningPlayer;
+    }
+
+    public void setOwningPlayer(String owningPlayer) {
+        this.owningPlayer = owningPlayer;
+    }
+
+    public int getBase() {
+        return base;
+    }
+
+    public void setBase(int selectionData) {
+        this.base = selectionData;
+    }
+
     public static final PacketCodec<PacketByteBuf, SelectionData> PACKET_CODEC = new PacketCodec<PacketByteBuf, SelectionData>() {
         public SelectionData decode(PacketByteBuf byteBuf) {
             BlockPos pos = byteBuf.readBlockPos();
@@ -113,12 +132,15 @@ public class SelectionData {
             boolean isInverted = byteBuf.readBoolean();
             int context = byteBuf.readInt();
             int id = byteBuf.readInt();
+            String owningPlayer = byteBuf.readString();
+            int base = byteBuf.readInt();
 
-            SelectionData selectionData = new SelectionData(pos, color, sizeOut, label, isRTBO);
+            SelectionData selectionData = new SelectionData(pos, color, sizeOut, label, isRTBO, owningPlayer);
             selectionData.setOffset(offset);
             selectionData.setInverted(isInverted);
             selectionData.setContext(context);
             selectionData.setId(id);
+            selectionData.setBase(base);
 
             return selectionData;
         }
@@ -133,6 +155,8 @@ public class SelectionData {
             byteBuf.writeBoolean(selectionData.isInverted);
             byteBuf.writeInt(selectionData.context);
             byteBuf.writeInt(selectionData.id);
+            byteBuf.writeString(selectionData.owningPlayer);
+            byteBuf.writeInt(selectionData.base);
         }
     };
 

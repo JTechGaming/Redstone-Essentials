@@ -8,18 +8,25 @@ import com.moulberry.axiomclientapi.regions.BlockRegion;
 import com.moulberry.axiomclientapi.regions.BooleanRegion;
 import com.moulberry.axiomclientapi.service.ToolService;
 import imgui.ImGui;
+import me.jtech.redstone_essentials.client.Redstone_Essentials_Client;
 import me.jtech.redstone_essentials.client.axiom.ServiceHelper;
+import me.jtech.redstone_essentials.networking.payloads.c2s.C2SInfoPacket;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.ArrayList;
 
 //TODO this doesnt work yet
 public class forceNeighborUpdatesTool implements CustomTool { //TODO comment this
@@ -73,28 +80,10 @@ public class forceNeighborUpdatesTool implements CustomTool { //TODO comment thi
                 assert world != null;
                 BlockState bState = world.getBlockState(new BlockPos(x, y, z));
                 bState.updateNeighbors(world, bPos, Block.NOTIFY_ALL, 3);
+
                 Block b = bState.getBlock();
-                /*if (b.equals(Blocks.OBSERVER)) {
-                    ObserverBlock observerBlock = (ObserverBlock) b;
-                    if (world.isEmittingRedstonePower(bPos, bState.get(Properties.FACING))) {
-                        Direction direction = bState.get(Properties.FACING);
-                        BlockState obsState = observerBlock.getDefaultState();
-                        BlockState tempBlock = Blocks.AIR.getDefaultState();
-                        world.setBlockState(bPos, tempBlock, Block.NOTIFY_ALL, 2);
-                        world.setBlockState(bPos, obsState.with(Properties.FACING, direction).with(Properties.POWERED, Boolean.FALSE), Block.NOTIFY_ALL, 2);
-                    } else {
-                        Direction direction = bState.get(Properties.FACING);
-                        BlockState obsState = observerBlock.getDefaultState();
-                        BlockState tempBlock = Blocks.AIR.getDefaultState();
-                        world.setBlockState(bPos, tempBlock, Block.NOTIFY_ALL, 2);
-                        world.setBlockState(bPos, obsState.with(Properties.FACING, direction).with(Properties.POWERED, Boolean.TRUE), Block.NOTIFY_ALL, 2);
-                    }
-                }*/
-                world.updateNeighborsAlways(bPos, b);
-                world.updateListeners(bPos, bState, bState, 3);
-                world.updateListeners(bPos, bState, bState, 1);
-                world.updateListeners(bPos, bState, bState, 2);
-                world.updateListeners(bPos, bState, bState, 4);
+                if (Redstone_Essentials_Client.packetsEnabled)
+                    ClientPlayNetworking.send(new C2SInfoPacket(1, Registries.ITEM.getId(b.asItem()).getPath(), bPos.getX()+"♅"+bPos.getY()+"♅"+bPos.getZ()+"♅", "", new ArrayList<>()));
             });
 
             float opacity = (float) Math.sin(time / 1000000f / 50f / 8f);
