@@ -206,7 +206,7 @@ public class Redstone_Essentials_Client implements ClientModInitializer { //TODO
                         if (!Config.announce_clear) {
                             return;
                         }
-                        context.player().sendMessage(Text.literal( payload.flag1() + " cleared their pings!").withColor(0xFFA500));
+                        context.player().sendMessage(Text.literal( payload.flag1() + " cleared their pings!").withColor(0xFFA500), false);
                     }
                     case SEND_PINGS_TO_NEW_CLIENT -> {
                         List<SelectionData> selections = new ArrayList<>();

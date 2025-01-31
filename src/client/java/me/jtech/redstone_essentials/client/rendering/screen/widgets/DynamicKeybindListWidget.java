@@ -71,7 +71,7 @@ public class DynamicKeybindListWidget extends ElementListWidget<DynamicKeybindLi
     }
 
     @Override
-    protected int getRowTop(int index) {
-        return (int) ((10 - getScrollAmount()) + index * this.itemHeight);
+    public int getRowTop(int index) {
+        return (int) ((10 - getScrollY()) + index * this.itemHeight);
     }
 }

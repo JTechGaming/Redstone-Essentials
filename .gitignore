@@ -2,3 +2,6 @@
 run/
 build/
 idea/
+.idea/
+remappedSrc/
+gradle/

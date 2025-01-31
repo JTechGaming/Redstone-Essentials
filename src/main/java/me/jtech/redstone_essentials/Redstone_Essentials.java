@@ -47,7 +47,7 @@ import java.util.stream.Stream;
 
 public class Redstone_Essentials implements ModInitializer, IClientSelectionContext { // TODO comment this
 
-    public static final String MOD_VERSION = "1.0.9+d188";
+    public static final String MOD_VERSION = "1.1";
 
     public static final Logger LOGGER = LoggerFactory.getLogger("redstone_essentials");
     public static final String MOD_ID = "redstone_essentials";
@@ -119,9 +119,7 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
                 PlayerEntity placer = context.player();
                 World world = placer.getWorld();
                 BlockPos pos = payload.blockPos();
-                Item returnItem = Registries.ITEM.get(Identifier.ofVanilla(payload.blockName().toLowerCase()));
-                boolean dropItems = placer.getWorld().getGameRules().getBoolean(GameRules.DO_TILE_DROPS);
-                placer.getWorld().getGameRules().get(GameRules.DO_TILE_DROPS).set(false, placer.getWorld().getServer());
+                Item returnItem = Registries.ITEM.getEntry(Identifier.ofVanilla(payload.blockName().toLowerCase())).get().value();
                 BlockState state = null;
                 if (returnItem.equals(Items.REDSTONE)) {
                     state = Blocks.REDSTONE_WIRE.getDefaultState();
@@ -137,7 +135,7 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
 
 
                 if (!payload.supportBlockName().equalsIgnoreCase("none") && !payload.supportBlockName().isEmpty()) {
-                    Item supportBlockItem = Registries.ITEM.get(Identifier.ofVanilla(payload.supportBlockName().toLowerCase()));
+                    Item supportBlockItem = Registries.ITEM.getEntry(Identifier.ofVanilla(payload.supportBlockName().toLowerCase())).get().value();
 
                     BlockState supportState = null;
                     for (Block block : BlockItem.BLOCK_ITEMS.keySet()) {
@@ -150,8 +148,6 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
                 }
 
                 setBlock(context, world, state, pos);
-
-                placer.getWorld().getGameRules().get(GameRules.DO_TILE_DROPS).set(dropItems, placer.getWorld().getServer());
             });
         }));
 
@@ -218,8 +214,7 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
                         );
 
                         ServerWorld world = context.player().getServerWorld();
-
-                        Item item = Registries.ITEM.get(Identifier.ofVanilla(blockPayload));
+                        Item item = Registries.ITEM.getEntry(Identifier.ofVanilla(blockPayload)).get().value();
                         Block block = Block.getBlockFromItem(item);
                         if (block != Blocks.REDSTONE_WIRE) {
                             return;

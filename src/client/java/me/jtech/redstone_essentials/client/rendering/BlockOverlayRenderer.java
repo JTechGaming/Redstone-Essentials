@@ -9,6 +9,7 @@ import me.jtech.redstone_essentials.client.rendering.gui.RealtimeByteOutputRende
 import me.jtech.redstone_essentials.client.rendering.screen.BitmapPrinterScreen;
 import me.jtech.redstone_essentials.IO.Config;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.*;
@@ -357,7 +358,7 @@ public class BlockOverlayRenderer {
         buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha);
         buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha);
 
-        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+        RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         BufferRenderer.drawWithGlobalProgram(buffer.end());
 
@@ -399,7 +400,7 @@ public class BlockOverlayRenderer {
         // Right face (maxX)
         addFace(buffer, transformationMatrix, box.maxX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, 0.5f, 0.0f, 0.0f, 0.4f);
 
-        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+        RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         BufferRenderer.drawWithGlobalProgram(buffer.end());

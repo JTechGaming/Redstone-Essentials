@@ -12,9 +12,9 @@ public record ClientsRenderPingPayload(BlockPos blockPos, Vector3f rgb, Vector3f
     public static final Id<ClientsRenderPingPayload> ID = new Id<>(NetworkingPackets.CLIENTS_RENDER_PING);
     public static final PacketCodec<RegistryByteBuf, ClientsRenderPingPayload> CODEC = PacketCodec.tuple(
             BlockPos.PACKET_CODEC, ClientsRenderPingPayload::blockPos,
-            PacketCodecs.VECTOR3F, ClientsRenderPingPayload::rgb,
-            PacketCodecs.VECTOR3F, ClientsRenderPingPayload::size,
-            PacketCodecs.VECTOR3F, ClientsRenderPingPayload::bools,
+            PacketCodecs.VECTOR_3F, ClientsRenderPingPayload::rgb,
+            PacketCodecs.VECTOR_3F, ClientsRenderPingPayload::size,
+            PacketCodecs.VECTOR_3F, ClientsRenderPingPayload::bools,
             PacketCodecs.STRING, ClientsRenderPingPayload::label,
             PacketCodecs.STRING, ClientsRenderPingPayload::owningPlayer,
             ClientsRenderPingPayload::new

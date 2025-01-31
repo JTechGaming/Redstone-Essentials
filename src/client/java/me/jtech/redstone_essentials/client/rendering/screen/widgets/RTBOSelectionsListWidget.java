@@ -76,7 +76,7 @@ public class RTBOSelectionsListWidget extends ElementListWidget<RTBOSelectionsLi
     }
 
     @Override
-    protected int getRowTop(int index) {
-        return (int) ((10 - getScrollAmount()) + index * this.itemHeight);
+    public int getRowTop(int index) {
+        return (int) ((10 - getScrollY()) + index * this.itemHeight);
     }
 }

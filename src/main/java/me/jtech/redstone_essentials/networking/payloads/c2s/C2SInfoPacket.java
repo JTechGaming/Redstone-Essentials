@@ -10,7 +10,7 @@ import net.minecraft.network.packet.CustomPayload;
 import java.util.List;
 
 public record C2SInfoPacket(int infoID, String flag1, String flag2, String flag3, List<SelectionData> selections) implements CustomPayload {
-    public static final CustomPayload.Id<C2SInfoPacket> ID = new CustomPayload.Id<>(NetworkingPackets.CLIENT_SEND_INFO);
+    public static final Id<C2SInfoPacket> ID = new Id<>(NetworkingPackets.CLIENT_SEND_INFO);
     public static final PacketCodec<RegistryByteBuf, C2SInfoPacket> CODEC = PacketCodec.tuple(
             PacketCodecs.INTEGER, C2SInfoPacket::infoID,
             PacketCodecs.STRING, C2SInfoPacket::flag1,
@@ -20,7 +20,7 @@ public record C2SInfoPacket(int infoID, String flag1, String flag2, String flag3
             C2SInfoPacket::new);
 
     @Override
-    public CustomPayload.Id<? extends CustomPayload> getId() {
+    public Id<? extends CustomPayload> getId() {
         return ID;
     }
 }

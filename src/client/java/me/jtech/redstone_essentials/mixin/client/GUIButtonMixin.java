@@ -20,7 +20,7 @@ public abstract class GUIButtonMixin extends ClickableWidget { // Make the class
         super(x, y, width, height, message); // Constructor is needed because we need this class to extend ClickableWidget
     }
 
-    @ModifyArg(method = "renderWidget", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"))
+    @ModifyArg(method = "renderWidget", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIIII)V"))
     public Identifier renderInjected(Identifier texture) // Replace the drawGuiTexture texture with a custom one based on the outcome of this code
     {
         if (Redstone_Essentials.shouldApplyButtonStyle) { // If the custom button style should be applied

@@ -10,7 +10,7 @@ public record ServerSendBitmapPayload(String bitmap, boolean finalBitmap) implem
     public static final Id<ServerSendBitmapPayload> ID = new Id<>(NetworkingPackets.SERVER_SEND_BITMAPS);
     public static final PacketCodec<RegistryByteBuf, ServerSendBitmapPayload> CODEC = PacketCodec.tuple(
             PacketCodecs.STRING, ServerSendBitmapPayload::bitmap,
-            PacketCodecs.BOOL, ServerSendBitmapPayload::finalBitmap,
+            PacketCodecs.BOOLEAN, ServerSendBitmapPayload::finalBitmap,
             ServerSendBitmapPayload::new);
 
     @Override

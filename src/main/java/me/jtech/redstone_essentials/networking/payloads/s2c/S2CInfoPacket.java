@@ -11,7 +11,7 @@ import net.minecraft.network.packet.CustomPayload;
 import java.util.List;
 
 public record S2CInfoPacket(int infoID, String flag1, String flag2, String flag3, List<SelectionData> selections) implements CustomPayload {
-    public static final CustomPayload.Id<S2CInfoPacket> ID = new CustomPayload.Id<>(NetworkingPackets.SERVER_SEND_INFO);
+    public static final Id<S2CInfoPacket> ID = new Id<>(NetworkingPackets.SERVER_SEND_INFO);
     public static final PacketCodec<RegistryByteBuf, S2CInfoPacket> CODEC = PacketCodec.tuple(
             PacketCodecs.INTEGER, S2CInfoPacket::infoID,
             PacketCodecs.STRING, S2CInfoPacket::flag1,
@@ -21,7 +21,7 @@ public record S2CInfoPacket(int infoID, String flag1, String flag2, String flag3
             S2CInfoPacket::new);
 
     @Override
-    public CustomPayload.Id<? extends CustomPayload> getId() {
+    public Id<? extends CustomPayload> getId() {
         return ID;
     }
 }

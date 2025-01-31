@@ -9,7 +9,7 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.math.BlockPos;
 
 public record SetBlockPayload(BlockPos blockPos, String blockName, String supportBlockName) implements CustomPayload {
-    public static final CustomPayload.Id<SetBlockPayload> ID = new CustomPayload.Id<>(NetworkingPackets.SERVER_SET_BLOCK);
+    public static final Id<SetBlockPayload> ID = new Id<>(NetworkingPackets.SERVER_SET_BLOCK);
     public static final PacketCodec<RegistryByteBuf, SetBlockPayload> CODEC = PacketCodec.tuple(
             BlockPos.PACKET_CODEC, SetBlockPayload::blockPos,
             PacketCodecs.STRING, SetBlockPayload::blockName,
@@ -18,7 +18,7 @@ public record SetBlockPayload(BlockPos blockPos, String blockName, String suppor
     );
 
     @Override
-    public CustomPayload.Id<? extends CustomPayload> getId() {
+    public Id<? extends CustomPayload> getId() {
         return ID;
     }
 }
