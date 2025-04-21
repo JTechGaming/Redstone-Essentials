@@ -1,7 +1,7 @@
 # Mod information
 Redstone Essentials is a server and client-side mod that adds a lot of quality of life features, enhancements, and debugging features to the game.
 
-## Here are some of the most significant features as of version 1.0.6
+## Here are some of the most significant features as of version 1.1
 
 ### Dust Place
 This works by pressing a keybind to toggle the ability. When the ability is toggled on, placing any full block will place a redstone dust on top, as shown below.
