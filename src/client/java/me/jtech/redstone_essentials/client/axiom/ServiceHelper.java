@@ -8,6 +8,8 @@ import com.moulberry.axiomclientapi.service.RegionProvider;
 import com.moulberry.axiomclientapi.service.ToolPatherProvider;
 import com.moulberry.axiomclientapi.service.ToolRegistryService;
 import com.moulberry.axiomclientapi.service.ToolService;
+import com.moulberry.mixinconstraints.annotations.IfModLoaded;
+import org.spongepowered.asm.mixin.Pseudo;
 
 import java.util.Optional;
 import java.util.ServiceLoader;
@@ -57,5 +59,4 @@ public class ServiceHelper { //TODO comment this
     public static ToolRegistryService getToolRegistryService() {
         return toolRegistryService;
     }
-
 }

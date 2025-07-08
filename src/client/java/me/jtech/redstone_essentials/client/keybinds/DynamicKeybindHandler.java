@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.jtech.redstone_essentials.client.Redstone_Essentials_Client;
+import me.jtech.redstone_essentials.client.editor.imgui.ImGuiImplementation;
 import me.jtech.redstone_essentials.client.rendering.screen.keybinds.KeybindEditorScreen;
 import me.jtech.redstone_essentials.client.rendering.screen.keybinds.KeybindEntry;
 import me.jtech.redstone_essentials.client.rendering.screen.keybinds.KeybindRegistry;
@@ -183,8 +184,12 @@ public class DynamicKeybindHandler { //TODO comment this
 
     public static boolean checkShouldUpdate() {
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client.currentScreen != null)
+        if (ImGuiImplementation.shouldRender) {
             return false;
+        }
+        if (client.currentScreen != null) {
+            return false;
+        }
         return !client.inGameHud.getChatHud().isChatFocused();
     }
 

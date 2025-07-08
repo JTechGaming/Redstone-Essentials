@@ -3,6 +3,8 @@ package me.jtech.redstone_essentials;
 import eu.midnightdust.lib.config.MidnightConfig;
 import me.jtech.redstone_essentials.commands.*;
 import me.jtech.redstone_essentials.IO.Config;
+import me.jtech.redstone_essentials.debugger.DebugManager;
+import me.jtech.redstone_essentials.debugger.DebuggerSession;
 import me.jtech.redstone_essentials.networking.InfoPackets;
 import me.jtech.redstone_essentials.networking.payloads.c2s.*;
 import me.jtech.redstone_essentials.networking.payloads.s2c.*;
@@ -11,6 +13,7 @@ import me.jtech.redstone_essentials.utility.SelectionContext;
 import me.jtech.redstone_essentials.utility.SelectionHelper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -21,6 +24,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
@@ -33,6 +37,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import org.apache.commons.math3.analysis.function.Min;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +52,7 @@ import java.util.stream.Stream;
 
 public class Redstone_Essentials implements ModInitializer, IClientSelectionContext { // TODO comment this
 
-    public static final String MOD_VERSION = "1.0.9+d188";
+    public static final String MOD_VERSION = "1.1";
 
     public static final Logger LOGGER = LoggerFactory.getLogger("redstone_essentials");
     public static final String MOD_ID = "redstone_essentials";
@@ -61,6 +66,17 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
     private final Path bitmapsPath = FabricLoader.getInstance().getConfigDir().resolve("redstone_essentials/bitmaps/");
 
     public static List<ServerPlayerEntity> outdatedClients = new ArrayList<>();
+    public static List<ServerPlayerEntity> modClients = new ArrayList<>();
+
+    private static MinecraftServer server;
+
+    public static Identifier path(String path) {
+        return Identifier.of(MOD_ID, path);
+    }
+
+    public static Identifier identifier(String s) {
+        return Identifier.of(MOD_ID, s);
+    }
 
     @Override
     public void onInitialize() {
@@ -72,12 +88,19 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
             throw new RuntimeException(e);
         }
 
+        ServerLifecycleEvents.SERVER_STARTED.register((s) -> {
+            server = s;
+            LOGGER.info("Server started");
+        });
+
         LOGGER.info("Registering Commands...");
         CalculateCommand.registerCommand();
         ReadBinCommand.registerCommand();
         WriteBinCommand.registerCommand();
         BitmapPrinterCommand.registerCommand();
         ListBitmapsCommand.registerCommand();
+
+        DynamicCommandHandler.init();
 
         LOGGER.info("Setting up Server-Side Packets...");
 
@@ -87,6 +110,7 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
         PayloadTypeRegistry.playC2S().register(SetBlockPayload.ID, SetBlockPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(ClientGetServerBitmapsPayload.ID, ClientGetServerBitmapsPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(C2SInfoPacket.ID, C2SInfoPacket.CODEC);
+        PayloadTypeRegistry.playC2S().register(C2SDebuggerPacket.ID, C2SDebuggerPacket.CODEC);
 
         PayloadTypeRegistry.playS2C().register(ClientsRenderPingPayload.ID, ClientsRenderPingPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(OpenScreenPayload.ID, OpenScreenPayload.CODEC);
@@ -94,6 +118,7 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
         PayloadTypeRegistry.playS2C().register(ClientSetBlockPayload.ID, ClientSetBlockPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(ServerSendBitmapPayload.ID, ServerSendBitmapPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(S2CInfoPacket.ID, S2CInfoPacket.CODEC);
+        PayloadTypeRegistry.playS2C().register(S2CDebuggerPacket.ID, S2CDebuggerPacket.CODEC);
 
         ServerPlayNetworking.registerGlobalReceiver(GiveItemPayload.ID, ((payload, context) -> {
             context.server().execute(() -> {
@@ -241,6 +266,7 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
 //                            Redstone_Essentials.outdatedClients.add(context.player());
 //                            return;
 //                        }
+                        modClients.add(context.player());
                         ServerPlayNetworking.send(context.player(), new S2CInfoPacket(InfoPackets.getInt(InfoPackets.S2C.CLIENT_RECEIVE_SERVER_VERSION), MOD_VERSION, "", "", new ArrayList<>()));
                         //ServerPlayNetworking.send(context.player(), new S2CInfoPacket(InfoPackets.getInt(InfoPackets.S2C.CLIENT_RECEIVE_SERVER_VERSION), payload.flag1(), "", "", new ArrayList<>()));
                     }
@@ -283,6 +309,29 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
             });
         }));
 
+        ServerPlayNetworking.registerGlobalReceiver(C2SDebuggerPacket.ID, ((payload, context) -> {
+            context.server().execute(() -> {
+                C2SDebuggerPacket.C2SInfoType infoID = C2SDebuggerPacket.C2SInfoType.fromId(payload.type());
+                DebuggerSession session = DebugManager.getSession(context.player());
+                if (session == null) {
+                    return;
+                }
+                switch (infoID) {
+                    case TOGGLE_FROZEN -> {
+                        session.togglePause();
+                    }
+                    case STEP_BACK -> {
+                        session.stepBackwardTick();
+                    }
+                    case STEP_FORWARD -> {
+                        session.stepForwardTick();
+                    }
+                    case null -> {}
+                    default -> throw new IllegalStateException("Unexpected value: " + payload.type());
+                }
+            });
+        }));
+
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
                 if (player != sender && !Redstone_Essentials.outdatedClients.contains(player)) {
@@ -290,6 +339,7 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
                     ServerPlayNetworking.send(player, new S2CInfoPacket(InfoPackets.getInt(InfoPackets.S2C.SEND_PINGS_TO_NEW_CLIENT), playerEntity.getName().getString(), "", "", new ArrayList<>()));
                 }
             }
+            server.execute(() -> DebugManager.startDebuggerSession(handler.player));
         });
 
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
@@ -299,6 +349,7 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
                     ServerPlayNetworking.send(player, new S2CInfoPacket(InfoPackets.getInt(InfoPackets.S2C.CLEAR_PINGS), handler.player.getName().getString(), "", "", new ArrayList<>()));
                 }
             }
+            //TODO delete old debugger sessions?
         });
 
         MidnightConfig.init(MOD_ID, Config.class);
@@ -311,6 +362,10 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
 
     public static Redstone_Essentials getInstance() {
         return instance;
+    }
+
+    public MinecraftServer getServer() {
+        return server;
     }
 
     public static void setInstance(Redstone_Essentials instance) {

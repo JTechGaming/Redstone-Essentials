@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "redstone_essentials",
-  "version": "1.0.9+d187",
+  "version": "1.1",
   "name": "Redstone Essentials",
   "description": "A mod that aims to improve the redstone experience when working with complex computational builds",
   "authors": ["JTechGaming"],
@@ -28,5 +28,7 @@
     "fabricloader": ">=0.16.5",
     "fabric": "*",
     "minecraft": "1.21"
-  }
+  },
+  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin",
+  "accessWidener" : "redstone_essentials.accesswidener"
 }

@@ -1,5 +1,17 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.0"
+    }
+}
+
 plugins {
     id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version "7.1.2"
     id 'maven-publish'
 }
 
@@ -49,13 +61,62 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modCompileOnly "com.github.moulberry:AxiomClientAPI:1.0.5.3"
+    modCompileOnly ("com.github.moulberry:AxiomClientAPI:1.0.5.3")
+
+    include(implementation("com.moulberry:mixinconstraints:1.0.5"))
 
     modImplementation include ("maven.modrinth:midnightlib:${project.midnightlib_version}")
 
     implementation 'com.google.code.gson:gson:2.8.9'
 
     modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+
+
+    // ImGui
+    shadow(implementation(rootProject.files('dependencies/imgui-java-binding-1.86.11-10-g0dbf36c.jar')))
+    shadow(implementation("io.github.spair:imgui-java-lwjgl3:1.86.10") {
+        exclude group: 'org.lwjgl'
+        exclude group: 'org.lwjgl.lwjgl'
+    })
+    shadow(api(rootProject.files('dependencies/imgui-java-natives-linux-1.86.11-10-g0dbf36c.jar')))
+    shadow(api(rootProject.files('dependencies/imgui-java-natives-macos-1.86.11-10-g0dbf36c.jar')))
+    shadow(api(rootProject.files('dependencies/imgui-java-natives-windows-1.86.11-10-g0dbf36c.jar')))
+
+    shadow(implementation("org.apache.commons:commons-math3:3.6.1"))
+
+    // Native File Dialogs
+    String nfdVersion = "org.lwjgl:lwjgl-nfd:3.3.3";
+
+    shadow(implementation(nfdVersion) {
+        exclude group: 'org.lwjgl'
+        exclude group: 'org.lwjgl.lwjgl'
+    })
+    shadow(api("org.lwjgl:lwjgl-nfd::natives-macos") {
+        exclude group: 'org.lwjgl'
+        exclude group: 'org.lwjgl.lwjgl'
+    })
+    shadow(api("org.lwjgl:lwjgl-nfd::natives-linux") {
+        exclude group: 'org.lwjgl'
+        exclude group: 'org.lwjgl.lwjgl'
+    })
+    shadow(api("org.lwjgl:lwjgl-nfd::natives-windows") {
+        exclude group: 'org.lwjgl'
+        exclude group: 'org.lwjgl.lwjgl'
+    })
+    shadow(api("org.lwjgl:lwjgl-nfd::natives-macos-arm64") {
+        exclude group: 'org.lwjgl'
+        exclude group: 'org.lwjgl.lwjgl'
+    })
+    shadow(api("org.lwjgl:lwjgl-nfd::natives-linux-arm64") {
+        exclude group: 'org.lwjgl'
+        exclude group: 'org.lwjgl.lwjgl'
+    })
+    shadow(api("org.lwjgl:lwjgl-nfd::natives-windows-arm64") {
+        exclude group: 'org.lwjgl'
+        exclude group: 'org.lwjgl.lwjgl'
+    })
+
+    implementation 'net.objecthunter:exp4j:0.4.8'
 }
 
 processResources {
@@ -81,6 +142,10 @@ tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         it.options.release.set(targetJavaVersion)
     }
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/redstone_essentials.accesswidener")
 }
 
 java {
@@ -144,13 +209,13 @@ task updateModInfo {
         // Increment version based on dev mode
         if (isDevBuild) {
             devVersion++ // Increment dev version
-        } else {
-            patch++      // Increment patch version
-            devVersion = 0 // Reset dev version
         }
 
         // Build new version
         def newVersion = isDevBuild ? "${major}.${minor}.${patch}+d${devVersion}" : "${major}.${minor}.${patch}"
+        if (newVersion.contains(".null")) {
+            newVersion = newVersion.replace(".null", "")
+        }
 
         // Save new version to the .version file
         if (isDevBuild) {

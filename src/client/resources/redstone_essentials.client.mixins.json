@@ -4,8 +4,12 @@
   "package": "me.jtech.redstone_essentials.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "FramebufferMixin",
     "GUIButtonMixin",
-    "OptionsScreenMixin"
+    "MinecraftClientMixin",
+    "MouseMixin",
+    "OptionsScreenMixin",
+    "WindowMixin"
   ],
   "injectors": {
     "defaultRequire": 1

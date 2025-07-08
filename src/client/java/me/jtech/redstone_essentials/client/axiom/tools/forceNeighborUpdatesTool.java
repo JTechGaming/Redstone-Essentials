@@ -7,6 +7,7 @@ import com.moulberry.axiomclientapi.pathers.ToolPatherUnique;
 import com.moulberry.axiomclientapi.regions.BlockRegion;
 import com.moulberry.axiomclientapi.regions.BooleanRegion;
 import com.moulberry.axiomclientapi.service.ToolService;
+import com.moulberry.mixinconstraints.annotations.IfModLoaded;
 import imgui.ImGui;
 import me.jtech.redstone_essentials.client.Redstone_Essentials_Client;
 import me.jtech.redstone_essentials.client.axiom.ServiceHelper;
@@ -25,10 +26,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
+import org.spongepowered.asm.mixin.Pseudo;
 
 import java.util.ArrayList;
 
-//TODO this doesnt work yet
+@IfModLoaded("axiom")
+@Pseudo
 public class forceNeighborUpdatesTool implements CustomTool { //TODO comment this
 
     private final BlockRegion blockRegion = ServiceHelper.createBlockRegion();

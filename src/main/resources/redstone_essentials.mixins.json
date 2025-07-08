@@ -4,6 +4,7 @@
   "package": "me.jtech.redstone_essentials.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BlockStateMixin"
   ],
   "injectors": {
     "defaultRequire": 1
