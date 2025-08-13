@@ -8,6 +8,7 @@ classes/
 # idea
 
 .idea/
+.idea
 *.iml
 *.ipr
 *.iws
@@ -23,3 +24,6 @@ bin/
 # fabric
 
 run/
+run
+/gradle/wrapper/gradle-wrapper.jar
+/gradle/wrapper/gradle-wrapper.properties
