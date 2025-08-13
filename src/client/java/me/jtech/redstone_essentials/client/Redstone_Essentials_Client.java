@@ -99,7 +99,9 @@ public class Redstone_Essentials_Client implements ClientModInitializer { //TODO
         SignalStrengthGiver.setupKeybinds();
 
         LOGGER.info("Registering axiom extension tools...");
-        ServiceHelper.getToolRegistryService().register(new forceNeighborUpdatesTool());
+//        if (FabricLoader.getInstance().isModLoaded("Axiom")) {
+//            ServiceHelper.getToolRegistryService().register(new forceNeighborUpdatesTool());
+//        }
 
         LOGGER.info("Registering Events");
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -122,7 +124,7 @@ public class Redstone_Essentials_Client implements ClientModInitializer { //TODO
 
         WorldRenderEvents.LAST.register((context) -> {
             ClientSelectionHelper.renderAll();
-            BlockOverlayRenderer.renderAll(context.matrixStack(), context.consumers());
+            BlockOverlayRenderer.renderAll(context);
         });
 
         LOGGER.info("Setting up Client-Side Packets...");

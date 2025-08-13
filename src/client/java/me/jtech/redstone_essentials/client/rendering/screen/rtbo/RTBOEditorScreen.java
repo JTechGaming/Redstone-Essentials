@@ -98,7 +98,7 @@ public class RTBOEditorScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context, mouseX, mouseY, delta);
+        //this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         this.labelField.render(context, mouseX, mouseY, delta);
         this.locationText.render(context, mouseX, mouseY, delta);

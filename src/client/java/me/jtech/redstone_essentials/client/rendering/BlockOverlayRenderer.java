@@ -1,6 +1,8 @@
 package me.jtech.redstone_essentials.client.rendering;
 
+import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import me.jtech.redstone_essentials.SelectionData;
 import me.jtech.redstone_essentials.client.IO.SessionStorage;
 import me.jtech.redstone_essentials.client.Redstone_Essentials_Client;
@@ -8,8 +10,12 @@ import me.jtech.redstone_essentials.client.clientAbilities.SelectionAbility;
 import me.jtech.redstone_essentials.client.rendering.gui.RealtimeByteOutputRenderer;
 import me.jtech.redstone_essentials.client.rendering.screen.BitmapPrinterScreen;
 import me.jtech.redstone_essentials.IO.Config;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
+import net.fabricmc.fabric.impl.renderer.RendererManager;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.ShaderProgramKeys;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.*;
@@ -213,7 +219,8 @@ public class BlockOverlayRenderer {
     }
 
     // Call this method from your main rendering logic to render all overlays
-    public static void renderAll(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
+    public static void renderAll(WorldRenderContext context) {
+        //if (true) return;
         for (BlockOverlayRenderer overlay : overlays) {
             if ((!Config.pings_enabled && !selectionOverlays.contains(overlay)) || (!Config.selections_enabled && selectionOverlays.contains(overlay))) {
                 continue;
@@ -221,19 +228,19 @@ public class BlockOverlayRenderer {
             if ((overlay.isRTBO && !RealtimeByteOutputRenderer.isShouldRender()) || (overlay.isRTBO && !Config.rtbo_enabled)) {
                 continue;
             }
-            overlay.render(matrixStack, vertexConsumerProvider);
+            overlay.render(context);
         }
     }
 
     // Rendering logic for the overlay around a specific block
-    public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
+    public void render(WorldRenderContext context) {
         Vec3d cameraPos = client.gameRenderer.getCamera().getPos();
 
         // Define the bounding box for the block
         Box box = new Box(blockPos).offset(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 
         // Render both outline and filled highlight
-        renderOutline(box.stretch(new Vec3d(size.getX() - 1, size.getY() - 1, size.getZ() - 1)), color, vertexConsumerProvider, matrixStack);
+        renderOutline(box.stretch(new Vec3d(size.getX() - 1, size.getY() - 1, size.getZ() - 1)), color, context);
     }
 
     public static void loadSessions() {
@@ -300,86 +307,94 @@ public class BlockOverlayRenderer {
         SessionStorage.storeSelectionsForServer(new SessionStorage.Data(localOverlays, localOverlayPositions, localSelectionOverlays), ip);
     }
 
-    private void renderOutline(Box box, Color color, VertexConsumerProvider vertexConsumerProvider, MatrixStack matrixStack) {
+    private void renderOutline(Box box, Color color, WorldRenderContext context) {
         float red = color.getRed() / 255.0f;
         float green = color.getGreen() / 255.0f;
         float blue = color.getBlue() / 255.0f;
         float alpha = color.getAlpha() / 255.0f;
 
+        MatrixStack matrixStack = context.matrixStack();
+
         Matrix4f transformationMatrix = matrixStack.peek().getPositionMatrix();
         Tessellator tessellator = Tessellator.getInstance();
 
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
+        GlStateManager._enableBlend();
+        //GlStateManager.defaultBlendFunc();
+        //RenderSystem.setupDefaultState();
         RenderSystem.lineWidth(20.0f);
         if (!Config.ping_skip_depth_test) {
-            RenderSystem.disableDepthTest();
+            GlStateManager._disableDepthTest();
         } else {
-            RenderSystem.enableDepthTest();
+            GlStateManager._enableDepthTest();
         }
-        BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
+        //BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
+
+        VertexConsumer buffer = context.consumers().getBuffer(RenderLayer.LINES);
 
         // Top Face Edges
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha).normal(0, 1, 0);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha).normal(0, 1, 0);
 
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha).normal(0, 1, 0);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha).normal(0, 1, 0);
 
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha).normal(0, 1, 0);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha).normal(0, 1, 0);
 
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha).normal(0, 1, 0);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha).normal(0, 1, 0);
 
         // Vertical Edges
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha).normal(0, 0, 0);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha).normal(0, 1, 0);
 
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha).normal(1, 0, 0);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha).normal(1, 0, 0);
 
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha).normal(1, 0, 1);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha).normal(1, 1, 1);
 
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha).normal(0, 0, 1);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).color(red, green, blue, alpha).normal(0, 1, 1);
 
         // Bottom Face Edges
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha).normal(0, 0, 0);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha).normal(1, 0, 0);
 
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha).normal(1, 0, 0);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha).normal(1, 0, 1);
 
-        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha).normal(1, 0, 1);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha).normal(0, 0, 1);
 
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha);
-        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.maxZ).color(red, green, blue, alpha).normal(0, 0, 1);
+        buffer.vertex(transformationMatrix, (float) box.minX, (float) box.minY, (float) box.minZ).color(red, green, blue, alpha).normal(0, 0, 0);
 
-        RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        BufferRenderer.drawWithGlobalProgram(buffer.end());
+//        RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
+//        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+//        BufferRenderer.drawWithGlobalProgram(buffer.end());
 
-        RenderSystem.disableBlend();
-        RenderSystem.enableDepthTest();
+        //RenderSystem.disableBlend();
+        GlStateManager._disableBlend();
+        GlStateManager._enableDepthTest();
         if (Config.ping_render_faces) {
-            renderTest(box, matrixStack);
+            renderTest(box, context);
         }
     }
 
-    private void renderTest(Box box, MatrixStack matrixStack) {
-        Matrix4f transformationMatrix = matrixStack.peek().getPositionMatrix();
+    private void renderTest(Box box, WorldRenderContext context) {
+        Matrix4f transformationMatrix = context.matrixStack().peek().getPositionMatrix();
         Tessellator tessellator = Tessellator.getInstance();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
+        GlStateManager._enableBlend();
+        //RenderSystem.defaultBlendFunc();
         if (!Config.ping_skip_depth_test) {
-            RenderSystem.disableDepthTest();
+            GlStateManager._disableDepthTest();
         } else {
-            RenderSystem.enableDepthTest();
+            GlStateManager._enableDepthTest();
         }
-        BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
+        //BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
+
+        VertexConsumer buffer = context.consumers().getBuffer(RenderLayer.getDebugTriangleFan());
 
         // Define the six faces of the cube
         // Bottom face (minY)
@@ -400,18 +415,18 @@ public class BlockOverlayRenderer {
         // Right face (maxX)
         addFace(buffer, transformationMatrix, box.maxX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, 0.5f, 0.0f, 0.0f, 0.4f);
 
-        RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-        BufferRenderer.drawWithGlobalProgram(buffer.end());
+//        RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
+//        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+//
+//        BufferRenderer.drawWithGlobalProgram(buffer.end());
 
         // Clean up after rendering
-        RenderSystem.disableBlend();
-        RenderSystem.enableDepthTest();
+        GlStateManager._disableBlend();
+        GlStateManager._enableDepthTest();
     }
 
     // Helper method to add a face
-    private void addFace(BufferBuilder buffer, Matrix4f matrix, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float r, float g, float b, float a) {
+    private void addFace(VertexConsumer buffer, Matrix4f matrix, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float r, float g, float b, float a) {
         // Define two triangles for the face
         buffer.vertex(matrix, (float) minX, (float) minY, (float) minZ).color(r, g, b, a);
         buffer.vertex(matrix, (float) maxX, (float) minY, (float) minZ).color(r, g, b, a);

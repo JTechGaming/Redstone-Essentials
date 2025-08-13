@@ -85,6 +85,7 @@ public class KeybindEditorScreen extends Screen {
         // Button to input the keys
         this.keyButton = ButtonWidget.builder(Text.literal(keybind == null ? "Key: ..." : "Key: " + keyNameQuery(keyList)), button -> {
             keyButton.active = false;
+            System.out.println("KeybindEditorScreen: Starting key detection");
             DynamicKeybindHandler.isReceiving = true;
         }).dimensions(this.width / 2 - 100, 150, 200, 20).build(); // Set dimensions and build the button
 
@@ -247,7 +248,7 @@ public class KeybindEditorScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) { //TODO comment this
-        this.renderBackground(context, mouseX, mouseY, delta);
+        //this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         this.nameField.render(context, mouseX, mouseY, delta);
         this.commandField.render(context, mouseX, mouseY, delta);

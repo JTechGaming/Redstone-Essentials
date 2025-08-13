@@ -53,5 +53,8 @@
   "redstone_essentials.midnightconfig.bitmap_enabled":"Bitmap Printer Enabled",
   "redstone_essentials.midnightconfig.bitmap_reset_on_finish":"Selections Enabled",
   "redstone_essentials.midnightconfig.send_bitmap":"Send your Print Selections To Other Players (Multiplayer Only)",
-  "redstone_essentials.midnightconfig.receive_bitmap":"Render Print Selections From Other Players (Multiplayer Only)"
+  "redstone_essentials.midnightconfig.receive_bitmap":"Render Print Selections From Other Players (Multiplayer Only)",
+
+  "redstone_essentials.midnightconfig.abilitySettingsComment":"Abilities Settings",
+  "redstone_essentials.midnightconfig.swap_block_retain_components":"Swap Block Retain Components"
 }

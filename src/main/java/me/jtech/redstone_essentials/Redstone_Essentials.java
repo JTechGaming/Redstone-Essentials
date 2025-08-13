@@ -11,6 +11,7 @@ import me.jtech.redstone_essentials.utility.SelectionContext;
 import me.jtech.redstone_essentials.utility.SelectionHelper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -22,6 +23,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.BlockEvent;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
@@ -100,7 +102,7 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
                 PlayerEntity player = context.player();
                 int slot = player.getInventory().getEmptySlot();
                 player.getInventory().insertStack(slot, payload.item());
-                player.getInventory().selectedSlot = slot;
+                player.getInventory().setSelectedSlot(slot);
                 player.getInventory().updateItems();
             });
         }));
@@ -182,6 +184,8 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
             });
         }));
 
+        
+
         ServerPlayNetworking.registerGlobalReceiver(C2SInfoPacket.ID, ((payload, context) -> {
             context.server().execute(() -> {
                 InfoPackets.C2S infoID = InfoPackets.getC2SEnum(payload.infoID());
@@ -213,7 +217,7 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
                                 Integer.parseInt(z.substring(0, z.indexOf("♅")))
                         );
 
-                        ServerWorld world = context.player().getServerWorld();
+                        ServerWorld world = context.player().getWorld();
                         Item item = Registries.ITEM.getEntry(Identifier.ofVanilla(blockPayload)).get().value();
                         Block block = Block.getBlockFromItem(item);
                         if (block != Blocks.REDSTONE_WIRE) {
@@ -243,11 +247,11 @@ public class Redstone_Essentials implements ModInitializer, IClientSelectionCont
                         String mode = payload.flag1();
                         SelectionHelper selectionHelper = new SelectionHelper(payload.selections().get(0).blockPos, payload.selections().get(0).blockPos.add(payload.selections().get(0).size), false);
                         if (mode.equalsIgnoreCase("read")) {
-                            context.player().sendMessage(Text.literal(selectionHelper.readData(context.player().getServerWorld(), 1) + ""));
+                            context.player().sendMessage(Text.literal(selectionHelper.readData(context.player().getWorld(), 1) + ""));
                             return;
                         }
                         // TODO&1.1: make the data and offset configurable
-                        selectionHelper.writeData(context.player().getServerWorld(), 3, 1, context.player());
+                        selectionHelper.writeData(context.player().getWorld(), 3, 1, context.player());
                     }
                     case CLEAR_PINGS -> {
                         LOGGER.info("Clearing pings for player " + context.player().getName().getString());
