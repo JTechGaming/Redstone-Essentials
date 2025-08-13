@@ -35,7 +35,6 @@ public class DynamicKeybindHandler { //TODO comment this
 
     private static final Gson GSON = new Gson();
     private static final Path CONFIG_FILE = MinecraftClient.getInstance().runDirectory.toPath().resolve("config/redstone_essentials/dynamic_keybinds.json");
-    private static boolean isInitialised = false;
     private static boolean hasProcessedKey = false;
 
     public static boolean isReceiving = false;
@@ -53,37 +52,30 @@ public class DynamicKeybindHandler { //TODO comment this
 
     public static void setupKeyDetection(KeybindEditorScreen scr) {
         DynamicKeybindHandler.parentScreen = scr;
-        if (!isInitialised) {
-            ScreenKeyboardEvents.beforeKeyPress(parentScreen).register((screen, keyCode, scanCode, modifiers) -> {
-                if (isReceiving) {
-                    if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT || keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT) {
-                        if (!pressedKeys.contains(GLFW.GLFW_KEY_LEFT_SHIFT) && !pressedKeys.contains(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
-                            pressedKeys.add(GLFW.GLFW_KEY_LEFT_SHIFT);
-                        }
-                    } else if (keyCode == GLFW.GLFW_KEY_LEFT_CONTROL || keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL) {
-                        if (!pressedKeys.contains(GLFW.GLFW_KEY_LEFT_CONTROL) && !pressedKeys.contains(GLFW.GLFW_KEY_RIGHT_CONTROL)) {
-                            pressedKeys.add(GLFW.GLFW_KEY_LEFT_CONTROL);
-                        }
-                    } else {
-                        if (!pressedKeys.contains(keyCode)) {
-                            pressedKeys.add(keyCode);
-                        }
+        ScreenKeyboardEvents.beforeKeyPress(parentScreen).register((screen, keyCode, scanCode, modifiers) -> {
+            if (isReceiving) {
+                if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT || keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT) {
+                    if (!pressedKeys.contains(GLFW.GLFW_KEY_LEFT_SHIFT) && !pressedKeys.contains(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
+                        pressedKeys.add(GLFW.GLFW_KEY_LEFT_SHIFT);
                     }
-                    parentScreen.setKeys(new ArrayList<>(pressedKeys));
-                }
-            });
-
-            ScreenKeyboardEvents.beforeKeyRelease(parentScreen).register((screen, keyCode, scanCode, modifiers) -> {
-                if (isReceiving) {
-                    for (Integer pressedKey : pressedKeys) {
-                        System.out.println(pressedKey);
+                } else if (keyCode == GLFW.GLFW_KEY_LEFT_CONTROL || keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL) {
+                    if (!pressedKeys.contains(GLFW.GLFW_KEY_LEFT_CONTROL) && !pressedKeys.contains(GLFW.GLFW_KEY_RIGHT_CONTROL)) {
+                        pressedKeys.add(GLFW.GLFW_KEY_LEFT_CONTROL);
                     }
-                    endKeyDetection(parentScreen);
+                } else {
+                    if (!pressedKeys.contains(keyCode)) {
+                        pressedKeys.add(keyCode);
+                    }
                 }
-            });
+                parentScreen.setKeys(new ArrayList<>(pressedKeys));
+            }
+        });
 
-            isInitialised = true;
-        }
+        ScreenKeyboardEvents.beforeKeyRelease(parentScreen).register((screen, keyCode, scanCode, modifiers) -> {
+            if (isReceiving) {
+                endKeyDetection(parentScreen);
+            }
+        });
     }
 
     public static void endKeyDetection(KeybindEditorScreen parentScreen) {
@@ -99,10 +91,10 @@ public class DynamicKeybindHandler { //TODO comment this
         long windowHandle = MinecraftClient.getInstance().getWindow().getHandle();
         for (Pair<List<Integer>, DynamicKeybindProperties> pair : keyBinds.values()) {
             int completionBuffer = 0;
-            for (int i=0; i<pair.getFirst().size(); i++) {
+            for (int i = 0; i < pair.getFirst().size(); i++) {
                 if (InputUtil.isKeyPressed(windowHandle, pair.getFirst().get(i))) {
                     completionBuffer++;
-                    if (completionBuffer==pair.getFirst().size()) {
+                    if (completionBuffer == pair.getFirst().size()) {
                         DynamicKeybindProperties properties = pair.getSecond();
                         if (!hasProcessedKey && shouldProcessKey) {
                             hasProcessedKey = !properties.hasHoldKey; // Hold key implementation
@@ -137,7 +129,8 @@ public class DynamicKeybindHandler { //TODO comment this
         String command = properties.command;
         if (properties.hasCycleState && !properties.cycleStates.isEmpty()) {
             properties.setCurrentCycleState((properties.getCurrentCycleState() + 1) % properties.cycleStates.size());
-            if (properties.cycleStates.get(properties.getCurrentCycleState()).isBlank()) properties.setCurrentCycleState((properties.getCurrentCycleState() + 1) % properties.cycleStates.size());
+            if (properties.cycleStates.get(properties.getCurrentCycleState()).isBlank())
+                properties.setCurrentCycleState((properties.getCurrentCycleState() + 1) % properties.cycleStates.size());
             command = properties.cycleStates.get(properties.getCurrentCycleState());
         }
         if (properties.copyText) {
@@ -164,7 +157,8 @@ public class DynamicKeybindHandler { //TODO comment this
     public static void loadKeybinds() {
         if (Files.exists(CONFIG_FILE)) {
             try (Reader reader = Files.newBufferedReader(CONFIG_FILE)) {
-                Type type = new TypeToken<Map<String, Pair<List<Integer>, DynamicKeybindProperties>>>() {}.getType();
+                Type type = new TypeToken<Map<String, Pair<List<Integer>, DynamicKeybindProperties>>>() {
+                }.getType();
                 keyBinds = GSON.fromJson(reader, type);
                 setupScreenRegister();
             } catch (IOException e) {

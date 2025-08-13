@@ -1,5 +1,6 @@
 package me.jtech.redstone_essentials.client.clientAbilities;
 
+import me.jtech.redstone_essentials.IO.Config;
 import me.jtech.redstone_essentials.client.Redstone_Essentials_Client;
 import me.jtech.redstone_essentials.client.utility.Toaster;
 import me.jtech.redstone_essentials.networking.payloads.c2s.SetItemPayload;
@@ -31,7 +32,7 @@ public class SwapBlockTypeAbility extends BaseAbility{ //TODO comment this
         MinecraftClient client = MinecraftClient.getInstance();
         assert client.player != null;
         PlayerInventory inventory = client.player.getInventory();
-        ItemStack item = inventory.getMainHandStack();
+        ItemStack item = inventory.getSelectedStack();
 
         if (item.equals(ItemStack.EMPTY)) return;
 
@@ -54,12 +55,14 @@ public class SwapBlockTypeAbility extends BaseAbility{ //TODO comment this
         type = type.replaceAll("minecraft:", "");
 
         ItemStack returnItem = Registries.ITEM.get(Identifier.ofVanilla(type)).getDefaultStack();
-        returnItem.set(DataComponentTypes.CUSTOM_NAME, item.get(DataComponentTypes.CUSTOM_NAME));
-        returnItem.set(DataComponentTypes.ITEM_NAME, item.get(DataComponentTypes.ITEM_NAME));
-        returnItem.setCount(item.getCount());
+        if (Config.swap_block_retain_components) {
+            returnItem.set(DataComponentTypes.CUSTOM_NAME, item.get(DataComponentTypes.CUSTOM_NAME));
+            returnItem.set(DataComponentTypes.ITEM_NAME, item.get(DataComponentTypes.ITEM_NAME));
+            returnItem.setCount(item.getCount());
+        }
 
         if (Redstone_Essentials_Client.packetsEnabled)
-            ClientPlayNetworking.send(new SetItemPayload(returnItem, client.player.getInventory().selectedSlot));
+            ClientPlayNetworking.send(new SetItemPayload(returnItem, client.player.getInventory().getSelectedSlot()));
     }
 
     @Override

@@ -67,6 +67,9 @@ public class Config extends MidnightConfig {
     @Entry(category = SETTINGS) public static boolean send_bitmap = true;
     @Entry(category = SETTINGS) public static boolean receive_bitmap = true;
 
+    @Comment(category = SETTINGS, centered = true) public static Comment abilitySettingsComment;
+    @Entry(category = SETTINGS) public static boolean swap_block_retain_components = false;
+
 
     // Keybindings
     @Comment(category = KEYBINDS, centered = true) public static Comment keybindComment;      // Centered comments are the same as normal ones - just centered!
